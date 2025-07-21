@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>山東祭2025｜E。-ast-</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* カスタムスタイル */
+        body {
+            background-color: #1a1a3b;
+            color: #f0f0f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* 星空アニメーション用キャンバス */
+        #starry-sky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* メインコンテンツのレイヤーを前面に */
+        main, header, footer {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* カスタムフォント */
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+
+        /* 銀河風タイトル */
+        .galaxy-text {
+            background: linear-gradient(45deg, #d1bfff, #a29bfe, #74b9ff, #d1bfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            animation: gradient-animation 5s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* スクロールダウンアイコンのアニメーション */
+        .scroll-down-arrow {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* セクションタイトルのスタイル */
+        .section-title {
+            color: #d1bfff;
+            text-shadow: 0 0 8px #d1bfff, 0 0 12px #d1bfff;
+        }
+
+        /* カードの浮遊感 */
+        .floating-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3), 0 0 15px rgba(209, 191, 255, 0.1);
+        }
+        .floating-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 25px rgba(209, 191, 255, 0.2);
+        }
+
+        /* タブのアクティブ状態 */
+        .tab-active {
+            background-color: #d1bfff !important;
+            color: #0d0d2b !important;
+            box-shadow: 0 0 10px #d1bfff;
+        }
+        
+        /* フィルターボタンのアクティブ状態 */
+        .filter-active {
+            background-color: #d1bfff;
+            color: #0d0d2b;
+            font-weight: bold;
+        }
+
+        /* Instagramボタンとマップボタン */
+        .cta-button {
+            background: linear-gradient(45deg, #8a2be2, #d1bfff, #ff69b4, #8a2be2);
+            background-size: 300% 300%;
+            animation: gradient-animation 8s ease infinite;
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #d1bfff;
+        }
+
+        /* フッターの星屑 */
+        .footer-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite ease-in-out;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        
+        /* スクロール時のフェードインアニメーション */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* モーダル */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        /* プリローダー */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a3b;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #preloader .loader-text {
+            color: #d1bfff;
+            font-size: 2rem;
+            font-family: 'Playfair Display', serif;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; text-shadow: 0 0 5px #d1bfff; }
+            50% { opacity: 1; text-shadow: 0 0 15px #d1bfff; }
+            100% { opacity: 0.5; text-shadow: 0 0 5px #d1bfff; }
+        }
+        
+        /* AIコンシェルジュ */
+        #ai-response {
+            white-space: pre-wrap;
+            line-height: 1.8;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #d1bfff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 模擬店カードのテキスト色を設定 */
+        .booth-card .p-4 h3 {
+            color: #ffffff;
+        }
+        .booth-card .p-4 p {
+            color: #e0e0e0;
+        }
+    </style>
+</head>
+<body class="bg-[#1a1a3b]">
+
+    <!-- 星空背景 -->
+    <canvas id="starry-sky"></canvas>
+    
+    <!-- プリローダー -->
+    <div id="preloader">
+        <div class="loader-text">E . - a s t -</div>
+    </div>
+
+    <!-- モーダル（マップ拡大用） -->
+    <div id="mapModal" class="modal">
+        <span class="modal-close" id="closeModal">&times;</span>
+        <img class="modal-content" id="modalImage" src="https://placehold.co/1200x800/1a1a3b/d1bfff?text=校内マップ拡大図">
+    </div>
+
+    <!-- ヒーローセクション -->
+    <header class="h-screen flex flex-col items-center justify-center text-center relative p-4">
+        <div class="z-10">
+            <h1 class="text-5xl md:text-8xl font-playfair galaxy-text font-black mb-4 leading-tight">
+                山東祭2025<br>E。-ast-
+            </h1>
+            <p class="text-lg md:text-2xl font-playfair text-gray-300">
+                テーマ：『チ。-地球の運動について-』
+            </p>
+        </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2">
+            <a href="#info" class="scroll-down-arrow">
+                <i class="fas fa-chevron-down text-3xl text-[#d1bfff]"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 md:space-y-32 pb-24">
+
+        <!-- 開催情報セクション -->
+        <section id="info" class="fade-in-section">
+            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">Information</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10 floating-card" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-blend-mode: overlay;">
+                    <h3 class="text-3xl font-playfair mb-4 text-[#d1bfff]">日程</h3>
+                    <p class="text-xl">8月30日 (土)</p>
+                    <p class="text-xl">8月31日 (日)</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10 floating-card" style="background-image: url('https://images.unsplash.com/photo-1506443432602-ac2fcd6f54e0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-blend-mode: overlay;">
+                    <h3 class="text-3xl font-playfair mb-4 text-[#d1bfff]">時間</h3>
+                    <p class="text-xl">10:00 〜 15:00</p>
+                    <p class="text-sm text-gray-400">(両日共通)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- イベントスケジュールセクション -->
+        <section id="schedule" class="fade-in-section">
+            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">Schedule</h2>
+            <div class="w-full">
+                <!-- 日付タブ -->
+                <div id="date-tabs" class="flex justify-center mb-4 space-x-2 md:space-x-4">
+                    <button data-date-target="day1" class="date-tab-button px-4 py-2 md:px-6 md:py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300 tab-active">8月30日(土)</button>
+                    <button data-date-target="day2" class="date-tab-button px-4 py-2 md:px-6 md:py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300">8月31日(日)</button>
+                </div>
+
+                <!-- 日付別コンテンツ -->
+                <div id="day1" class="date-content">
+                    <!-- 会場タブ -->
+                    <div class="location-tabs flex justify-center mb-8 space-x-2 md:space-x-4">
+                        <button data-location-target="day1-gym" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300 tab-active">体育館</button>
+                        <button data-location-target="day1-auditorium" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300">講堂</button>
+                    </div>
+                    <!-- 会場別コンテンツ -->
+                    <div class="p-6 md:p-10 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
+                        <div id="day1-gym" class="location-content space-y-6">
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">10:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">開会式</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">11:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">吹奏楽部 演奏</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">13:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">ダンス部 公演</div></div>
+                        </div>
+                        <div id="day1-auditorium" class="location-content space-y-6 hidden">
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">10:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">演劇部 公演「銀河鉄道の夜」</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">12:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">軽音楽部 ライブ (前半)</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">14:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">有志バンド 発表</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="day2" class="date-content hidden">
+                    <!-- 会場タブ -->
+                    <div class="location-tabs flex justify-center mb-8 space-x-2 md:space-x-4">
+                        <button data-location-target="day2-gym" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300 tab-active">体育館</button>
+                        <button data-location-target="day2-auditorium" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300">講堂</button>
+                    </div>
+                    <!-- 会場別コンテンツ -->
+                    <div class="p-6 md:p-10 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
+                        <div id="day2-gym" class="location-content space-y-6">
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">10:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">クラス対抗クイズ大会</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">12:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">カラオケ大会 決勝</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">14:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">閉会式</div></div>
+                        </div>
+                        <div id="day2-auditorium" class="location-content space-y-6 hidden">
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">11:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">書道部 パフォーマンス</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">13:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">軽音楽部 ライブ (後半)</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">14:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">教員バンド ライブ</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 模擬店・展示情報セクション -->
+        <section id="booths" class="fade-in-section">
+            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">Booths & Exhibits</h2>
+            <!-- フィルター -->
+            <div id="filters" class="flex justify-center flex-wrap gap-2 mb-8">
+                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300 filter-active" data-filter="all">すべて</button>
+                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-filter="class">クラス</button>
+                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-filter="club">部活</button>
+            </div>
+            
+            <!-- カードグリッド -->
+            <div id="booth-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- JavaScriptでカードを動的に生成 -->
+            </div>
+        </section>
+        
+        <!-- AI コンシェルジュセクション -->
+        <section id="ai-concierge" class="fade-in-section">
+            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">AI Concierge "Astra"</h2>
+            <div class="max-w-3xl mx-auto p-6 md:p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
+                <p class="text-center text-gray-300 mb-6">山東祭について知りたいことをAIコンシェルジュ「アストラ」に質問してみよう！</p>
+                <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                    <input type="text" id="ai-prompt" class="w-full bg-white/10 rounded-full px-6 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d1bfff]" placeholder="例：焼きそばはどこですか？">
+                    <button id="ask-ai-button" class="px-8 py-3 font-bold text-white rounded-full cta-button whitespace-nowrap">
+                        <i class="fas fa-magic-sparkles mr-2"></i>質問する
+                    </button>
+                </div>
+                <div id="ai-loader" class="hidden justify-center my-4">
+                    <div class="loader"></div>
+                </div>
+                <div id="ai-response" class="mt-4 p-6 bg-white/5 rounded-lg min-h-[100px]">
+                    <p class="text-gray-400">ここに回答が表示されます。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 校内マップセクション -->
+        <section id="map" class="fade-in-section">
+            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">School Map</h2>
+            <div class="relative bg-black/30 p-4 rounded-2xl border border-white/10">
+                <img id="schoolMapImage" src="https://placehold.co/1000x600/1a1a3b/d1bfff?text=山形東高校 校内マップ" alt="校内マップ" class="w-full rounded-lg cursor-pointer">
+                <!-- マーカーはJavaScriptによって動的に生成されます -->
+                <p class="text-center mt-4 text-gray-400">マップをクリックまたはタップで拡大表示します。</p>
+            </div>
+        </section>
+
+        <!-- アクセス & 学校情報セクション -->
+        <section id="access" class="fade-in-section">
+            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">Access</h2>
+            <div class="grid lg:grid-cols-2 gap-8 md:gap-12">
+                <div class="bg-black/30 p-8 rounded-2xl border border-white/10">
+                    <h3 class="text-2xl font-playfair text-[#d1bfff] mb-4">山形県立山形東高等学校</h3>
+                    <p class="mb-2"><i class="fas fa-map-marker-alt w-6"></i> 住所: 〒990-0044 山形県山形市緑町1-5-59</p>
+                    <p><i class="fas fa-phone w-6"></i> 電話: 023-622-3010</p>
+                </div>
+                <div class="bg-black/30 p-8 rounded-2xl border border-white/10 flex flex-col items-center justify-center text-center">
+                    <i class="fas fa-map-marked-alt text-4xl text-[#d1bfff] mb-4"></i>
+                    <h3 class="text-xl font-playfair mb-4">地図で場所を確認</h3>
+                    <a href="https://www.google.com/maps/place/%E5%B1%B1%E5%BD%A2%E7%9C%8C%E7%AB%8B%E5%B1%B1%E5%BD%A2%E6%9D%B1%E9%AB%98%E7%AD%89%E5%AD%A6%E6%A0%A1/@38.2564436,140.344156,630m/data=!3m2!1e3!5s0x5f8bc9fb57f215af:0xc1094e60ba0c6b4d!4m6!3m5!1s0x5f8bc9fb50c05223:0x228d8bf43f261125!8m2!3d38.2577883!4d140.3456953!16s%2Fg%2F122bxrcd?entry=ttu&g_ep=EgoyMDI1MDcxMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-3 text-md font-bold text-white rounded-full cta-button">
+                       Googleマップで開く
+                    </a>
+               </div>
+            </div>
+        </section>
+
+        <!-- Instagramリンク -->
+        <section class="fade-in-section text-center">
+             <a href="https://www.instagram.com/yamatosai_2025?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="inline-block px-10 py-4 text-lg font-bold text-white rounded-full cta-button">
+                <i class="fab fa-instagram mr-2"></i>
+                山東祭 公式Instagramへ
+            </a>
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="relative bg-gradient-to-t from-black/80 to-transparent pt-20 pb-8 mt-16 text-center text-gray-400 text-sm">
+        <div class="footer-stars"></div>
+        <p>© 2025 山形東高校 山東祭実行委員会</p>
+    </footer>
+    
+    <script>
+        // --- データ定義 ---
+        const boothData = {
+            classes: [
+                { name: '2年1組', category: 'class', location: '2-4教室', content: 'トイストーリーマニア21', description: 'トイストーリーの世界観で楽しむアトラクションです。' },
+                { name: '2年2組', category: 'class', location: '2-2教室', content: 'カジノ', description: 'チップを賭けて一攫千金を目指せ！' },
+                { name: '2年3組', category: 'class', location: '2-3教室', content: 'クラブ・占いなど', description: 'あなたの運勢、占います。' },
+                { name: '2年4組', category: 'class', location: '2-1教室', content: '脱出ゲーム', description: '謎を解き明かし、教室から脱出せよ！' },
+                { name: '2年5組', category: 'class', location: '2-5教室', content: '謎解きゲーム', description: '頭脳を駆使して謎に挑め！' },
+                { name: '2年6組', category: 'class', location: '1-1教室', content: 'ROUND６', description: '様々なミニゲームで盛り上がろう！' },
+                { name: '3年1組', category: 'class', location: '1-2教室', content: '韓国スイーツ', description: '流行りの韓国スイーツを召し上がれ。' },
+                { name: '3年2組', category: 'class', location: '1-3教室', content: 'ハンバーガーとゼリー', description: 'ボリューム満点のハンバーガーとデザートのセット。' },
+                { name: '3年3組', category: 'class', location: '1-4教室', content: '焼きそば', description: '文化祭の定番！特製ソースが決め手。' },
+                { name: '3年4組', category: 'class', location: '第1多目的室', content: 'お化け屋敷', description: 'この夏一番の恐怖体験をあなたに…' },
+                { name: '3年5組', category: 'class', location: '1-5教室', content: '冷やしうどん', description: '暑い日にぴったり！さっぱり冷やしうどん。' },
+                { name: '3年6組', category: 'class', location: '1-6教室', content: '揚げパンとドリンク', description: '懐かしの味、揚げパンはいかがですか？' },
+            ],
+            clubs: [
+                { name: '文芸部', category: 'club', location: '中央廊下', content: '展示・部誌販売', description: '部員たちの創作の軌跡をご覧ください。' },
+                { name: 'JRC部', category: 'club', location: '保健室前廊下', content: 'レモネード販売・募金活動', description: '爽やかなレモネードで一息つきませんか？' },
+                { name: '家庭科部', category: 'club', location: '中央廊下', content: '手作りクッキー販売', description: '愛情込めて作りました。お土産にどうぞ。' },
+                { name: '地域国際班', category: 'club', location: '中央廊下', content: 'アフタヌーンティーセット', description: '優雅な午後のひとときを。' },
+                { name: '探究A9班', category: 'club', location: '中央廊下', content: '規格外野菜・果物の販売', description: 'フードロス削減にご協力ください！' },
+                { name: '囲碁将棋部', category: 'club', location: '講堂前廊下', content: '青空将棋・喫茶', description: '初心者大歓迎！ゆっくりお茶でもいかがですか。' },
+                { name: '剣道部', category: 'club', location: '武道館前', content: 'かき氷・玉こん', description: '熱い夏にはこれ！山形名物玉こんも。' },
+                { name: 'サッカー部', category: 'club', location: '体育館', content: 'かき氷・リフティング', description: 'リフティングチャレンジで景品ゲット！' },
+                { name: '男子ハンド部', category: 'club', location: '体育館', content: 'ポップコーン', description: 'キャラメル味と塩味をご用意！' },
+                { name: '弓道部', category: 'club', location: '体育館', content: '的あて', description: '君も弓矢の名手になれるかも？' },
+                { name: '陸上部', category: 'club', location: '体育館', content: 'ベビーカステラ', description: '一口サイズの甘くて美味しいおやつです。' },
+                { name: 'バドミントン部', category: 'club', location: '体育館', content: '綿あめのせドリンク', description: 'ふわふわ綿あめが乗った可愛いドリンク。' },
+                { name: 'バスケ部', category: 'club', location: '体育館', content: 'アイスの実サイダー', description: 'シュワっと爽快！アイスの実入りサイダー。' },
+                { name: '硬式テニス部', category: 'club', location: '体育館', content: 'ゼリー入りドリンク', description: '食感が楽しいゼリー入りドリンクです。' },
+                { name: '野球部', category: 'club', location: '体育館入口', content: 'アイスフロート', description: '冷たいドリンクにアイスを乗せて。' },
+                { name: 'バレー部', category: 'club', location: '体育館入口', content: 'アイスのせワッフル', description: '焼きたてワッフルと冷たいアイスの組み合わせ。' },
+                { name: 'ソフトテニス部', category: 'club', location: '体育館入口', content: 'かき氷', description: '夏の定番、冷たいかき氷！' },
+                { name: '美術部', category: 'club', location: '美術室', content: '展示・グッズ製作体験', description: '芸術の秋、オリジナルグッズを作りませんか？' },
+                { name: '書道部', category: 'club', location: '書道室', content: '作品展示', description: '墨と筆が織りなす世界をご覧ください。' },
+                { name: '写真部', category: 'club', location: '写真室', content: 'グッズ販売・フォトスポット', description: '思い出の一枚をここで。' },
+                { name: '科学部', category: 'club', location: 'グラウンド', content: 'ペットボトルロケット', description: '青空へ向かってロケットを発射！' }
+            ]
+        };
+        
+        const locationCoordinates = {
+            '体育館': { top: '35%', left: '25%' },
+            '講堂': { top: '50%', left: '70%' },
+            '武道館前': { top: '25%', left: '15%' },
+            'グラウンド': { top: '80%', left: '15%' },
+            '体育館入口': { top: '45%', left: '28%' },
+            '保健室前廊下': { top: '45%', left: '50%'},
+            '中央廊下': { top: '55%', left: '50%'},
+            '講堂前廊下': { top: '50%', left: '62%'},
+            '1-1教室': { top: '65%', left: '45%' },
+            '1-2教室': { top: '65%', left: '50%' },
+            '1-3教室': { top: '65%', left: '55%' },
+            '1-4教室': { top: '65%', left: '60%' },
+            '1-5教室': { top: '65%', left: '65%' },
+            '1-6教室': { top: '65%', left: '70%' },
+            '2-1教室': { top: '75%', left: '45%' },
+            '2-2教室': { top: '75%', left: '50%' },
+            '2-3教室': { top: '75%', left: '55%' },
+            '2-4教室': { top: '75%', left: '60%' },
+            '2-5教室': { top: '75%', left: '65%' },
+            '第1多目的室': { top: '40%', left: '40%'},
+            '美術室': { top: '35%', left: '75%'},
+            '書道室': { top: '35%', left: '80%'},
+            '写真室': { top: '35%', left: '85%'}
+        };
+
+        // --- 機能別関数 ---
+
+        function createAndDisplayBooths() {
+            try {
+                const boothGrid = document.getElementById('booth-grid');
+                if (!boothGrid) {
+                    console.error('Error: Could not find the element with id="booth-grid".');
+                    return;
+                }
+                
+                boothGrid.innerHTML = '';
+                const allBooths = [...boothData.classes, ...boothData.clubs];
+                
+                allBooths.forEach(booth => {
+                    const card = document.createElement('div');
+                    card.className = 'booth-card bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden floating-card cursor-pointer';
+                    card.dataset.category = booth.category;
+
+                    card.innerHTML = `
+                        <img src="https://placehold.co/400x250/2c2c54/d1bfff?text=${encodeURIComponent(booth.name)}" alt="${booth.name}の画像" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x250/2c2c54/d1bfff?text=Image+Not+Found';">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold font-playfair">${booth.name}</h3>
+                            <p class="text-sm mt-1">${booth.content}</p>
+                        </div>
+                        <div class="booth-details hidden p-4 border-t border-white/10 bg-black/20 text-gray-200">
+                            <p><strong>場所:</strong> ${booth.location}</p>
+                            <p><strong>内容:</strong> ${booth.content}</p>
+                            <p class="mt-2 text-sm">${booth.description}</p>
+                        </div>`;
+                    
+                    boothGrid.appendChild(card);
+                });
+            } catch (e) {
+                console.error("An error occurred in createAndDisplayBooths:", e);
+            }
+        }
+        
+        function displayMapMarkers() {
+            try {
+                const mapContainer = document.querySelector('#map > div');
+                if (!mapContainer) return;
+
+                mapContainer.querySelectorAll('.map-marker').forEach(marker => marker.remove());
+                const allBooths = [...boothData.classes, ...boothData.clubs];
+                const locations = {};
+
+                allBooths.forEach(booth => {
+                    const primaryLocation = booth.location.split('&')[0].trim().replace('部室', booth.name.replace('部', '室'));
+                    if (!locations[primaryLocation]) {
+                        locations[primaryLocation] = [];
+                    }
+                    locations[primaryLocation].push(booth.name);
+                });
+
+                Object.keys(locations).forEach(locationName => {
+                    if (locationCoordinates[locationName]) {
+                        const coords = locationCoordinates[locationName];
+                        const marker = document.createElement('div');
+                        marker.className = 'map-marker absolute group';
+                        marker.style.top = coords.top;
+                        marker.style.left = coords.left;
+                        
+                        const boothList = locations[locationName].join(', ');
+
+                        marker.innerHTML = `
+                            <i class="fas fa-map-marker-alt text-red-500 text-3xl cursor-pointer transition-transform duration-300 group-hover:scale-125" style="text-shadow: 0 0 5px rgba(0,0,0,0.5);"></i>
+                            <div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#d1bfff] text-[#0d0d2b] text-sm px-3 py-2 rounded-lg whitespace-nowrap shadow-lg z-20 w-max max-w-xs text-left">
+                                <strong class="font-bold block mb-1">${locationName}</strong>
+                                <span class="text-xs">${boothList}</span>
+                            </div>`;
+                        mapContainer.appendChild(marker);
+                    }
+                });
+            } catch (e) {
+                console.error("An error occurred in displayMapMarkers:", e);
+            }
+        }
+
+        function setupEventListeners() {
+            try {
+                const faders = document.querySelectorAll('.fade-in-section');
+                const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -20px 0px" };
+                const appearOnScroll = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, appearOptions);
+                faders.forEach(fader => appearOnScroll.observe(fader));
+
+                const dateTabs = document.querySelectorAll('.date-tab-button');
+                const dateContents = document.querySelectorAll('.date-content');
+                dateTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        dateTabs.forEach(t => t.classList.remove('tab-active'));
+                        tab.classList.add('tab-active');
+                        const targetId = tab.dataset.dateTarget;
+                        dateContents.forEach(content => {
+                            content.classList.toggle('hidden', content.id !== targetId);
+                        });
+                    });
+                });
+
+                const locationTabs = document.querySelectorAll('.location-tab-button');
+                locationTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const parentDateContent = tab.closest('.date-content');
+                        parentDateContent.querySelectorAll('.location-tab-button').forEach(t => t.classList.remove('tab-active'));
+                        tab.classList.add('tab-active');
+                        const targetId = tab.dataset.locationTarget;
+                        parentDateContent.querySelectorAll('.location-content').forEach(content => {
+                            content.classList.toggle('hidden', content.id !== targetId);
+                        });
+                    });
+                });
+                
+                const filterButtons = document.querySelectorAll('.filter-button');
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const filter = button.dataset.filter;
+                        filterButtons.forEach(btn => btn.classList.remove('filter-active'));
+                        button.classList.add('filter-active');
+                        document.querySelectorAll('.booth-card').forEach(card => {
+                            card.style.display = (filter === 'all' || card.dataset.category === filter) ? 'block' : 'none';
+                        });
+                    });
+                });
+                
+                const boothGrid = document.getElementById('booth-grid');
+                if (boothGrid) {
+                    boothGrid.addEventListener('click', (e) => {
+                        const card = e.target.closest('.booth-card');
+                        if (card) {
+                            card.querySelector('.booth-details').classList.toggle('hidden');
+                        }
+                    });
+                }
+
+                const modal = document.getElementById('mapModal');
+                const mapImage = document.getElementById('schoolMapImage');
+                const closeModal = document.getElementById('closeModal');
+                if(mapImage) mapImage.onclick = () => { modal.style.display = "flex"; };
+                if(closeModal) closeModal.onclick = () => { modal.style.display = "none"; };
+                window.onclick = (event) => { if (event.target == modal) { modal.style.display = "none"; } };
+            } catch (e) {
+                console.error("An error occurred in setupEventListeners:", e);
+            }
+        }
+        
+        function setupStarrySky() {
+            try {
+                const canvas = document.getElementById('starry-sky');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let stars = [], shootingStars = [];
+                function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+                class Star {
+                    constructor(x, y, r, c) { this.x=x;this.y=y;this.r=r;this.c=c;this.a=0.5+Math.random()*0.5;this.baseAlpha=this.a;this.ac=Math.random()*0.02-0.01; }
+                    draw() { ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(${this.c}, ${this.a})`;ctx.fill(); }
+                    update() { this.a+=this.ac; if(this.a>this.baseAlpha||this.a<0){this.ac*=-1;} this.draw(); }
+                }
+                class ShootingStar {
+                    constructor() { this.reset(); }
+                    reset() { this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height*0.5;this.l=Math.random()*80+10;this.s=Math.random()*5+5;this.sz=Math.random()*1+0.5;this.active=true; }
+                    update() { if(this.active){ this.x-=this.s;this.y+=this.s*0.5; if(this.x<0||this.y>=canvas.height){this.active=false;setTimeout(()=>this.reset(),Math.random()*5000+5000);} } }
+                    draw() { if(this.active){ ctx.fillStyle='#d1bfff';ctx.beginPath();ctx.moveTo(this.x,this.y);ctx.lineTo(this.x+this.l,this.y-this.l*0.5);ctx.lineWidth=this.sz;ctx.strokeStyle='rgba(209,191,255,0.5)';ctx.stroke(); } }
+                }
+                function initStars() { for(let i=0;i<200;i++){stars.push(new Star(Math.random()*canvas.width,Math.random()*canvas.height,Math.random()*1.5,'255,255,255'));} for(let i=0;i<2;i++){shootingStars.push(new ShootingStar());} }
+                function animate() { requestAnimationFrame(animate);ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>s.update());shootingStars.forEach(s=>{s.update();s.draw();}); }
+                initStars();animate();
+
+                const footer = document.querySelector('.footer-stars');
+                if (!footer) return;
+                for (let i = 0; i < 50; i++) { const star = document.createElement('div');star.className='star';star.style.width=`${Math.random()*2+1}px`;star.style.height=star.style.width;star.style.left=`${Math.random()*100}%`;star.style.top=`${Math.random()*100}%`;star.style.animationDelay=`${Math.random()*5}s`;star.style.animationDuration=`${Math.random()*3+2}s`;footer.appendChild(star); }
+            } catch(e) {
+                console.error("An error occurred in setupStarrySky:", e);
+            }
+        }
+
+        async function callGemini(prompt) {
+            const aiResponse = document.getElementById('ai-response');
+            const aiLoader = document.getElementById('ai-loader');
+            const askButton = document.getElementById('ask-ai-button');
+
+            aiLoader.style.display = 'flex';
+            aiResponse.innerHTML = '<p class="text-gray-400">アストラが考えています...</p>';
+            askButton.disabled = true;
+
+            let context = "あなたは「山東祭2025」の公式AIコンシェルジュ「アストラ」です。以下の情報を元に、来場者からの質問にフレンドリーかつ丁寧な日本語で回答してください。\n\n";
+            context += "## 山東祭2025 概要\n";
+            context += "- 名称: 山東祭2025｜E。-ast-\n";
+            context += "- テーマ: 『チ。-地球の運動について-』\n";
+            context += "- 日時: 8月30日(土)・31日(日) 10:00〜15:00\n\n";
+            context += "## 企画一覧\n";
+            [...boothData.classes, ...boothData.clubs].forEach(b => {
+                context += `- ${b.name}: ${b.content} (場所: ${b.location})\n`;
+            });
+            
+            const fullPrompt = context + "\n## 質問\n" + prompt;
+
+            let chatHistory = [{ role: "user", parts: [{ text: fullPrompt }] }];
+            const payload = { contents: chatHistory };
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    aiResponse.innerText = text;
+                } else {
+                    aiResponse.innerText = "申し訳ありません、うまく回答を生成できませんでした。もう一度試してみてください。";
+                }
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                aiResponse.innerText = "エラーが発生しました。ネットワーク接続を確認して、もう一度お試しください。";
+            } finally {
+                aiLoader.style.display = 'none';
+                askButton.disabled = false;
+            }
+        }
+
+        function setupAIConcierge() {
+            try {
+                const askButton = document.getElementById('ask-ai-button');
+                const aiPromptInput = document.getElementById('ai-prompt');
+
+                if (askButton) {
+                    askButton.addEventListener('click', () => {
+                        const prompt = aiPromptInput.value;
+                        if (prompt.trim()) {
+                            callGemini(prompt);
+                        }
+                    });
+                }
+                if (aiPromptInput) {
+                    aiPromptInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            const prompt = aiPromptInput.value;
+                            if (prompt.trim()) {
+                                callGemini(prompt);
+                            }
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error("An error occurred in setupAIConcierge:", e);
+            }
+        }
+
+        // --- アプリケーションの初期化 ---
+        function initializeApp() {
+            // 全ての機能をここで初期化
+            setupStarrySky();
+            createAndDisplayBooths();
+            displayMapMarkers();
+            setupEventListeners();
+            setupAIConcierge();
+        }
+
+        // --- イベントリスナーの登録 ---
+        // ★★★ 修正点: DOMContentLoadedの代わりにwindow.onloadを使用 ★★★
+        window.onload = function() {
+            initializeApp();
+
+            // プリローダーを非表示にする
+            const preloader = document.getElementById('preloader');
+            if(preloader) {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+            }
+        };
+    </script>
+</body>
+</html>
