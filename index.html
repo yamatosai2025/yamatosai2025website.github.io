@@ -208,24 +208,6 @@
             50% { opacity: 1; text-shadow: 0 0 15px #d1bfff; }
             100% { opacity: 0.5; text-shadow: 0 0 5px #d1bfff; }
         }
-        
-        /* AIコンシェルジュ */
-        #ai-response {
-            white-space: pre-wrap;
-            line-height: 1.8;
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #d1bfff;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
 
         /* 模擬店カードのテキスト色を設定 */
         .booth-card .p-4 h3 {
@@ -356,26 +338,6 @@
             <!-- カードグリッド -->
             <div id="booth-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- JavaScriptでカードを動的に生成 -->
-            </div>
-        </section>
-        
-        <!-- AI コンシェルジュセクション -->
-        <section id="ai-concierge" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">AI Concierge "Astra"</h2>
-            <div class="max-w-3xl mx-auto p-6 md:p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
-                <p class="text-center text-gray-300 mb-6">山東祭について知りたいことをAIコンシェルジュ「アストラ」に質問してみよう！</p>
-                <div class="flex flex-col sm:flex-row gap-4 mb-4">
-                    <input type="text" id="ai-prompt" class="w-full bg-white/10 rounded-full px-6 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d1bfff]" placeholder="例：焼きそばはどこですか？">
-                    <button id="ask-ai-button" class="px-8 py-3 font-bold text-white rounded-full cta-button whitespace-nowrap">
-                        <i class="fas fa-magic-sparkles mr-2"></i>質問する
-                    </button>
-                </div>
-                <div id="ai-loader" class="hidden justify-center my-4">
-                    <div class="loader"></div>
-                </div>
-                <div id="ai-response" class="mt-4 p-6 bg-white/5 rounded-lg min-h-[100px]">
-                    <p class="text-gray-400">ここに回答が表示されます。</p>
-                </div>
             </div>
         </section>
 
@@ -675,84 +637,6 @@
             }
         }
 
-        async function callGemini(prompt) {
-            const aiResponse = document.getElementById('ai-response');
-            const aiLoader = document.getElementById('ai-loader');
-            const askButton = document.getElementById('ask-ai-button');
-
-            aiLoader.style.display = 'flex';
-            aiResponse.innerHTML = '<p class="text-gray-400">アストラが考えています...</p>';
-            askButton.disabled = true;
-
-            let context = "あなたは「山東祭2025」の公式AIコンシェルジュ「アストラ」です。以下の情報を元に、来場者からの質問にフレンドリーかつ丁寧な日本語で回答してください。\n\n";
-            context += "## 山東祭2025 概要\n";
-            context += "- 名称: 山東祭2025｜E。-ast-\n";
-            context += "- テーマ: 『チ。-地球の運動について-』\n";
-            context += "- 日時: 8月30日(土)・31日(日) 10:00〜15:00\n\n";
-            context += "## 企画一覧\n";
-            [...boothData.classes, ...boothData.clubs].forEach(b => {
-                context += `- ${b.name}: ${b.content} (場所: ${b.location})\n`;
-            });
-            
-            const fullPrompt = context + "\n## 質問\n" + prompt;
-
-            let chatHistory = [{ role: "user", parts: [{ text: fullPrompt }] }];
-            const payload = { contents: chatHistory };
-            const apiKey = "AIzaSyAPPaIcov6OEtT4kiQFxXBQB8XX4vd_a-k"; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const result = await response.json();
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    aiResponse.innerText = text;
-                } else {
-                    aiResponse.innerText = "申し訳ありません、うまく回答を生成できませんでした。もう一度試してみてください。";
-                }
-            } catch (error) {
-                console.error("Error calling Gemini API:", error);
-                aiResponse.innerText = "エラーが発生しました。ネットワーク接続を確認して、もう一度お試しください。";
-            } finally {
-                aiLoader.style.display = 'none';
-                askButton.disabled = false;
-            }
-        }
-
-        function setupAIConcierge() {
-            try {
-                const askButton = document.getElementById('ask-ai-button');
-                const aiPromptInput = document.getElementById('ai-prompt');
-
-                if (askButton) {
-                    askButton.addEventListener('click', () => {
-                        const prompt = aiPromptInput.value;
-                        if (prompt.trim()) {
-                            callGemini(prompt);
-                        }
-                    });
-                }
-                if (aiPromptInput) {
-                    aiPromptInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') {
-                            const prompt = aiPromptInput.value;
-                            if (prompt.trim()) {
-                                callGemini(prompt);
-                            }
-                        }
-                    });
-                }
-            } catch (e) {
-                console.error("An error occurred in setupAIConcierge:", e);
-            }
-        }
-
         // --- アプリケーションの初期化 ---
         function initializeApp() {
             // 全ての機能をここで初期化
@@ -760,11 +644,9 @@
             createAndDisplayBooths();
             displayMapMarkers();
             setupEventListeners();
-            setupAIConcierge();
         }
 
         // --- イベントリスナーの登録 ---
-        // ★★★ 修正点: DOMContentLoadedの代わりにwindow.onloadを使用 ★★★
         window.onload = function() {
             initializeApp();
 
