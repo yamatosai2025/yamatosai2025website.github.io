@@ -216,6 +216,29 @@
         .booth-card .p-4 p {
             color: #e0e0e0;
         }
+        
+        /* 言語スイッチャー */
+        #lang-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background-color: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            border-radius: 9999px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        #lang-switcher button {
+            padding: 8px 16px;
+            color: #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 9999px;
+        }
+        #lang-switcher button.active {
+            background-color: #d1bfff;
+            color: #0d0d2b;
+        }
     </style>
 </head>
 <body class="bg-[#1a1a3b]">
@@ -228,19 +251,25 @@
         <div class="loader-text">E . - a s t -</div>
     </div>
 
+    <!-- 言語スイッチャー -->
+    <div id="lang-switcher">
+        <button id="lang-ja" class="active">JA</button>
+        <button id="lang-en">EN</button>
+    </div>
+
     <!-- モーダル（マップ拡大用） -->
     <div id="mapModal" class="modal">
         <span class="modal-close" id="closeModal">&times;</span>
-        <img class="modal-content" id="modalImage" src="https://placehold.co/1200x800/1a1a3b/d1bfff?text=校内マップ拡大図">
+        <img class="modal-content" id="modalImage" src="https://placehold.co/1200x800/1a1a3b/d1bfff?text=School+Map">
     </div>
 
     <!-- ヒーローセクション -->
     <header class="h-screen flex flex-col items-center justify-center text-center relative p-4">
         <div class="z-10">
-            <h1 class="text-5xl md:text-8xl font-playfair galaxy-text font-black mb-4 leading-tight">
+            <h1 class="text-5xl md:text-8xl font-playfair galaxy-text font-black mb-4 leading-tight" data-lang-key="heroTitle">
                 山東祭2025<br>E。-ast-
             </h1>
-            <p class="text-lg md:text-2xl font-playfair text-gray-300">
+            <p class="text-lg md:text-2xl font-playfair text-gray-300" data-lang-key="heroSubtitle">
                 テーマ：『チ。-地球の運動について-』
             </p>
         </div>
@@ -255,49 +284,49 @@
 
         <!-- 開催情報セクション -->
         <section id="info" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">Information</h2>
+            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="infoTitle">Information</h2>
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10 floating-card" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-blend-mode: overlay;">
-                    <h3 class="text-3xl font-playfair mb-4 text-[#d1bfff]">日程</h3>
-                    <p class="text-xl">8月30日 (土)</p>
-                    <p class="text-xl">8月31日 (日)</p>
+                    <h3 class="text-3xl font-playfair mb-4 text-[#d1bfff]" data-lang-key="infoDateTitle">日程</h3>
+                    <p class="text-xl" data-lang-key="infoDate1">8月30日 (土)</p>
+                    <p class="text-xl" data-lang-key="infoDate2">8月31日 (日)</p>
                 </div>
                 <div class="p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10 floating-card" style="background-image: url('https://images.unsplash.com/photo-1506443432602-ac2fcd6f54e0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-blend-mode: overlay;">
-                    <h3 class="text-3xl font-playfair mb-4 text-[#d1bfff]">時間</h3>
+                    <h3 class="text-3xl font-playfair mb-4 text-[#d1bfff]" data-lang-key="infoTimeTitle">時間</h3>
                     <p class="text-xl">10:00 〜 15:00</p>
-                    <p class="text-sm text-gray-400">(両日共通)</p>
+                    <p class="text-sm text-gray-400" data-lang-key="infoTimeDesc">(両日共通)</p>
                 </div>
             </div>
         </section>
 
         <!-- イベントスケジュールセクション -->
         <section id="schedule" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">Schedule</h2>
+            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="scheduleTitle">Schedule</h2>
             <div class="w-full">
                 <!-- 日付タブ -->
                 <div id="date-tabs" class="flex justify-center mb-4 space-x-2 md:space-x-4">
-                    <button data-date-target="day1" class="date-tab-button px-4 py-2 md:px-6 md:py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300 tab-active">8月30日(土)</button>
-                    <button data-date-target="day2" class="date-tab-button px-4 py-2 md:px-6 md:py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300">8月31日(日)</button>
+                    <button data-date-target="day1" class="date-tab-button px-4 py-2 md:px-6 md:py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300 tab-active" data-lang-key="scheduleDate1">8月30日(土)</button>
+                    <button data-date-target="day2" class="date-tab-button px-4 py-2 md:px-6 md:py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300" data-lang-key="scheduleDate2">8月31日(日)</button>
                 </div>
 
                 <!-- 日付別コンテンツ -->
                 <div id="day1" class="date-content">
                     <!-- 会場タブ -->
                     <div class="location-tabs flex justify-center mb-8 space-x-2 md:space-x-4">
-                        <button data-location-target="day1-gym" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300 tab-active">体育館</button>
-                        <button data-location-target="day1-auditorium" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300">講堂</button>
+                        <button data-location-target="day1-gym" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300 tab-active" data-lang-key="scheduleVenueGym">体育館</button>
+                        <button data-location-target="day1-auditorium" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300" data-lang-key="scheduleVenueHall">講堂</button>
                     </div>
                     <!-- 会場別コンテンツ -->
                     <div class="p-6 md:p-10 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
                         <div id="day1-gym" class="location-content space-y-6">
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">10:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">開会式</div></div>
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">11:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">吹奏楽部 演奏</div></div>
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">13:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">ダンス部 公演</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">10:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1G1">開会式</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">11:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1G2">吹奏楽部 演奏</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">13:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1G3">ダンス部 公演</div></div>
                         </div>
                         <div id="day1-auditorium" class="location-content space-y-6 hidden">
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">10:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">演劇部 公演「銀河鉄道の夜」</div></div>
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">12:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">軽音楽部 ライブ (前半)</div></div>
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">14:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">有志バンド 発表</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">10:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1A1">演劇部 公演「銀河鉄道の夜」</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">12:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1A2">軽音楽部 ライブ (前半)</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">14:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1A3">有志バンド 発表</div></div>
                         </div>
                     </div>
                 </div>
@@ -305,20 +334,20 @@
                 <div id="day2" class="date-content hidden">
                     <!-- 会場タブ -->
                     <div class="location-tabs flex justify-center mb-8 space-x-2 md:space-x-4">
-                        <button data-location-target="day2-gym" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300 tab-active">体育館</button>
-                        <button data-location-target="day2-auditorium" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300">講堂</button>
+                        <button data-location-target="day2-gym" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300 tab-active" data-lang-key="scheduleVenueGym">体育館</button>
+                        <button data-location-target="day2-auditorium" class="location-tab-button px-4 py-2 md:px-8 md:py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300" data-lang-key="scheduleVenueHall">講堂</button>
                     </div>
                     <!-- 会場別コンテンツ -->
                     <div class="p-6 md:p-10 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
                         <div id="day2-gym" class="location-content space-y-6">
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">10:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">クラス対抗クイズ大会</div></div>
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">12:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">カラオケ大会 決勝</div></div>
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">14:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">閉会式</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">10:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2G1">クラス対抗クイズ大会</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">12:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2G2">カラオケ大会 決勝</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">14:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2G3">閉会式</div></div>
                         </div>
                         <div id="day2-auditorium" class="location-content space-y-6 hidden">
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">11:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">書道部 パフォーマンス</div></div>
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">13:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">軽音楽部 ライブ (後半)</div></div>
-                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">14:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4">教員バンド ライブ</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">11:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2A1">書道部 パフォーマンス</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">13:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2A2">軽音楽部 ライブ (後半)</div></div>
+                            <div class="flex items-center space-x-4"><time class="w-24 text-lg font-bold text-[#d1bfff]">14:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2A3">教員バンド ライブ</div></div>
                         </div>
                     </div>
                 </div>
@@ -327,12 +356,12 @@
         
         <!-- 模擬店・展示情報セクション -->
         <section id="booths" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">Booths & Exhibits</h2>
+            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="boothsTitle">Booths & Exhibits</h2>
             <!-- フィルター -->
             <div id="filters" class="flex justify-center flex-wrap gap-2 mb-8">
-                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300 filter-active" data-filter="all">すべて</button>
-                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-filter="class">クラス</button>
-                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-filter="club">部活</button>
+                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300 filter-active" data-filter="all" data-lang-key="filterAll">すべて</button>
+                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-filter="class" data-lang-key="filterClass">クラス</button>
+                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-filter="club" data-lang-key="filterClub">部活</button>
             </div>
             
             <!-- カードグリッド -->
@@ -343,27 +372,27 @@
 
         <!-- 校内マップセクション -->
         <section id="map" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">School Map</h2>
+            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="mapTitle">School Map</h2>
             <div class="relative bg-black/30 p-4 rounded-2xl border border-white/10">
                 <img id="schoolMapImage" src="https://placehold.co/1000x600/1a1a3b/d1bfff?text=山形東高校 校内マップ" alt="校内マップ" class="w-full rounded-lg cursor-pointer">
                 <!-- マーカーはJavaScriptによって動的に生成されます -->
-                <p class="text-center mt-4 text-gray-400">マップをクリックまたはタップで拡大表示します。</p>
+                <p class="text-center mt-4 text-gray-400" data-lang-key="mapDesc">マップをクリックまたはタップで拡大表示します。</p>
             </div>
         </section>
 
         <!-- アクセス & 学校情報セクション -->
         <section id="access" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title">Access</h2>
+            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="accessTitle">Access</h2>
             <div class="grid lg:grid-cols-2 gap-8 md:gap-12">
                 <div class="bg-black/30 p-8 rounded-2xl border border-white/10">
-                    <h3 class="text-2xl font-playfair text-[#d1bfff] mb-4">山形県立山形東高等学校</h3>
-                    <p class="mb-2"><i class="fas fa-map-marker-alt w-6"></i> 住所: 〒990-0044 山形県山形市緑町1-5-59</p>
-                    <p><i class="fas fa-phone w-6"></i> 電話: 023-622-3010</p>
+                    <h3 class="text-2xl font-playfair text-[#d1bfff] mb-4" data-lang-key="accessSchoolName">山形県立山形東高等学校</h3>
+                    <p class="mb-2"><i class="fas fa-map-marker-alt w-6"></i> <span data-lang-key="accessAddressTitle">住所:</span> <span data-lang-key="accessAddress">〒990-0044 山形県山形市緑町1-5-59</span></p>
+                    <p><i class="fas fa-phone w-6"></i> <span data-lang-key="accessPhoneTitle">電話:</span> 023-622-3010</p>
                 </div>
                 <div class="bg-black/30 p-8 rounded-2xl border border-white/10 flex flex-col items-center justify-center text-center">
                     <i class="fas fa-map-marked-alt text-4xl text-[#d1bfff] mb-4"></i>
-                    <h3 class="text-xl font-playfair mb-4">地図で場所を確認</h3>
-                    <a href="https://www.google.com/maps/place/%E5%B1%B1%E5%BD%A2%E7%9C%8C%E7%AB%8B%E5%B1%B1%E5%BD%A2%E6%9D%B1%E9%AB%98%E7%AD%89%E5%AD%A6%E6%A0%A1/@38.2564436,140.344156,630m/data=!3m2!1e3!5s0x5f8bc9fb57f215af:0xc1094e60ba0c6b4d!4m6!3m5!1s0x5f8bc9fb50c05223:0x228d8bf43f261125!8m2!3d38.2577883!4d140.3456953!16s%2Fg%2F122bxrcd?entry=ttu&g_ep=EgoyMDI1MDcxMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-3 text-md font-bold text-white rounded-full cta-button">
+                    <h3 class="text-xl font-playfair mb-4" data-lang-key="accessGmapTitle">地図で場所を確認</h3>
+                    <a href="https://www.google.com/maps/place/%E5%B1%B1%E5%BD%A2%E7%9C%8C%E7%AB%8B%E5%B1%B1%E5%BD%A2%E6%9D%B1%E9%AB%98%E7%AD%89%E5%AD%A6%E6%A0%A1/@38.2564436,140.344156,630m/data=!3m2!1e3!5s0x5f8bc9fb57f215af:0xc1094e60ba0c6b4d!4m6!3m5!1s0x5f8bc9fb50c05223:0x228d8bf43f261125!8m2!3d38.2577883!4d140.3456953!16s%2Fg%2F122bxrcd?entry=ttu&g_ep=EgoyMDI1MDcxMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-3 text-md font-bold text-white rounded-full cta-button" data-lang-key="accessGmapButton">
                        Googleマップで開く
                     </a>
                </div>
@@ -372,7 +401,7 @@
 
         <!-- Instagramリンク -->
         <section class="fade-in-section text-center">
-             <a href="https://www.instagram.com/yamatosai_2025?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="inline-block px-10 py-4 text-lg font-bold text-white rounded-full cta-button">
+             <a href="https://www.instagram.com/yamatosai_2025?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="inline-block px-10 py-4 text-lg font-bold text-white rounded-full cta-button" data-lang-key="instagramButton">
                 <i class="fab fa-instagram mr-2"></i>
                 山東祭 公式Instagramへ
             </a>
@@ -383,88 +412,200 @@
     <!-- フッター -->
     <footer class="relative bg-gradient-to-t from-black/80 to-transparent pt-20 pb-8 mt-16 text-center text-gray-400 text-sm">
         <div class="footer-stars"></div>
-        <p>© 2025 山形東高校 山東祭実行委員会</p>
+        <p data-lang-key="footerText">© 2025 山形東高校 山東祭実行委員会</p>
     </footer>
     
     <script>
         // --- データ定義 ---
         const boothData = {
             classes: [
-                { name: '2年1組', category: 'class', location: '2-4教室', content: 'トイストーリーマニア21', description: 'トイストーリーの世界観で楽しむアトラクションです。' },
-                { name: '2年2組', category: 'class', location: '2-2教室', content: 'カジノ', description: 'チップを賭けて一攫千金を目指せ！' },
-                { name: '2年3組', category: 'class', location: '2-3教室', content: 'クラブ・占いなど', description: 'あなたの運勢、占います。' },
-                { name: '2年4組', category: 'class', location: '2-1教室 & ゼミ2', content: '脱出ゲーム', description: '謎を解き明かし、教室から脱出せよ！' },
-                { name: '2年5組', category: 'class', location: '2-5教室', content: '謎解きゲーム', description: '頭脳を駆使して謎に挑め！' },
-                { name: '2年6組', category: 'class', location: '1-1教室 & ゼミ1', content: 'ROUND６', description: '様々なミニゲームで盛り上がろう！' },
-                { name: '3年1組', category: 'class', location: '1-2教室', content: '韓国スイーツ', description: '流行りの韓国スイーツを召し上がれ。' },
-                { name: '3年2組', category: 'class', location: '1-3教室', content: 'ハンバーガーとゼリー', description: 'ボリューム満点のハンバーガーとデザートのセット。' },
-                { name: '3年3組', category: 'class', location: '1-4教室', content: '焼きそば', description: '文化祭の定番！特製ソースが決め手。' },
-                { name: '3年4組', category: 'class', location: '第1多目的室', content: 'お化け屋敷', description: 'この夏一番の恐怖体験をあなたに…' },
-                { name: '3年5組', category: 'class', location: '1-5教室', content: '冷やしうどん', description: '暑い日にぴったり！さっぱり冷やしうどん。' },
-                { name: '3年6組', category: 'class', location: '1-6教室', content: '揚げパンとドリンク', description: '懐かしの味、揚げパンはいかがですか？' },
+                { name: '2年1組', content: 'トイストーリーマニア21', description: 'トイストーリーの世界観で楽しむアトラクションです。', location: '2-4教室', category: 'class', name_en: 'Class 2-1', content_en: 'Toy Story Mania 21', description_en: 'An attraction where you can enjoy the world of Toy Story.', location_en: 'Room 2-4' },
+                { name: '2年2組', content: 'カジノ', description: 'チップを賭けて一攫千金を目指せ！', location: '2-2教室', category: 'class', name_en: 'Class 2-2', content_en: 'Casino', description_en: 'Bet your chips and aim for a fortune!', location_en: 'Room 2-2' },
+                { name: '2年3組', content: 'クラブ・占いなど', description: 'あなたの運勢、占います。', location: '2-3教室', category: 'class', name_en: 'Class 2-3', content_en: 'Club & Fortune Telling', description_en: 'We will tell your fortune.', location_en: 'Room 2-3' },
+                { name: '2年4組', content: '脱出ゲーム', description: '謎を解き明かし、教室から脱出せよ！', location: '2-1教室 & ゼミ2', category: 'class', name_en: 'Class 2-4', content_en: 'Escape Game', description_en: 'Solve the mysteries and escape from the classroom!', location_en: 'Room 2-1 & Seminar 2' },
+                { name: '2年5組', content: '謎解きゲーム', description: '頭脳を駆使して謎に挑め！', location: '2-5教室', category: 'class', name_en: 'Class 2-5', content_en: 'Puzzle Game', description_en: 'Use your intellect to challenge the puzzles!', location_en: 'Room 2-5' },
+                { name: '2年6組', content: 'ROUND６', description: '様々なミニゲームで盛り上がろう！', location: '1-1教室 & ゼミ1', category: 'class', name_en: 'Class 2-6', content_en: 'ROUND 6', description_en: 'Let\'s have fun with various mini-games!', location_en: 'Room 1-1 & Seminar 1' },
+                { name: '3年1組', content: '韓国スイーツ', description: '流行りの韓国スイーツを召し上がれ。', location: '1-2教室', category: 'class', name_en: 'Class 3-1', content_en: 'Korean Sweets', description_en: 'Enjoy the trendy Korean sweets.', location_en: 'Room 1-2' },
+                { name: '3年2組', content: 'ハンバーガーとゼリー', description: 'ボリューム満点のハンバーガーとデザートのセット。', location: '1-3教室', category: 'class', name_en: 'Class 3-2', content_en: 'Hamburgers & Jelly', description_en: 'A set of hearty hamburgers and dessert.', location_en: 'Room 1-3' },
+                { name: '3年3組', content: '焼きそば', description: '文化祭の定番！特製ソースが決め手。', location: '1-4教室', category: 'class', name_en: 'Class 3-3', content_en: 'Yakisoba', description_en: 'A classic festival food! The special sauce is the key.', location_en: 'Room 1-4' },
+                { name: '3年4組', content: 'お化け屋敷', description: 'この夏一番の恐怖体験をあなたに…', location: '第1多目的室', category: 'class', name_en: 'Class 3-4', content_en: 'Haunted House', description_en: 'The most terrifying experience of the summer awaits you...', location_en: 'Multipurpose Room 1' },
+                { name: '3年5組', content: '冷やしうどん', description: '暑い日にぴったり！さっぱり冷やしうどん。', location: '1-5教室', category: 'class', name_en: 'Class 3-5', content_en: 'Cold Udon', description_en: 'Perfect for a hot day! Refreshing cold udon.', location_en: 'Room 1-5' },
+                { name: '3年6組', content: '揚げパンとドリンク', description: '懐かしの味、揚げパンはいかがですか？', location: '1-6教室', category: 'class', name_en: 'Class 3-6', content_en: 'Fried Bread & Drinks', description_en: 'How about a taste of nostalgia with fried bread?', location_en: 'Room 1-6' },
             ],
             clubs: [
-                { name: '文芸部', category: 'club', location: '中央廊下・部室', content: '展示・部誌販売', description: '部員たちの創作の軌跡をご覧ください。' },
-                { name: 'JRC部', category: 'club', location: '保健室前廊下', content: 'レモネード販売・募金活動', description: '爽やかなレモネードで一息つきませんか？' },
-                { name: '家庭科部', category: 'club', location: '中央廊下', content: '手作りクッキー販売', description: '愛情込めて作りました。お土産にどうぞ。' },
-                { name: '地域国際班', category: 'club', location: '中央廊下', content: 'アフタヌーンティーセット', description: '優雅な午後のひとときを。' },
-                { name: '探究A9班', category: 'club', location: '中央廊下', content: '規格外野菜・果物の販売', description: 'フードロス削減にご協力ください！' },
-                { name: '囲碁将棋部', category: 'club', location: '講堂前廊下', content: '青空将棋・喫茶', description: '初心者大歓迎！ゆっくりお茶でもいかがですか。' },
-                { name: '剣道部', category: 'club', location: '武道館前', content: 'かき氷・玉こん', description: '熱い夏にはこれ！山形名物玉こんも。' },
-                { name: 'サッカー部', category: 'club', location: '体育館', content: 'かき氷・リフティング', description: 'リフティングチャレンジで景品ゲット！' },
-                { name: '男子ハンド部', category: 'club', location: '体育館', content: 'ポップコーン', description: 'キャラメル味と塩味をご用意！' },
-                { name: '弓道部', category: 'club', location: '体育館', content: '的あて', description: '君も弓矢の名手になれるかも？' },
-                { name: '陸上部', category: 'club', location: '体育館', content: 'ベビーカステラ', description: '一口サイズの甘くて美味しいおやつです。' },
-                { name: 'バドミントン部', category: 'club', location: '体育館', content: '綿あめのせドリンク', description: 'ふわふわ綿あめが乗った可愛いドリンク。' },
-                { name: 'バスケ部', category: 'club', location: '体育館', content: 'アイスの実サイダー', description: 'シュワっと爽快！アイスの実入りサイダー。' },
-                { name: '硬式テニス部', category: 'club', location: '体育館', content: 'ゼリー入りドリンク', description: '食感が楽しいゼリー入りドリンクです。' },
-                { name: '野球部', category: 'club', location: '体育館入口', content: 'アイスフロート', description: '冷たいドリンクにアイスを乗せて。' },
-                { name: 'バレー部', category: 'club', location: '体育館入口', content: 'アイスのせワッフル', description: '焼きたてワッフルと冷たいアイスの組み合わせ。' },
-                { name: 'ソフトテニス部', category: 'club', location: '体育館入口', content: 'かき氷', description: '夏の定番、冷たいかき氷！' },
-                { name: '美術部', category: 'club', location: '部室', content: '展示・グッズ製作体験', description: '芸術の秋、オリジナルグッズを作りませんか？' },
-                { name: '書道部', category: 'club', location: '部室', content: '作品展示', description: '墨と筆が織りなす世界をご覧ください。' },
-                { name: '写真部', category: 'club', location: '部室', content: 'グッズ販売・フォトスポット', description: '思い出の一枚をここで。' },
-                { name: '科学部', category: 'club', location: 'グラウンド', content: 'ペットボトルロケット', description: '青空へ向かってロケットを発射！' },
-                { name: '図書委員会', category: 'club', location: '2-6教室', content: '古本市', description: '掘り出し物が見つかるかも？古本市へようこそ。' }
+                { name: '文芸部', content: '展示・部誌販売', description: '部員たちの創作の軌跡をご覧ください。', location: '中央廊下・部室', category: 'club', name_en: 'Literary Club', content_en: 'Exhibition & Magazine Sale', description_en: 'See the creative works of our members.', location_en: 'Central Hallway / Clubroom' },
+                { name: 'JRC部', content: 'レモネード販売・募金活動', description: '爽やかなレモネードで一息つきませんか？', location: '保健室前廊下', category: 'club', name_en: 'JRC Club', content_en: 'Lemonade Sale & Fundraising', description_en: 'Take a break with a refreshing lemonade.', location_en: 'Hallway in front of Nurse\'s Office' },
+                { name: '家庭科部', content: '手作りクッキー販売', description: '愛情込めて作りました。お土産にどうぞ。', location: '中央廊下', category: 'club', name_en: 'Home Economics Club', content_en: 'Handmade Cookie Sale', description_en: 'Made with love. Perfect as a souvenir.', location_en: 'Central Hallway' },
+                { name: '地域国際班', content: 'アフタヌーンティーセット', description: '優雅な午後のひとときを。', location: '中央廊下', category: 'club', name_en: 'Regional/International Group', content_en: 'Afternoon Tea Set', description_en: 'Enjoy an elegant afternoon.', location_en: 'Central Hallway' },
+                { name: '探究A9班', content: '規格外野菜・果物の販売', description: 'フードロス削減にご協力ください！', location: '中央廊下', category: 'club', name_en: 'Inquiry Group A9', content_en: 'Sale of Non-standard Vegetables & Fruits', description_en: 'Please cooperate in reducing food loss!', location_en: 'Central Hallway' },
+                { name: '囲碁将棋部', content: '青空将棋・喫茶', description: '初心者大歓迎！ゆっくりお茶でもいかがですか。', location: '講堂前廊下', category: 'club', name_en: 'Go & Shogi Club', content_en: 'Outdoor Shogi & Cafe', description_en: 'Beginners welcome! How about a relaxing cup of tea?', location_en: 'Hallway in front of Auditorium' },
+                { name: '剣道部', content: 'かき氷・玉こん', description: '熱い夏にはこれ！山形名物玉こんも。', location: '武道館前', category: 'club', name_en: 'Kendo Club', content_en: 'Shaved Ice & Tamakon', description_en: 'A must for a hot summer! Also featuring Yamagata\'s famous Tamakon.', location_en: 'In front of Budokan' },
+                { name: 'サッカー部', content: 'かき氷・リフティング', description: 'リフティングチャレンジで景品ゲット！', location: '体育館', category: 'club', name_en: 'Soccer Club', content_en: 'Shaved Ice & Juggling Challenge', description_en: 'Win a prize in the juggling challenge!', location_en: 'Gymnasium' },
+                { name: '男子ハンド部', content: 'ポップコーン', description: 'キャラメル味と塩味をご用意！', location: '体育館', category: 'club', name_en: 'Men\'s Handball Club', content_en: 'Popcorn', description_en: 'Available in caramel and salt flavors!', location_en: 'Gymnasium' },
+                { name: '弓道部', content: '的あて', description: '君も弓矢の名手になれるかも？', location: '体育館', category: 'club', name_en: 'Kyudo Club', content_en: 'Archery Target Practice', description_en: 'You could become a master archer!', location_en: 'Gymnasium' },
+                { name: '陸上部', content: 'ベビーカステラ', description: '一口サイズの甘くて美味しいおやつです。', location: '体育館', category: 'club', name_en: 'Track & Field Club', content_en: 'Baby Castella', description_en: 'Bite-sized sweet and delicious snacks.', location_en: 'Gymnasium' },
+                { name: 'バドミントン部', content: '綿あめのせドリンク', description: 'ふわふわ綿あめが乗った可愛いドリンク。', location: '体育館', category: 'club', name_en: 'Badminton Club', content_en: 'Drink with Cotton Candy', description_en: 'A cute drink topped with fluffy cotton candy.', location_en: 'Gymnasium' },
+                { name: 'バスケ部', content: 'アイスの実サイダー', description: 'シュワっと爽快！アイスの実入りサイダー。', location: '体育館', category: 'club', name_en: 'Basketball Club', content_en: 'Ice no Mi Cider', description_en: 'Fizzy and refreshing! Cider with frozen fruit bites.', location_en: 'Gymnasium' },
+                { name: '硬式テニス部', content: 'ゼリー入りドリンク', description: '食感が楽しいゼリー入りドリンクです。', location: '体育館', category: 'club', name_en: 'Tennis Club', content_en: 'Jelly Drink', description_en: 'A drink with a fun texture.', location_en: 'Gymnasium' },
+                { name: '野球部', content: 'アイスフロート', description: '冷たいドリンクにアイスを乗せて。', location: '体育館入口', category: 'club', name_en: 'Baseball Club', content_en: 'Ice Cream Float', description_en: 'A cold drink topped with ice cream.', location_en: 'Gymnasium Entrance' },
+                { name: 'バレー部', content: 'アイスのせワッフル', description: '焼きたてワッフルと冷たいアイスの組み合わせ。', location: '体育館入口', category: 'club', name_en: 'Volleyball Club', content_en: 'Waffle with Ice Cream', description_en: 'The combination of fresh-baked waffles and cold ice cream.', location_en: 'Gymnasium Entrance' },
+                { name: 'ソフトテニス部', content: 'かき氷', description: '夏の定番、冷たいかき氷！', location: '体育館入口', category: 'club', name_en: 'Soft Tennis Club', content_en: 'Shaved Ice', description_en: 'A summer classic, cold shaved ice!', location_en: 'Gymnasium Entrance' },
+                { name: '美術部', content: '展示・グッズ製作体験', description: '芸術の秋、オリジナルグッズを作りませんか？', location: '部室', category: 'club', name_en: 'Art Club', content_en: 'Exhibition & Goods Making', description_en: 'The season for art. Why not make your own original goods?', location_en: 'Clubroom' },
+                { name: '書道部', content: '作品展示', description: '墨と筆が織りなす世界をご覧ください。', location: '部室', category: 'club', name_en: 'Calligraphy Club', content_en: 'Exhibition', description_en: 'Please see the world woven by ink and brush.', location_en: 'Clubroom' },
+                { name: '写真部', content: 'グッズ販売・フォトスポット', description: '思い出の一枚をここで。', location: '部室', category: 'club', name_en: 'Photography Club', content_en: 'Goods Sale & Photo Spot', description_en: 'Take a memorable photo here.', location_en: 'Clubroom' },
+                { name: '科学部', content: 'ペットボトルロケット', description: '青空へ向かってロケットを発射！', location: 'グラウンド', category: 'club', name_en: 'Science Club', content_en: 'Bottle Rocket', description_en: 'Launch a rocket into the blue sky!', location_en: 'Grounds' },
+                { name: '図書委員会', content: '古本市', description: '掘り出し物が見つかるかも？古本市へようこそ。', location: '2-6教室', category: 'club', name_en: 'Library Committee', content_en: 'Used Book Fair', description_en: 'You might find a hidden gem! Welcome to the used book fair.', location_en: 'Room 2-6' }
             ]
         };
         
         const locationCoordinates = {
-            '体育館': { top: '35%', left: '25%' },
-            '講堂': { top: '50%', left: '70%' },
-            '武道館前': { top: '25%', left: '15%' },
-            'グラウンド': { top: '80%', left: '15%' },
-            '体育館入口': { top: '45%', left: '28%' },
-            '保健室前廊下': { top: '45%', left: '50%'},
-            '中央廊下': { top: '55%', left: '50%'},
-            '講堂前廊下': { top: '50%', left: '62%'},
-            '1-1教室': { top: '65%', left: '45%' },
-            '1-2教室': { top: '65%', left: '50%' },
-            '1-3教室': { top: '65%', left: '55%' },
-            '1-4教室': { top: '65%', left: '60%' },
-            '1-5教室': { top: '65%', left: '65%' },
-            '1-6教室': { top: '65%', left: '70%' },
-            '2-1教室': { top: '75%', left: '45%' },
-            '2-2教室': { top: '75%', left: '50%' },
-            '2-3教室': { top: '75%', left: '55%' },
-            '2-4教室': { top: '75%', left: '60%' },
-            '2-5教室': { top: '75%', left: '65%' },
-            '2-6教室': { top: '75%', left: '70%' },
-            '第1多目的室': { top: '40%', left: '40%'},
-            '部室': { top: '35%', left: '80%'},
-            'ゼミ1': { top: '65%', left: '40%' },
-            'ゼミ2': { top: '75%', left: '40%' }
+            '体育館': { top: '35%', left: '25%' }, 'Gymnasium': { top: '35%', left: '25%' },
+            '講堂': { top: '50%', left: '70%' }, 'Auditorium': { top: '50%', left: '70%' },
+            '武道館前': { top: '25%', left: '15%' }, 'In front of Budokan': { top: '25%', left: '15%' },
+            'グラウンド': { top: '80%', left: '15%' }, 'Grounds': { top: '80%', left: '15%' },
+            '体育館入口': { top: '45%', left: '28%' }, 'Gymnasium Entrance': { top: '45%', left: '28%' },
+            '保健室前廊下': { top: '45%', left: '50%'}, 'Hallway in front of Nurse\'s Office': { top: '45%', left: '50%'},
+            '中央廊下': { top: '55%', left: '50%'}, 'Central Hallway': { top: '55%', left: '50%'},
+            '講堂前廊下': { top: '50%', left: '62%'}, 'Hallway in front of Auditorium': { top: '50%', left: '62%'},
+            '1-1教室': { top: '65%', left: '45%' }, 'Room 1-1': { top: '65%', left: '45%' },
+            '1-2教室': { top: '65%', left: '50%' }, 'Room 1-2': { top: '65%', left: '50%' },
+            '1-3教室': { top: '65%', left: '55%' }, 'Room 1-3': { top: '65%', left: '55%' },
+            '1-4教室': { top: '65%', left: '60%' }, 'Room 1-4': { top: '65%', left: '60%' },
+            '1-5教室': { top: '65%', left: '65%' }, 'Room 1-5': { top: '65%', left: '65%' },
+            '1-6教室': { top: '65%', left: '70%' }, 'Room 1-6': { top: '65%', left: '70%' },
+            '2-1教室': { top: '75%', left: '45%' }, 'Room 2-1': { top: '75%', left: '45%' },
+            '2-2教室': { top: '75%', left: '50%' }, 'Room 2-2': { top: '75%', left: '50%' },
+            '2-3教室': { top: '75%', left: '55%' }, 'Room 2-3': { top: '75%', left: '55%' },
+            '2-4教室': { top: '75%', left: '60%' }, 'Room 2-4': { top: '75%', left: '60%' },
+            '2-5教室': { top: '75%', left: '65%' }, 'Room 2-5': { top: '75%', left: '65%' },
+            '2-6教室': { top: '75%', left: '70%' }, 'Room 2-6': { top: '75%', left: '70%' },
+            '第1多目的室': { top: '40%', left: '40%'}, 'Multipurpose Room 1': { top: '40%', left: '40%'},
+            '部室': { top: '35%', left: '80%'}, 'Clubroom': { top: '35%', left: '80%'},
+            'ゼミ1': { top: '65%', left: '40%' }, 'Seminar 1': { top: '65%', left: '40%' },
+            'ゼミ2': { top: '75%', left: '40%' }, 'Seminar 2': { top: '75%', left: '40%' }
         };
 
+        const translations = {
+            ja: {
+                heroTitle: "山東祭2025<br>E。-ast-",
+                heroSubtitle: "テーマ：『チ。-地球の運動について-』",
+                infoTitle: "Information",
+                infoDateTitle: "日程",
+                infoDate1: "8月30日 (土)",
+                infoDate2: "8月31日 (日)",
+                infoTimeTitle: "時間",
+                infoTimeDesc: "(両日共通)",
+                scheduleTitle: "Schedule",
+                scheduleDate1: "8月30日(土)",
+                scheduleDate2: "8月31日(日)",
+                scheduleVenueGym: "体育館",
+                scheduleVenueHall: "講堂",
+                eventD1G1: "開会式",
+                eventD1G2: "吹奏楽部 演奏",
+                eventD1G3: "ダンス部 公演",
+                eventD1A1: "演劇部 公演「銀河鉄道の夜」",
+                eventD1A2: "軽音楽部 ライブ (前半)",
+                eventD1A3: "有志バンド 発表",
+                eventD2G1: "クラス対抗クイズ大会",
+                eventD2G2: "カラオケ大会 決勝",
+                eventD2G3: "閉会式",
+                eventD2A1: "書道部 パフォーマンス",
+                eventD2A2: "軽音楽部 ライブ (後半)",
+                eventD2A3: "教員バンド ライブ",
+                boothsTitle: "Booths & Exhibits",
+                filterAll: "すべて",
+                filterClass: "クラス",
+                filterClub: "部活",
+                mapTitle: "School Map",
+                mapDesc: "マップをクリックまたはタップで拡大表示します。",
+                accessTitle: "Access",
+                accessSchoolName: "山形県立山形東高等学校",
+                accessAddressTitle: "住所:",
+                accessAddress: "〒990-0044 山形県山形市緑町1-5-59",
+                accessPhoneTitle: "電話:",
+                accessGmapTitle: "地図で場所を確認",
+                accessGmapButton: "Googleマップで開く",
+                instagramButton: "山東祭 公式Instagramへ",
+                footerText: "© 2025 山形東高校 山東祭実行委員会",
+                boothLocation: "場所:",
+                boothContent: "内容:",
+            },
+            en: {
+                heroTitle: "YAMATO Fes 2025<br>E. -ast-",
+                heroSubtitle: "Theme: 'Chi. -About the Motion of the Earth-'",
+                infoTitle: "Information",
+                infoDateTitle: "Date",
+                infoDate1: "August 30 (Sat)",
+                infoDate2: "August 31 (Sun)",
+                infoTimeTitle: "Time",
+                infoTimeDesc: "(Both days)",
+                scheduleTitle: "Schedule",
+                scheduleDate1: "Aug 30 (Sat)",
+                scheduleDate2: "Aug 31 (Sun)",
+                scheduleVenueGym: "Gymnasium",
+                scheduleVenueHall: "Auditorium",
+                eventD1G1: "Opening Ceremony",
+                eventD1G2: "Brass Band Performance",
+                eventD1G3: "Dance Club Performance",
+                eventD1A1: "Drama Club Performance 'Night on the Galactic Railroad'",
+                eventD1A2: "Light Music Club Live (Part 1)",
+                eventD1A3: "Volunteer Band Performance",
+                eventD2G1: "Inter-class Quiz Tournament",
+                eventD2G2: "Karaoke Contest Finals",
+                eventD2G3: "Closing Ceremony",
+                eventD2A1: "Calligraphy Club Performance",
+                eventD2A2: "Light Music Club Live (Part 2)",
+                eventD2A3: "Teachers' Band Live",
+                boothsTitle: "Booths & Exhibits",
+                filterAll: "All",
+                filterClass: "Class",
+                filterClub: "Club",
+                mapTitle: "School Map",
+                mapDesc: "Click or tap the map to enlarge.",
+                accessTitle: "Access",
+                accessSchoolName: "Yamagata Higashi High School",
+                accessAddressTitle: "Address:",
+                accessAddress: "1-5-59 Midori-cho, Yamagata-shi, Yamagata 990-0044",
+                accessPhoneTitle: "Phone:",
+                accessGmapTitle: "Check the location on the map",
+                accessGmapButton: "Open in Google Maps",
+                instagramButton: "Official Instagram",
+                footerText: "© 2025 Yamagata Higashi High School Festival Committee",
+                boothLocation: "Location:",
+                boothContent: "Content:",
+            }
+        };
+
+        let currentLang = 'ja';
+
         // --- 機能別関数 ---
+
+        function setLanguage(lang) {
+            if (!['ja', 'en'].includes(lang)) return;
+            currentLang = lang;
+            document.documentElement.lang = lang;
+
+            // 静的テキストの翻訳
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.dataset.langKey;
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // 動的コンテンツの再描画
+            createAndDisplayBooths();
+            displayMapMarkers();
+
+            // スイッチャーのボタンのアクティブ状態を更新
+            document.getElementById('lang-ja').classList.toggle('active', lang === 'ja');
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+        }
 
         function createAndDisplayBooths() {
             try {
                 const boothGrid = document.getElementById('booth-grid');
-                if (!boothGrid) {
-                    console.error('Error: Could not find the element with id="booth-grid".');
-                    return;
-                }
+                if (!boothGrid) return;
                 
                 boothGrid.innerHTML = '';
                 const allBooths = [...boothData.classes, ...boothData.clubs];
@@ -474,16 +615,21 @@
                     card.className = 'booth-card bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden floating-card cursor-pointer';
                     card.dataset.category = booth.category;
 
+                    const name = currentLang === 'en' ? booth.name_en : booth.name;
+                    const content = currentLang === 'en' ? booth.content_en : booth.content;
+                    const description = currentLang === 'en' ? booth.description_en : booth.description;
+                    const location = currentLang === 'en' ? booth.location_en : booth.location;
+
                     card.innerHTML = `
-                        <img src="https://placehold.co/400x250/2c2c54/d1bfff?text=${encodeURIComponent(booth.name)}" alt="${booth.name}の画像" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x250/2c2c54/d1bfff?text=Image+Not+Found';">
+                        <img src="https://placehold.co/400x250/2c2c54/d1bfff?text=${encodeURIComponent(name)}" alt="${name}" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x250/2c2c54/d1bfff?text=Image+Not+Found';">
                         <div class="p-4">
-                            <h3 class="text-xl font-bold font-playfair">${booth.name}</h3>
-                            <p class="text-sm mt-1">${booth.content}</p>
+                            <h3 class="text-xl font-bold font-playfair">${name}</h3>
+                            <p class="text-sm mt-1">${content}</p>
                         </div>
                         <div class="booth-details hidden p-4 border-t border-white/10 bg-black/20 text-gray-200">
-                            <p><strong>場所:</strong> ${booth.location}</p>
-                            <p><strong>内容:</strong> ${booth.content}</p>
-                            <p class="mt-2 text-sm">${booth.description}</p>
+                            <p><strong>${translations[currentLang].boothLocation}</strong> ${location}</p>
+                            <p><strong>${translations[currentLang].boothContent}</strong> ${content}</p>
+                            <p class="mt-2 text-sm">${description}</p>
                         </div>`;
                     
                     boothGrid.appendChild(card);
@@ -503,14 +649,16 @@
                 const locations = {};
 
                 allBooths.forEach(booth => {
-                    // " & "で区切られた場所をそれぞれ処理
-                    const locationParts = booth.location.split('&').map(part => part.trim());
+                    const locationKey = currentLang === 'en' ? booth.location_en : booth.location;
+                    const name = currentLang === 'en' ? booth.name_en : booth.name;
+                    
+                    const locationParts = locationKey.split('&').map(part => part.trim());
                     
                     locationParts.forEach(part => {
                         if (!locations[part]) {
                             locations[part] = [];
                         }
-                        locations[part].push(booth.name);
+                        locations[part].push(name);
                     });
                 });
 
@@ -540,6 +688,10 @@
 
         function setupEventListeners() {
             try {
+                // Language switcher
+                document.getElementById('lang-ja').addEventListener('click', () => setLanguage('ja'));
+                document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+
                 const faders = document.querySelectorAll('.fade-in-section');
                 const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -20px 0px" };
                 const appearOnScroll = new IntersectionObserver((entries, observer) => {
@@ -645,11 +797,9 @@
 
         // --- アプリケーションの初期化 ---
         function initializeApp() {
-            // 全ての機能をここで初期化
             setupStarrySky();
-            createAndDisplayBooths();
-            displayMapMarkers();
             setupEventListeners();
+            setLanguage(currentLang); // 初期言語を設定
         }
 
         // --- イベントリスナーの登録 ---
