@@ -135,7 +135,7 @@
             </div>
         </section>
 
-        <!-- ★ 新機能: リアルタイム混雑状況 -->
+        <!-- リアルタイム混雑状況 -->
         <section id="crowd-status" class="fade-in-section">
             <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="crowdTitle">リアルタイム混雑状況</h2>
             <div id="crowd-status-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto p-6 md:p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
@@ -262,31 +262,36 @@
     
     <!-- Firebase SDK -->
     <script type="module">
-        // Firebase SDK のインポート
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // ★ 修正点: 環境変数からFirebase設定を読み込むように変更
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-
-        // Firebaseの初期化
+        // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+        // ★ ここに、ご自身のFirebaseプロジェクトの設定情報を貼り付けてください ★
+        // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+        const firebaseConfig = {
+  apiKey: "AIzaSyBUclBluehOXOZXlDCeePcdVKmYdKkRxFI",
+  authDomain: "yamatosai2025-4f10b.firebaseapp.com",
+  projectId: "yamatosai2025-4f10b",
+  storageBucket: "yamatosai2025-4f10b.firebasestorage.app",
+  messagingSenderId: "817983089763",
+  appId: "1:817983089763:web:8ca71d1ff70812f2645c56",
+  measurementId: "G-H7VH1ZJYE9"
+};
         let app, auth, db;
         try {
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             db = getFirestore(app);
             
-            // 匿名認証でサインイン
             signInAnonymously(auth).catch((error) => {
                 console.error("Anonymous sign-in failed:", error);
             });
 
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-                    // 混雑状況のリアルタイム監視を開始
-                    const crowdStatusCollection = collection(db, `/artifacts/${appId}/public/data/crowd-status`);
+                    const dbPath = `/artifacts/${firebaseConfig.projectId}/public/data/crowd-status`;
+                    const crowdStatusCollection = collection(db, dbPath);
                     onSnapshot(crowdStatusCollection, (snapshot) => {
                         const statuses = {};
                         snapshot.forEach((doc) => {
@@ -301,7 +306,6 @@
 
         } catch (error) {
             console.error("Firebase initialization failed:", error);
-            // Firebaseの初期化に失敗した場合のフォールバック処理
             const crowdGrid = document.getElementById('crowd-status-grid');
             if(crowdGrid) {
                 crowdGrid.innerHTML = `<p class="text-gray-400 col-span-full text-center">混雑状況の取得に失敗しました。</p>`;
