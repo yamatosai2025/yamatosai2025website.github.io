@@ -135,7 +135,6 @@
             </div>
         </section>
 
-       
         <!-- イベントスケジュールセクション -->
         <section id="schedule" class="fade-in-section">
             <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="scheduleTitle">Schedule</h2>
@@ -207,7 +206,7 @@
             </div>
         </section>
 
-         <!-- リアルタイム混雑状況 -->
+        <!-- ★ 修正点: リアルタイム混雑状況セクションをここに移動 -->
         <section id="crowd-status" class="fade-in-section">
             <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="crowdTitle">リアルタイム混雑状況</h2>
             <div id="crowd-status-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto p-6 md:p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
@@ -215,7 +214,6 @@
                 <p class="text-gray-400 col-span-full text-center" data-lang-key="crowdLoading">混雑状況を読み込んでいます...</p>
             </div>
         </section>
-
 
         <!-- 校内マップセクション -->
         <section id="map" class="fade-in-section">
@@ -268,7 +266,55 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-           <script>
+        // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+        // ★ ここに、ご自身のFirebaseプロジェクトの設定情報を貼り付けてください ★
+        // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+        const firebaseConfig = {
+  apiKey: "AIzaSyBUclBluehOXOZXlDCeePcdVKmYdKkRxFI",
+  authDomain: "yamatosai2025-4f10b.firebaseapp.com",
+  projectId: "yamatosai2025-4f10b",
+  storageBucket: "yamatosai2025-4f10b.firebasestorage.app",
+  messagingSenderId: "817983089763",
+  appId: "1:817983089763:web:8ca71d1ff70812f2645c56",
+  measurementId: "G-H7VH1ZJYE9"
+};
+
+        let app, auth, db;
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            
+            signInAnonymously(auth).catch((error) => {
+                console.error("Anonymous sign-in failed:", error);
+            });
+
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    const dbPath = `/artifacts/${firebaseConfig.projectId}/public/data/crowd-status`;
+                    const crowdStatusCollection = collection(db, dbPath);
+                    onSnapshot(crowdStatusCollection, (snapshot) => {
+                        const statuses = {};
+                        snapshot.forEach((doc) => {
+                            statuses[doc.id] = doc.data();
+                        });
+                        window.updateCrowdStatusUI(statuses);
+                    }, (error) => {
+                        console.error("Error getting crowd status: ", error);
+                    });
+                }
+            });
+
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            const crowdGrid = document.getElementById('crowd-status-grid');
+            if(crowdGrid) {
+                crowdGrid.innerHTML = `<p class="text-gray-400 col-span-full text-center">混雑状況の取得に失敗しました。</p>`;
+            }
+        }
+    </script>
+
+    <script>
         // --- データ定義 ---
         const boothData = {
             classes: [
@@ -310,55 +356,6 @@
                 { id: 'library', name: '図書委員会', content: '古本市', description: '掘り出し物が見つかるかも？古本市へようこそ。', location: '2-6教室', category: 'club', name_en: 'Library Committee', content_en: 'Used Book Fair', description_en: 'You might find a hidden gem! Welcome to the used book fair.', location_en: 'Room 2-6', imageUrl: 'https://images.unsplash.com/photo-1550399105-c4db5fb85c18?q=80&w=2071&auto=format&fit=crop' }
             ]
         };
-
-         // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-        // ★ ここに、ご自身のFirebaseプロジェクトの設定情報を貼り付けてください ★
-        // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-        const firebaseConfig = {
-  apiKey: "AIzaSyBUclBluehOXOZXlDCeePcdVKmYdKkRxFI",
-  authDomain: "yamatosai2025-4f10b.firebaseapp.com",
-  projectId: "yamatosai2025-4f10b",
-  storageBucket: "yamatosai2025-4f10b.firebasestorage.app",
-  messagingSenderId: "817983089763",
-  appId: "1:817983089763:web:8ca71d1ff70812f2645c56",
-  measurementId: "G-H7VH1ZJYE9"
-};
-        let app, auth, db;
-        try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-            
-            signInAnonymously(auth).catch((error) => {
-                console.error("Anonymous sign-in failed:", error);
-            });
-
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    const dbPath = `/artifacts/${firebaseConfig.projectId}/public/data/crowd-status`;
-                    const crowdStatusCollection = collection(db, dbPath);
-                    onSnapshot(crowdStatusCollection, (snapshot) => {
-                        const statuses = {};
-                        snapshot.forEach((doc) => {
-                            statuses[doc.id] = doc.data();
-                        });
-                        window.updateCrowdStatusUI(statuses);
-                    }, (error) => {
-                        console.error("Error getting crowd status: ", error);
-                    });
-                }
-            });
-
-        } catch (error) {
-            console.error("Firebase initialization failed:", error);
-            const crowdGrid = document.getElementById('crowd-status-grid');
-            if(crowdGrid) {
-                crowdGrid.innerHTML = `<p class="text-gray-400 col-span-full text-center">混雑状況の取得に失敗しました。</p>`;
-            }
-        }
-    </script>
-
-
         
         const locationCoordinates = {
             '体育館': { top: '35%', left: '25%' }, 'Gymnasium': { top: '35%', left: '25%' },
