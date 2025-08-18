@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>山東祭2025｜E。-ast-</title>
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -76,22 +79,27 @@
 </head>
 <body class="bg-[#1a1a3b]">
 
+    <!-- 星空背景 -->
     <canvas id="starry-sky"></canvas>
     
+    <!-- プリローダー -->
     <div id="preloader">
         <div class="loader-text">E . - a s t -</div>
     </div>
 
+    <!-- 言語スイッチャー -->
     <div id="lang-switcher">
         <button id="lang-ja" class="active">JA</button>
         <button id="lang-en">EN</button>
     </div>
 
+    <!-- モーダル（マップ拡大用） -->
     <div id="mapModal" class="modal">
-        <span class="modal-close" id="closeModal">×</span>
+        <span class="modal-close" id="closeModal">&times;</span>
         <img class="modal-content" id="modalImage" src="" onerror="this.onerror=null;this.src='https://placehold.co/1200x800/1a1a3b/d1bfff?text=Map+Error';">
     </div>
 
+    <!-- ヒーローセクション -->
     <header class="h-screen flex flex-col items-center justify-center text-center relative p-4">
         <div class="z-10">
             <h1 class="text-5xl md:text-8xl font-playfair galaxy-text font-black mb-4 leading-tight" data-lang-key="heroTitle">
@@ -110,6 +118,7 @@
 
     <main class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 md:space-y-32 pb-24">
 
+        <!-- 開催情報セクション -->
         <section id="info" class="fade-in-section">
             <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="infoTitle">Information</h2>
             <div class="grid md:grid-cols-2 gap-8">
@@ -126,14 +135,17 @@
             </div>
         </section>
 
+        <!-- イベントスケジュールセクション -->
         <section id="schedule" class="fade-in-section">
             <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="scheduleTitle">Schedule</h2>
             <div class="w-full">
+                <!-- 日付タブ -->
                 <div id="date-tabs" class="flex justify-center mb-4 space-x-2 md:space-x-4">
                     <button data-date-target="day1" class="date-tab-button px-4 py-2 md:px-6 md:py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300 tab-active" data-lang-key="scheduleDate1">8月30日(土)</button>
                     <button data-date-target="day2" class="date-tab-button px-4 py-2 md:px-6 md:py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300" data-lang-key="scheduleDate2">8月31日(日)</button>
                 </div>
 
+                <!-- 日付別コンテンツ -->
                 <div id="day1" class="date-content">
                     <h3 class="text-2xl font-playfair text-center mb-8 text-gray-300" data-lang-key="scheduleDay1Title">8/30 (Sat)</h3>
                     <div class="grid md:grid-cols-2 gap-8">
@@ -183,34 +195,43 @@
             </div>
         </section>
         
+        <!-- 模擬店・展示情報セクション -->
         <section id="booths" class="fade-in-section">
             <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="boothsTitle">Booths & Exhibits</h2>
+            <!-- フィルター -->
             <div id="filters" class="flex justify-center flex-wrap gap-2 mb-8">
                 <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300 filter-active" data-filter="all" data-lang-key="filterAll">すべて</button>
                 <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-filter="class" data-lang-key="filterClass">クラス</button>
                 <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-filter="club" data-lang-key="filterClub">部活・委員会</button>
             </div>
             
+            <!-- カードグリッド -->
             <div id="booth-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                </div>
+                <!-- JavaScriptでカードを動的に生成 -->
+            </div>
         </section>
 
+        <!-- リアルタイム混雑状況 -->
         <section id="crowd-status" class="fade-in-section">
             <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="crowdTitle">リアルタイム混雑状況</h2>
             <div id="crowd-status-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto p-6 md:p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
+                <!-- JavaScriptで混雑状況を動的に生成 -->
                 <p class="text-gray-400 col-span-full text-center" data-lang-key="crowdLoading">混雑状況を読み込んでいます...</p>
             </div>
         </section>
 
+        <!-- 校内マップセクション -->
         <section id="map" class="fade-in-section">
             <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="mapTitle">School Map</h2>
             <div class="bg-black/30 p-4 rounded-2xl border border-white/10">
+                <!-- マップタブ -->
                 <div id="map-tabs" class="flex justify-center flex-wrap gap-2 mb-4">
                     <button class="map-tab-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300 tab-active" data-map-target="map-1f" data-lang-key="mapTab1F">1F</button>
                     <button class="map-tab-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-map-target="map-2f" data-lang-key="mapTab2F">2F</button>
                     <button class="map-tab-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-map-target="map-3f" data-lang-key="mapTab3F">3F</button>
                     <button class="map-tab-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-map-target="map-gym" data-lang-key="mapTabGym">体育館</button>
                 </div>
+                <!-- マップ画像コンテナ -->
                 <div id="map-images" class="relative">
                     <img id="map-1f" class="map-image w-full rounded-lg cursor-pointer" src="山東祭校内マップ1F.svg" alt="1階 校内マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+1F+Error';">
                     <img id="map-2f" class="map-image w-full rounded-lg cursor-pointer hidden" src="山東祭校内マップ2F.svg" alt="2階 校内マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+2F+Error';">
@@ -221,6 +242,7 @@
             </div>
         </section>
 
+        <!-- アクセス & 学校情報セクション -->
         <section id="access" class="fade-in-section">
             <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="accessTitle">Access</h2>
             <div class="grid lg:grid-cols-2 gap-8 md:gap-12">
@@ -239,6 +261,7 @@
             </div>
         </section>
 
+        <!-- Instagramリンク -->
         <section class="fade-in-section text-center">
              <a href="https://www.instagram.com/yamatosai_2025?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="inline-block px-10 py-4 text-lg font-bold text-white rounded-full cta-button" data-lang-key="instagramButton">
                 <i class="fab fa-instagram mr-2"></i>
@@ -248,11 +271,13 @@
 
     </main>
 
+    <!-- フッター -->
     <footer class="relative bg-gradient-to-t from-black/80 to-transparent pt-20 pb-8 mt-16 text-center text-gray-400 text-sm">
         <div class="footer-stars"></div>
         <p data-lang-key="footerText">© 2025 山形東高校 山東祭実行委員会</p>
     </footer>
     
+    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -520,7 +545,6 @@
             });
 
             createAndDisplayBooths();
-            displayMapMarkers();
             window.updateCrowdStatusUI(); // 言語変更時に混雑状況UIも更新
 
             document.getElementById('lang-ja').classList.toggle('active', lang === 'ja');
@@ -601,53 +625,6 @@
             }
         }
         
-        function displayMapMarkers() {
-            try {
-                const mapContainer = document.querySelector('#map > div');
-                if (!mapContainer) return;
-
-                mapContainer.querySelectorAll('.map-marker').forEach(marker => marker.remove());
-                const allBooths = [...boothData.classes, ...boothData.clubs];
-                const locations = {};
-
-                allBooths.forEach(booth => {
-                    const locationKey = currentLang === 'en' ? booth.location_en : booth.location;
-                    const name = currentLang === 'en' ? booth.name_en : booth.name;
-                    
-                    const locationParts = locationKey.split('&').map(part => part.trim());
-                    
-                    locationParts.forEach(part => {
-                        if (!locations[part]) {
-                            locations[part] = [];
-                        }
-                        locations[part].push(name);
-                    });
-                });
-
-                Object.keys(locations).forEach(locationName => {
-                    if (locationCoordinates[locationName]) {
-                        const coords = locationCoordinates[locationName];
-                        const marker = document.createElement('div');
-                        marker.className = 'map-marker absolute group';
-                        marker.style.top = coords.top;
-                        marker.style.left = coords.left;
-                        
-                        const boothList = locations[locationName].join(', ');
-
-                        marker.innerHTML = `
-                            <i class="fas fa-map-marker-alt text-red-500 text-3xl cursor-pointer transition-transform duration-300 group-hover:scale-125" style="text-shadow: 0 0 5px rgba(0,0,0,0.5);"></i>
-                            <div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#d1bfff] text-[#0d0d2b] text-sm px-3 py-2 rounded-lg whitespace-nowrap shadow-lg z-20 w-max max-w-xs text-left">
-                                <strong class="font-bold block mb-1">${locationName}</strong>
-                                <span class="text-xs">${boothList}</span>
-                            </div>`;
-                        mapContainer.appendChild(marker);
-                    }
-                });
-            } catch (e) {
-                console.error("An error occurred in displayMapMarkers:", e);
-            }
-        }
-
         function setupEventListeners() {
             try {
                 document.getElementById('lang-ja').addEventListener('click', () => setLanguage('ja'));
