@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>山東祭2025｜E。-ast-</title>
-    <meta name="google-site-verification" content="DRTzbBW6-cmft7sW1mAdjFslwf6RlpAJ0n8JS_a2YXU" />
-
+    
+    <!-- ★ 追加点: 検索エンジン向けのサイト説明文 -->
     <meta name="description" content="山東祭2025の公式ウェブサイトへようこそ！開催日時、イベントスケジュール、模擬店や展示の情報をリアルタイムで更新中。宇宙をテーマにした今年の文化祭をお見逃しなく！">
     
     <link rel="icon" type="image/png" href="favicon.png">
@@ -88,7 +88,7 @@
         <div class="loader-text">E . - a s t -</div>
     </div>
 
-    <!-- ★ 変更点: 新しい言語スイッチャー -->
+    <!-- 言語スイッチャー -->
     <div id="lang-switcher-container" class="fixed top-5 right-5 z-50">
         <button id="lang-switcher-btn" class="px-4 py-2 text-white bg-black/30 backdrop-blur-sm border border-white/20 rounded-full transition-all duration-300 hover:bg-white/20 flex items-center space-x-2">
             <i class="fas fa-globe"></i>
@@ -777,18 +777,21 @@
             setLanguage(currentLang); // 初期言語を設定
         }
 
-        // --- イベントリスナーの登録 ---
-        window.onload = function() {
+        // --- ★ 修正点: イベントリスナーの登録タイミングを変更 ---
+        // window.onloadの代わりにDOMContentLoadedを使用することで、HTMLの解析が完了次第すぐにスクリプトを実行します。
+        // これにより、画像などの読み込みを待たずにコンテンツが表示されるようになります。
+        document.addEventListener('DOMContentLoaded', function() {
             initializeApp();
 
             const preloader = document.getElementById('preloader');
             if(preloader) {
-                setTimeout(() => {
+                // window.onloadはプリローダーを消すためだけに残します
+                window.onload = function() {
                     preloader.style.opacity = '0';
                     preloader.style.visibility = 'hidden';
-                }, 500); // 少し遅延させてローディングを見せる
+                };
             }
-        };
+        });
     </script>
 </body>
 </html>
