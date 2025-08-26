@@ -116,12 +116,18 @@ window.updateCrowdStatusUI = function(statuses) {
     });
 }
 
+// ★ 修正点: requestAnimationFrame を使ってカードを1枚ずつ表示
 function createAndDisplayBooths() {
     const boothGrid = document.getElementById('booth-grid');
     if (!boothGrid) return;
     boothGrid.innerHTML = '';
     const allBooths = [...boothData.classes, ...boothData.clubs];
-    allBooths.forEach(booth => {
+    
+    let index = 0;
+    function processNextCard() {
+        if (index >= allBooths.length) return; // すべてのカードを処理したら終了
+
+        const booth = allBooths[index];
         const card = document.createElement('div');
         card.className = 'booth-card floating-card';
         card.dataset.category = booth.category;
@@ -136,7 +142,13 @@ function createAndDisplayBooths() {
                 <p style="margin-top: 0.5rem; font-size: 0.875rem;">${booth.description[currentLang]}</p>
             </div>`;
         boothGrid.appendChild(card);
-    });
+        
+        index++;
+        // 次のフレームで次のカードを処理するようにスケジュール
+        requestAnimationFrame(processNextCard);
+    }
+    // 最初のカード処理を開始
+    requestAnimationFrame(processNextCard);
 }
 
 function setupEventListeners() {
@@ -244,9 +256,7 @@ function setupStarrySky() {
 }
 
 // --- アプリケーションの初期化 ---
-// ★ 修正点: DOMContentLoadedに変更してカードの表示を高速化
 document.addEventListener('DOMContentLoaded', function() {
-    // ページの骨組みができた時点で、すぐにカード作成やイベントリスナーの設定を開始
     setupEventListeners();
     
     translateAllStaticText(currentLang);
@@ -254,7 +264,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateLangSwitcherUI(currentLang);
     createAndDisplayBooths();
 
-    // ページの全リソース（画像など）が読み込まれたら、星空とプリローダーを処理
     window.addEventListener('load', function() {
         setupStarrySky();
         const preloader = document.getElementById('preloader');
