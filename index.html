@@ -9,9 +9,6 @@
     
     <link rel="icon" type="image/png" href="favicon.png">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,175 +18,264 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* カスタムスタイル */
+        /* --- 基本スタイル & アニメーション --- */
+        :root {
+            --bg-color: #1a1a3b;
+            --text-color: #f0f0f0;
+            --accent-color: #d1bfff;
+            --card-bg: rgba(0, 0, 0, 0.3);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
         body {
-            background-color: #1a1a3b;
-            color: #f0f0f0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Noto Sans JP', 'Inter', sans-serif;
             overflow-x: hidden;
+            margin: 0;
         }
-        
-        #starry-sky { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        main, header, footer { position: relative; z-index: 10; }
+
         .font-playfair { font-family: 'Playfair Display', serif; }
-        .font-inter { font-family: 'Noto Sans JP', 'Inter', sans-serif; }
 
-        .galaxy-text {
-            background: linear-gradient(45deg, #d1bfff, #a29bfe, #74b9ff, #d1bfff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; text-fill-color: transparent;
-            animation: gradient-animation 5s ease infinite; background-size: 200% 200%;
+        @keyframes gradient-animation {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-        @keyframes gradient-animation { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .scroll-down-arrow { animation: bounce 2s infinite; }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } 60% { transform: translateY(-10px); } }
-        
-        .section-title { color: #d1bfff; text-shadow: 0 0 8px #d1bfff, 0 0 12px #d1bfff; }
-        .floating-card { transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.3), 0 0 15px rgba(209, 191, 255, 0.1); }
-        .floating-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 25px rgba(209, 191, 255, 0.2); }
-        .tab-active { background-color: #d1bfff !important; color: #0d0d2b !important; box-shadow: 0 0 10px #d1bfff; }
-        .filter-active { background-color: #d1bfff; color: #0d0d2b; font-weight: bold; }
-        .cta-button { background: linear-gradient(45deg, #8a2be2, #d1bfff, #ff69b4, #8a2be2); background-size: 300% 300%; animation: gradient-animation 8s ease infinite; transition: all 0.3s ease; }
-        .cta-button:hover { transform: scale(1.05); box-shadow: 0 0 20px #d1bfff; }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; text-shadow: 0 0 5px var(--accent-color); }
+            50% { opacity: 1; text-shadow: 0 0 15px var(--accent-color); }
+        }
 
-        .footer-stars { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; }
-        .star { position: absolute; background-color: white; border-radius: 50%; animation: twinkle 5s infinite ease-in-out; }
-        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-        
-        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
-        
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
-        .modal-content { margin: auto; display: block; max-width: 90%; max-height: 90%; }
-        .modal-close { position: absolute; top: 25px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; transition: 0.3s; cursor: pointer; }
+        /* --- 共通コンポーネント --- */
+        .section-title {
+            color: var(--accent-color);
+            text-shadow: 0 0 8px var(--accent-color), 0 0 12px var(--accent-color);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.25rem;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border-radius: 9999px;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            background: linear-gradient(45deg, #8a2be2, #d1bfff, #ff69b4, #8a2be2);
+            background-size: 300% 300%;
+            animation: gradient-animation 8s ease infinite;
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+        .floating-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3), 0 0 15px rgba(209, 191, 255, 0.1);
+        }
+        .floating-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 25px rgba(209, 191, 255, 0.2);
+        }
+        .tab-active {
+            background-color: var(--accent-color) !important;
+            color: #0d0d2b !important;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+        .filter-active {
+            background-color: var(--accent-color);
+            color: #0d0d2b;
+            font-weight: bold;
+        }
 
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #1a1a3b; z-index: 9999; display: flex; align-items: center; justify-content: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
-        #preloader .loader-text { color: #d1bfff; font-size: 2rem; font-family: 'Playfair Display', serif; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.5; text-shadow: 0 0 5px #d1bfff; } 50% { opacity: 1; text-shadow: 0 0 15px #d1bfff; } 100% { opacity: 0.5; text-shadow: 0 0 5px #d1bfff; } }
-
-        .booth-card .p-4 h3 { color: #ffffff; }
-        .booth-card .p-4 p { color: #e0e0e0; }
+        /* --- レイアウト & セクション --- */
+        main {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 0 1rem 6rem 1rem;
+        }
+        main section { margin-bottom: 6rem; }
+        .grid { display: grid; gap: 2rem; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
         
-        /* 混雑状況インジケーター */
+        /* --- プリローダー & 背景 --- */
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        #preloader .loader-text { color: var(--accent-color); font-size: 2rem; font-family: 'Playfair Display', serif; animation: pulse 2s infinite; }
+        #starry-sky { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+
+        /* --- ヘッダー --- */
+        header { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; padding: 1rem; }
+        header h1 { font-size: 3rem; font-weight: 900; margin-bottom: 1rem; line-height: 1.2; }
+        header p { font-size: 1.125rem; color: #d1d5db; }
+        .galaxy-text { background: linear-gradient(45deg, #d1bfff, #a29bfe, #74b9ff, #d1bfff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: transparent; animation: gradient-animation 5s ease infinite; background-size: 200% 200%; }
+        .scroll-down-arrow { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; color: var(--accent-color); font-size: 1.875rem; }
+
+        /* --- 言語スイッチャー --- */
+        #lang-switcher-container { position: fixed; top: 1.25rem; right: 1.25rem; z-index: 50; }
+        #lang-switcher-btn { padding: 0.5rem 1rem; color: white; background-color: var(--card-bg); backdrop-filter: blur(5px); border: 1px solid var(--border-color); border-radius: 9999px; transition: all 0.3s; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+        #lang-switcher-btn:hover { background-color: rgba(255, 255, 255, 0.2); }
+
+        /* --- 情報セクション --- */
+        .info-card { padding: 2rem; border-radius: 1rem; background-color: var(--card-bg); backdrop-filter: blur(4px); border: 1px solid var(--border-color); background-size: cover; background-blend-mode: overlay; }
+        .info-card h3 { font-size: 1.875rem; margin-bottom: 1rem; color: var(--accent-color); }
+        .info-card p { font-size: 1.25rem; }
+
+        /* --- スケジュールセクション --- */
+        .tab-buttons { display: flex; justify-content: center; margin-bottom: 1rem; gap: 1rem; }
+        .tab-buttons button { padding: 0.5rem 1.5rem; border-radius: 9999px; background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px); transition: all 0.3s; cursor: pointer; color: var(--text-color); }
+        .date-content.hidden { display: none; }
+        .schedule-card { padding: 2.5rem; border-radius: 1rem; background-color: var(--card-bg); backdrop-filter: blur(4px); border: 1px solid var(--border-color); }
+        .schedule-card h4 { font-size: 1.5rem; text-align: center; margin-bottom: 1.5rem; color: var(--accent-color); }
+        .schedule-item { display: flex; align-items: center; gap: 1rem; }
+        .schedule-item time { width: 7rem; font-weight: bold; color: var(--accent-color); }
+        .schedule-item div { flex: 1; border-left: 2px dashed var(--accent-color); padding-left: 1rem; }
+        .schedule-card .space-y-6 > * + * { margin-top: 1.5rem; }
+        
+        /* --- 企画 & 展示セクション --- */
+        #filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+        #filters button { padding: 0.5rem 1rem; border-radius: 9999px; border: 1px solid var(--border-color); transition: all 0.3s; cursor: pointer; color: var(--text-color); }
+        .booth-card { background-color: var(--card-bg); backdrop-filter: blur(4px); border: 1px solid var(--border-color); border-radius: 1rem; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
+        .booth-card > div:first-child { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; text-align: center; padding: 1rem; min-height: 180px; }
+        .booth-card h3 { font-size: 1.25rem; font-weight: bold; }
+        .booth-card p { font-size: 0.875rem; margin-top: 0.25rem; color: #e0e0e0; }
+        .booth-details { display: none; padding: 1rem; border-top: 1px solid var(--border-color); background-color: rgba(0,0,0,0.2); color: #d1d5db; }
+        .booth-details p { margin-top: 0.5rem; }
+
+        /* --- 混雑状況セクション --- */
+        #crowd-status-grid { max-width: 56rem; margin: 0 auto; padding: 2rem; border-radius: 1rem; background-color: var(--card-bg); backdrop-filter: blur(4px); border: 1px solid var(--border-color); }
+        .status-item { display: flex; align-items: center; }
         .status-indicator { display: inline-block; width: 1rem; height: 1rem; border-radius: 50%; margin-right: 0.75rem; }
         .status-0 { background-color: #4ade80; box-shadow: 0 0 8px #4ade80; } /* green */
         .status-1 { background-color: #facc15; box-shadow: 0 0 8px #facc15; } /* yellow */
         .status-2 { background-color: #f87171; box-shadow: 0 0 8px #f87171; } /* red */
+
+        /* --- マップセクション --- */
+        .map-container { background-color: var(--card-bg); padding: 1rem; border-radius: 1rem; border: 1px solid var(--border-color); }
+        .map-image { width: 100%; border-radius: 0.5rem; cursor: pointer; }
+        .map-image.hidden { display: none; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
+        .modal-content { margin: auto; display: block; max-width: 90%; max-height: 90%; }
+        .modal-close { position: absolute; top: 25px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; transition: 0.3s; cursor: pointer; }
+
+        /* --- フッター --- */
+        footer { position: relative; padding: 5rem 0 2rem 0; margin-top: 4rem; text-align: center; color: #9ca3af; font-size: 0.875rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
+        .footer-stars { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; }
+        .star { position: absolute; background-color: white; border-radius: 50%; animation: twinkle 5s infinite ease-in-out; }
+        
+        /* --- フェードイン --- */
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* --- レスポンシブ対応 --- */
+        @media (min-width: 768px) {
+            .md-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .lg-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            header h1 { font-size: 5rem; }
+            header p { font-size: 1.5rem; }
+            .section-title { font-size: 3rem; }
+        }
     </style>
 </head>
-<body class="bg-[#1a1a3b]">
+<body>
 
-    <!-- 星空背景 -->
     <canvas id="starry-sky"></canvas>
+    <div id="preloader"><div class="loader-text">E . - a s t -</div></div>
     
-    <!-- プリローダー -->
-    <div id="preloader">
-        <div class="loader-text">E . - a s t -</div>
-    </div>
-
-    <!-- 言語スイッチャー -->
-    <div id="lang-switcher-container" class="fixed top-5 right-5 z-50">
-        <button id="lang-switcher-btn" class="px-4 py-2 text-white bg-black/30 backdrop-blur-sm border border-white/20 rounded-full transition-all duration-300 hover:bg-white/20 flex items-center space-x-2">
+    <div id="lang-switcher-container">
+        <button id="lang-switcher-btn">
             <i class="fas fa-globe"></i>
             <span id="lang-switcher-text">English</span>
         </button>
     </div>
 
-    <!-- モーダル（マップ拡大用） -->
     <div id="mapModal" class="modal">
         <span class="modal-close" id="closeModal">&times;</span>
         <img class="modal-content" id="modalImage" src="" onerror="this.onerror=null;this.src='https://placehold.co/1200x800/1a1a3b/d1bfff?text=Map+Error';">
     </div>
 
-    <!-- ヒーローセクション -->
-    <header class="h-screen flex flex-col items-center justify-center text-center relative p-4">
-        <div class="z-10">
-            <h1 class="text-5xl md:text-8xl font-playfair galaxy-text font-black mb-4 leading-tight" data-lang-key="heroTitle">
-                山東祭2025<br>E-AST-
-            </h1>
-            <p class="text-lg md:text-2xl font-playfair text-gray-300" data-lang-key="heroSubtitle">
-                スローガン：『チ。-地球の運動について-』
-            </p>
+    <header>
+        <div>
+            <h1 class="font-playfair galaxy-text" data-lang-key="heroTitle">山東祭2025<br>E-AST-</h1>
+            <p class="font-playfair" data-lang-key="heroSubtitle">スローガン：『チ。-地球の運動について-』</p>
         </div>
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2">
-            <a href="#info" class="scroll-down-arrow">
-                <i class="fas fa-chevron-down text-3xl text-[#d1bfff]"></i>
-            </a>
-        </div>
+        <a href="#info" class="scroll-down-arrow"><i class="fas fa-chevron-down"></i></a>
     </header>
 
-    <main class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 md:space-y-32 pb-24">
-
-        <!-- 開催情報セクション -->
+    <main>
         <section id="info" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="infoTitle">Information</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10 floating-card" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-blend-mode: overlay;">
-                    <h3 class="text-3xl font-playfair mb-4 text-[#d1bfff]" data-lang-key="infoDateTitle">日程</h3>
-                    <p class="text-xl" data-lang-key="infoDate1">8月30日 (土)</p>
-                    <p class="text-xl" data-lang-key="infoDate2">8月31日 (日)</p>
+            <h2 class="font-playfair section-title" data-lang-key="infoTitle">Information</h2>
+            <div class="grid md-grid-cols-2">
+                <div class="info-card floating-card" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop');">
+                    <h3 class="font-playfair" data-lang-key="infoDateTitle">日程</h3>
+                    <p data-lang-key="infoDate1">8月30日 (土)</p>
+                    <p data-lang-key="infoDate2">8月31日 (日)</p>
                 </div>
-                <div class="p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10 floating-card" style="background-image: url('https://images.unsplash.com/photo-1506443432602-ac2fcd6f54e0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-blend-mode: overlay;">
-                    <h3 class="text-3xl font-playfair mb-4 text-[#d1bfff]" data-lang-key="infoTimeTitle">一般公開 時間</h3>
-                    <p class="text-lg" data-lang-key="infoTime1">8/30 (土) 10:30 〜 15:00</p>
-                    <p class="text-lg" data-lang-key="infoTime2">8/31 (日) 10:00 〜 14:00</p>
+                <div class="info-card floating-card" style="background-image: url('https://images.unsplash.com/photo-1506443432602-ac2fcd6f54e0?q=80&w=2070&auto=format&fit=crop');">
+                    <h3 class="font-playfair" data-lang-key="infoTimeTitle">一般公開 時間</h3>
+                    <p data-lang-key="infoTime1">8/30 (土) 10:30 〜 15:00</p>
+                    <p data-lang-key="infoTime2">8/31 (日) 10:00 〜 14:00</p>
                 </div>
             </div>
         </section>
 
-        <!-- イベントスケジュールセクション -->
         <section id="schedule" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="scheduleTitle">Schedule</h2>
-            <div class="w-full">
-                <!-- 日付タブ -->
-                <div id="date-tabs" class="flex justify-center mb-4 space-x-2 md:space-x-4">
-                    <button data-date-target="day1" class="date-tab-button px-4 py-2 md:px-6 md:py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300 tab-active" data-lang-key="scheduleDate1">8月30日(土)</button>
-                    <button data-date-target="day2" class="date-tab-button px-4 py-2 md:px-6 md:py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm transition-all duration-300" data-lang-key="scheduleDate2">8月31日(日)</button>
+            <h2 class="font-playfair section-title" data-lang-key="scheduleTitle">Schedule</h2>
+            <div>
+                <div class="tab-buttons" id="date-tabs">
+                    <button data-date-target="day1" class="tab-active" data-lang-key="scheduleDate1">8月30日(土)</button>
+                    <button data-date-target="day2" data-lang-key="scheduleDate2">8月31日(日)</button>
                 </div>
-
-                <!-- 日付別コンテンツ -->
                 <div id="day1" class="date-content">
-                    <h3 class="text-2xl font-playfair text-center mb-8 text-gray-300" data-lang-key="scheduleDay1Title">8/30 (Sat)</h3>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="p-6 md:p-10 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
-                            <h4 class="text-2xl font-playfair text-center mb-6 text-[#d1bfff]" data-lang-key="scheduleVenueGym">体育館</h4>
+                    <h3 class="font-playfair" style="text-align: center; margin-bottom: 2rem; color: #d1d5db;" data-lang-key="scheduleDay1Title">8/30 (Sat)</h3>
+                    <div class="grid md-grid-cols-2">
+                        <div class="schedule-card">
+                            <h4 class="font-playfair" data-lang-key="scheduleVenueGym">体育館</h4>
                             <div class="space-y-6">
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">10:30~10:35</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1G1">オープニング</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">10:35~11:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1G2">放送部作品上映</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">11:30~12:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1G3">歌うまA</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">12:05~12:45</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1G4">一年生企画</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">12:50~13:10</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1G5">チアパフォーマンス</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">13:15~13:45</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1G6">歌うまB</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">13:50~14:20</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1G7">イントロドン</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">14:25~14:55</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD1G8">有志ダンス</div></div>
+                                <div class="schedule-item"><time>10:30~10:35</time><div data-lang-key="eventD1G1">オープニング</div></div>
+                                <div class="schedule-item"><time>10:35~11:30</time><div data-lang-key="eventD1G2">放送部作品上映</div></div>
+                                <div class="schedule-item"><time>11:30~12:00</time><div data-lang-key="eventD1G3">歌うまAブロック</div></div>
+                                <div class="schedule-item"><time>12:05~12:45</time><div data-lang-key="eventD1G4">一年生ダンス</div></div>
+                                <div class="schedule-item"><time>12:50~13:10</time><div data-lang-key="eventD1G5">チアパフォーマンス</div></div>
+                                <div class="schedule-item"><time>13:15~13:45</time><div data-lang-key="eventD1G6">歌うまBブロック</div></div>
+                                <div class="schedule-item"><time>13:50~14:20</time><div data-lang-key="eventD1G7">イントロドン</div></div>
+                                <div class="schedule-item"><time>14:25~14:55</time><div data-lang-key="eventD1G8">有志ダンス</div></div>
                             </div>
                         </div>
-                        <div class="p-6 md:p-10 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center">
-                             <p class="text-center text-gray-400" data-lang-key="eventD1A_none">講堂での一般公開企画はありません</p>
+                        <div class="schedule-card" style="display:flex; align-items:center; justify-content:center;">
+                             <p style="text-align:center; color: #9ca3af;" data-lang-key="eventD1A_none">講堂での一般公開企画はありません</p>
                         </div>
                     </div>
                 </div>
-
                 <div id="day2" class="date-content hidden">
-                    <h3 class="text-2xl font-playfair text-center mb-8 text-gray-300" data-lang-key="scheduleDay2Title">8/31 (Sun)</h3>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="p-6 md:p-10 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
-                            <h4 class="text-2xl font-playfair text-center mb-6 text-[#d1bfff]" data-lang-key="scheduleVenueGym">体育館</h4>
+                    <h3 class="font-playfair" style="text-align: center; margin-bottom: 2rem; color: #d1d5db;" data-lang-key="scheduleDay2Title">8/31 (Sun)</h3>
+                    <div class="grid md-grid-cols-2">
+                        <div class="schedule-card">
+                            <h4 class="font-playfair" data-lang-key="scheduleVenueGym">体育館</h4>
                             <div class="space-y-6">
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">10:10~10:40</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2G1">歌うまC</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">10:45~11:30</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2G2">H-1</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">11:35~12:15</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2G3">一年生企画</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">12:20~13:05</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2G4">有志ダンス</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">13:10~13:40</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2G5">書道パフォーマンス</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">13:45~13:50</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2G6">エンディング</div></div>
+                                <div class="schedule-item"><time>10:10~10:40</time><div data-lang-key="eventD2G1">歌うまCブロック</div></div>
+                                <div class="schedule-item"><time>10:45~11:30</time><div data-lang-key="eventD2G2">H-1グランプリ</div></div>
+                                <div class="schedule-item"><time>11:35~12:15</time><div data-lang-key="eventD2G3">一年生ダンス</div></div>
+                                <div class="schedule-item"><time>12:20~13:05</time><div data-lang-key="eventD2G4">有志ダンス</div></div>
+                                <div class="schedule-item"><time>13:10~13:40</time><div data-lang-key="eventD2G5">書道パフォーマンス</div></div>
+                                <div class="schedule-item"><time>13:45~13:50</time><div data-lang-key="eventD2G6">エンディング</div></div>
                             </div>
                         </div>
-                        <div class="p-6 md:p-10 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
-                            <h4 class="text-2xl font-playfair text-center mb-6 text-[#d1bfff]" data-lang-key="scheduleVenueHall">講堂</h4>
+                        <div class="schedule-card">
+                            <h4 class="font-playfair" data-lang-key="scheduleVenueHall">講堂</h4>
                             <div class="space-y-6">
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">10:10~11:00</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2A1">スマブラ大会</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">11:05~11:20</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2A2">歌うま準決勝</div></div>
-                                <div class="flex items-center space-x-4"><time class="w-28 text-lg font-bold text-[#d1bfff]">11:30~14:05</time><div class="flex-1 border-l-2 border-dashed border-[#d1bfff] pl-4" data-lang-key="eventD2A3">バンド</div></div>
+                                <div class="schedule-item"><time>10:10~11:00</time><div data-lang-key="eventD2A1">スマブラ大会</div></div>
+                                <div class="schedule-item"><time>11:05~11:20</time><div data-lang-key="eventD2A2">歌うま準決勝</div></div>
+                                <div class="schedule-item"><time>11:30~14:05</time><div data-lang-key="eventD2A3">バンド</div></div>
                             </div>
                         </div>
                     </div>
@@ -197,92 +283,74 @@
             </div>
         </section>
         
-        <!-- 模擬店・展示情報セクション -->
         <section id="booths" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="boothsTitle">Booths & Exhibits</h2>
-            <!-- フィルター -->
-            <div id="filters" class="flex justify-center flex-wrap gap-2 mb-8">
-                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300 filter-active" data-filter="all" data-lang-key="filterAll">すべて</button>
-                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-filter="class" data-lang-key="filterClass">クラス</button>
-                <button class="filter-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-filter="club" data-lang-key="filterClub">部活・委員会</button>
+            <h2 class="font-playfair section-title" data-lang-key="boothsTitle">Booths & Exhibits</h2>
+            <div id="filters">
+                <button class="filter-active" data-filter="all" data-lang-key="filterAll">すべて</button>
+                <button data-filter="class" data-lang-key="filterClass">クラス</button>
+                <button data-filter="club" data-lang-key="filterClub">部活・委員会</button>
             </div>
-            
-            <!-- カードグリッド -->
-            <div id="booth-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- JavaScriptでカードを動的に生成 -->
-            </div>
-
-            <!-- 探究ポスターへのリンク -->
-            <div class="text-center mt-12">
-                <a href="https://drive.google.com/drive/folders/1g72cGElfsPMMzFcXUasVw_DdJJnD_Eql" target="_blank" rel="noopener noreferrer" class="inline-block px-10 py-4 text-lg font-bold text-white rounded-full cta-button" data-lang-key="researchPostersButton">
-                    <i class="fas fa-search mr-2"></i>
-                    本校2年生の探究ポスターはこちら
+            <div id="booth-grid" class="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3"></div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="https://drive.google.com/drive/folders/1g72cGElfsPMMzFcXUasVw_DdJJnD_Eql" target="_blank" rel="noopener noreferrer" class="cta-button" data-lang-key="researchPostersButton">
+                    <i class="fas fa-search" style="margin-right: 0.5rem;"></i>本校2年生の探究ポスターはこちら
                 </a>
             </div>
         </section>
 
-        <!-- リアルタイム混雑状況 -->
         <section id="crowd-status" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="crowdTitle">リアルタイム混雑状況</h2>
-            <div id="crowd-status-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto p-6 md:p-8 rounded-2xl bg-black/30 backdrop-blur-sm border border-white/10">
-                <!-- JavaScriptで混雑状況を動的に生成 -->
-                <p class="text-gray-400 col-span-full text-center" data-lang-key="crowdLoading">混雑状況を読み込んでいます...</p>
+            <h2 class="font-playfair section-title" data-lang-key="crowdTitle">リアルタイム混雑状況</h2>
+            <div id="crowd-status-grid" class="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3">
+                <p style="grid-column: 1 / -1; text-align: center; color: #9ca3af;" data-lang-key="crowdLoading">混雑状況を読み込んでいます...</p>
             </div>
         </section>
 
-        <!-- 校内マップセクション -->
         <section id="map" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="mapTitle">School Map</h2>
-            <div class="bg-black/30 p-4 rounded-2xl border border-white/10">
-                <!-- マップタブ -->
-                <div id="map-tabs" class="flex justify-center flex-wrap gap-2 mb-4">
-                    <button class="map-tab-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300 tab-active" data-map-target="map-1f" data-lang-key="mapTab1F">1F</button>
-                    <button class="map-tab-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-map-target="map-2f" data-lang-key="mapTab2F">2F</button>
-                    <button class="map-tab-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-map-target="map-3f" data-lang-key="mapTab3F">3F</button>
-                    <button class="map-tab-button px-4 py-2 rounded-full border border-white/20 transition-colors duration-300" data-map-target="map-gym" data-lang-key="mapTabGym">体育館</button>
+            <h2 class="font-playfair section-title" data-lang-key="mapTitle">School Map</h2>
+            <div class="map-container">
+                <div class="tab-buttons" id="map-tabs">
+                    <button class="tab-active" data-map-target="map-1f" data-lang-key="mapTab1F">1F</button>
+                    <button data-map-target="map-2f" data-lang-key="mapTab2F">2F</button>
+                    <button data-map-target="map-3f" data-lang-key="mapTab3F">3F</button>
+                    <button data-map-target="map-gym" data-lang-key="mapTabGym">体育館</button>
                 </div>
-                <!-- マップ画像コンテナ -->
-                <div id="map-images" class="relative">
-                    <img id="map-1f" class="map-image w-full rounded-lg cursor-pointer" src="山東祭校内マップ1F.svg" alt="1階 校内マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+1F+Error';">
-                    <img id="map-2f" class="map-image w-full rounded-lg cursor-pointer hidden" src="山東祭校内マップ2F.svg" alt="2階 校内マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+2F+Error';">
-                    <img id="map-3f" class="map-image w-full rounded-lg cursor-pointer hidden" src="山東祭校内マップ3F.svg" alt="3階 校内マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+3F+Error';">
-                    <img id="map-gym" class="map-image w-full rounded-lg cursor-pointer hidden" src="山東祭校内マップ体育館.svg" alt="体育館マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+Gym+Error';">
+                <div id="map-images">
+                    <img id="map-1f" class="map-image" src="山東祭校内マップ1F.svg" alt="1階 校内マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+1F+Error';">
+                    <img id="map-2f" class="map-image hidden" src="山東祭校内マップ2F.svg" alt="2階 校内マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+2F+Error';">
+                    <img id="map-3f" class="map-image hidden" src="山東祭校内マップ3F.svg" alt="3階 校内マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+3F+Error';">
+                    <img id="map-gym" class="map-image hidden" src="山東祭校内マップ体育館.svg" alt="体育館マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+Gym+Error';">
                 </div>
-                <p class="text-center mt-4 text-gray-400" data-lang-key="mapDesc">マップをクリックまたはタップで拡大表示します。</p>
+                <p style="text-align: center; margin-top: 1rem; color: #9ca3af;" data-lang-key="mapDesc">マップをクリックまたはタップで拡大表示します。</p>
             </div>
         </section>
 
-        <!-- アクセス & 学校情報セクション -->
         <section id="access" class="fade-in-section">
-            <h2 class="text-4xl md:text-5xl font-playfair text-center mb-12 section-title" data-lang-key="accessTitle">Access</h2>
-            <div class="grid lg:grid-cols-2 gap-8 md:gap-12">
-                <div class="bg-black/30 p-8 rounded-2xl border border-white/10">
-                    <h3 class="text-2xl font-playfair text-[#d1bfff] mb-4" data-lang-key="accessSchoolName">山形県立山形東高等学校</h3>
-                    <p class="mb-2"><i class="fas fa-map-marker-alt w-6"></i> <span data-lang-key="accessAddressTitle">住所:</span> <span data-lang-key="accessAddress">〒990-0044 山形県山形市緑町1-5-59</span></p>
-                    <p><i class="fas fa-phone w-6"></i> <span data-lang-key="accessPhoneTitle">電話:</span> 023-622-3010</p>
+            <h2 class="font-playfair section-title" data-lang-key="accessTitle">Access</h2>
+            <div class="grid lg-grid-cols-2">
+                <div class="info-card">
+                    <h3 class="font-playfair" data-lang-key="accessSchoolName">山形県立山形東高等学校</h3>
+                    <p><i class="fas fa-map-marker-alt" style="width: 1.5rem;"></i> <span data-lang-key="accessAddressTitle">住所:</span> <span data-lang-key="accessAddress">〒990-0044 山形県山形市緑町1-5-59</span></p>
+                    <p style="margin-top: 0.5rem;"><i class="fas fa-phone" style="width: 1.5rem;"></i> <span data-lang-key="accessPhoneTitle">電話:</span> 023-622-3010</p>
                 </div>
-                <div class="bg-black/30 p-8 rounded-2xl border border-white/10 flex flex-col items-center justify-center text-center">
-                    <i class="fas fa-map-marked-alt text-4xl text-[#d1bfff] mb-4"></i>
-                    <h3 class="text-xl font-playfair mb-4" data-lang-key="accessGmapTitle">地図で場所を確認</h3>
-                    <a href="https://www.google.com/maps/place/%E5%B1%B1%E5%BD%A2%E7%9C%8C%E7%AB%8B%E5%B1%B1%E5%BD%A2%E6%9D%B1%E9%AB%98%E7%AD%89%E5%AD%A6%E6%A0%A1/@38.2564436,140.344156,630m/data=!3m2!1e3!5s0x5f8bc9fb57f215af:0xc1094e60ba0c6b4d!4m6!3m5!1s0x5f8bc9fb50c05223:0x228d8bf43f261125!8m2!3d38.2577883!4d140.3456953!16s%2Fg%2F122bxrcd?entry=ttu&g_ep=EgoyMDI1MDcxMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-3 text-md font-bold text-white rounded-full cta-button" data-lang-key="accessGmapButton">
+                <div class="info-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                    <i class="fas fa-map-marked-alt" style="font-size: 2.25rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
+                    <h3 class="font-playfair" style="font-size: 1.25rem; margin-bottom: 1rem;" data-lang-key="accessGmapTitle">地図で場所を確認</h3>
+                    <a href="https://www.google.com/maps/place/%E5%B1%B1%E5%BD%A2%E7%9C%8C%E7%AB%8B%E5%B1%B1%E5%BD%A2%E6%9D%B1%E9%AB%98%E7%AD%89%E5%AD%A6%E6%A0%A1" target="_blank" rel="noopener noreferrer" class="cta-button" data-lang-key="accessGmapButton">
                         Googleマップで開く
                     </a>
                </div>
             </div>
         </section>
 
-        <!-- Instagramリンク -->
-        <section class="fade-in-section text-center">
-             <a href="https://www.instagram.com/yamatosai_2025?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="inline-block px-10 py-4 text-lg font-bold text-white rounded-full cta-button" data-lang-key="instagramButton">
-                <i class="fab fa-instagram mr-2"></i>
+        <section class="fade-in-section" style="text-align: center;">
+             <a href="https://www.instagram.com/yamatosai_2025" target="_blank" rel="noopener noreferrer" class="cta-button" data-lang-key="instagramButton">
+                <i class="fab fa-instagram" style="margin-right: 0.5rem;"></i>
                 山東祭 公式Instagramへ
             </a>
         </section>
-
     </main>
 
-    <!-- フッター -->
-    <footer class="relative bg-gradient-to-t from-black/80 to-transparent pt-20 pb-8 mt-16 text-center text-gray-400 text-sm">
+    <footer>
         <div class="footer-stars"></div>
         <p data-lang-key="footerText">© 2025 山形東高校 山東祭実行委員会</p>
     </footer>
@@ -294,47 +362,37 @@
         import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
- apiKey: "AIzaSyBUclBluehOXOZXlDCeePcdVKmYdKkRxFI",
- authDomain: "yamatosai2025-4f10b.firebaseapp.com",
- projectId: "yamatosai2025-4f10b",
- storageBucket: "yamatosai2025-4f10b.firebasestorage.app",
- messagingSenderId: "817983089763",
- appId: "1:817983089763:web:8ca71d1ff70812f2645c56",
- measurementId: "G-H7VH1ZJYE9"
-};
+             apiKey: "AIzaSyBUclBluehOXOZXlDCeePcdVKmYdKkRxFI",
+             authDomain: "yamatosai2025-4f10b.firebaseapp.com",
+             projectId: "yamatosai2025-4f10b",
+             storageBucket: "yamatosai2025-4f10b.firebasestorage.app",
+             messagingSenderId: "817983089763",
+             appId: "1:817983089763:web:8ca71d1ff70812f2645c56",
+             measurementId: "G-H7VH1ZJYE9"
+        };
 
-
-        let app, auth, db;
         try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
             
-            signInAnonymously(auth).catch((error) => {
-                console.error("Anonymous sign-in failed:", error);
-            });
+            signInAnonymously(auth).catch(console.error);
 
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const dbPath = `/artifacts/${firebaseConfig.projectId}/public/data/crowd-status`;
-                    const crowdStatusCollection = collection(db, dbPath);
-                    onSnapshot(crowdStatusCollection, (snapshot) => {
+                    onSnapshot(collection(db, dbPath), (snapshot) => {
                         const statuses = {};
-                        snapshot.forEach((doc) => {
-                            statuses[doc.id] = doc.data();
-                        });
+                        snapshot.forEach((doc) => { statuses[doc.id] = doc.data(); });
                         window.updateCrowdStatusUI(statuses);
-                    }, (error) => {
-                        console.error("Error getting crowd status: ", error);
-                    });
+                    }, console.error);
                 }
             });
-
         } catch (error) {
             console.error("Firebase initialization failed:", error);
             const crowdGrid = document.getElementById('crowd-status-grid');
             if(crowdGrid) {
-                crowdGrid.innerHTML = `<p class="text-gray-400 col-span-full text-center">混雑状況の取得に失敗しました。</p>`;
+                crowdGrid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #9ca3af;">混雑状況の取得に失敗しました。</p>`;
             }
         }
     </script>
@@ -343,208 +401,59 @@
         // --- データ定義 ---
         const boothData = {
             classes: [
-                { id: 'c21', name: '2年1組', content: 'トイストーリーマニア21', description: '完全非公式、某夢の国に雰囲気だけ寄せたシューティングゲーム。難易度本家超え、豪華景品あり！狙うは的と、担任のSmile。', location: '2-4教室', category: 'class', name_en: 'Class 2-1', content_en: 'Toy Story Mania 21', description_en: 'An unofficial shooting game with a dream-like atmosphere. Harder than the original, with great prizes! Aim for the target and our teacher\'s smile.', location_en: 'Room 2-4' },
-                { id: 'c22', name: '2年2組', content: 'カジノ', description: '運否天賦、貴方の運はどこまで通じるか、賞品を狙って試してみよう。日常に別れをつけ、ただでしか味わえない非日常があなたを待っています！※このカジノは合法です。', location: '2-2教室', category: 'class', name_en: 'Class 2-2', content_en: 'Casino', description_en: 'Test your luck and aim for prizes. A unique experience awaits you! *This casino is legal.', location_en: 'Room 2-2' },
-                { id: 'c23', name: '2年3組', content: 'クラブ 童夢', description: 'Ladies and gentlemen, boys and girls! 夏の暑さと山東祭の熱気にあてられたそこのアナタ、涼しいクラブで遊んでいきませんか？占いで素敵な未来への恒等式をお教えしましょう。', location: '2-3教室', category: 'class', name_en: 'Class 2-3', content_en: 'Club Domu', description_en: 'Feeling the heat of the summer and the festival? Come cool down and play at our club. We\'ll tell your fortune for a wonderful future.', location_en: 'Room 2-3' },
-                { id: 'c24', name: '2年4組', content: 'どきどき♡だっしゅつげーむ', description: 'もえもえきゅん♡メイド喫茶の鍵があかない！？ご主人様、私たちを助けて〜！', location: '2-1教室', category: 'class', name_en: 'Class 2-4', content_en: 'Thrilling ♡ Escape Game', description_en: 'The key to the maid cafe is lost!? Master, please help us!', location_en: 'Room 2-1' },
-                { id: 'c25', name: '2年5組', content: '山東謎の陣', description: '待ち時間で遊びたい友達とはしゃぎたいこれら全てを叶える方法があります。そう、謎解きをすることです！山東祭を楽しみたい皆様やってるんですか、謎解きしてください！', location: '2-5教室', category: 'class', name_en: 'Class 2-5', content_en: 'Mysterious Camp in Yamato', description_en: 'Want to have fun with friends while you wait? Then solve our puzzles! Everyone, please come and challenge our mystery!', location_en: 'Room 2-5' },
-                { id: 'c26', name: '2年6組', content: 'ROUND6', description: 'All the fun with this class. 山東祭にくる人々へ笑顔と健康とコミュニケーションの場を提供し続けることが私たちの理念です。楽しさの全てはこのクラスとともに。', location: '1-1教室 & ゼミ1', category: 'class', name_en: 'Class 2-6', content_en: 'ROUND6 All the fun with this class', description_en: 'Our philosophy is to provide smiles, health, and a place for communication. All the fun is with this class.', location_en: 'Room 1-1 & Seminar 1' },
-                { id: 'c31', name: '3年1組', content: 'cafe-ゆい。', description: 'クロワッサンを潰して焼くという、背教的ですらあるその発想は世の中をひっくり返すような危険思想かもしれない。しかし、だからこそ、どうしようもなく魅力的なのだ。', location: '1-2教室', category: 'class', name_en: 'Class 3-1', content_en: 'cafe-Yui.', description_en: 'The idea of crushing and baking a croissant may be a dangerous thought that could turn the world upside down. But that\'s precisely why it\'s so irresistibly charming.', location_en: 'Room 1-2' },
-                { id: 'c32', name: '3年2組', content: 'Route 32 Diner', description: '本場アメリカの雰囲気を再現したダイナーが登場！ジューシーなバーガーやきらめくゼリーで、文化祭の思い出に最高の一皿を！', location: '1-3教室', category: 'class', name_en: 'Class 3-2', content_en: 'Route 32 Diner', description_en: 'A diner that recreates an authentic American atmosphere! Enjoy juicy burgers and sparkling jelly for the best festival memories!', location_en: 'Room 1-3' },
-                { id: 'c33', name: '3年3組', content: '真夏のぶっ濃いメイド', description: 'おかえりなさいませ、ご主人様♡ 3年3組の名物の焼きそばは、ぶっ濃い脂汗が隠し味♡(衛生面には配慮してます) ギャップ萌え必至の非日常体験、召し上がれ！', location: '1-4教室', category: 'class', name_en: 'Class 3-3', content_en: 'Midsummer\'s Scorching Maid', description_en: 'Welcome home, Master♡ Our famous yakisoba has a secret ingredient... Enjoy a unique experience that will surely charm you!', location_en: 'Room 1-4' },
-                { id: 'c34', name: '3年4組', content: '廃病院', description: '昔、人気の病院が突然閉鎖されたらしい、、、私の親友がその病院に入ってから様子がおかしい。その理由をたずねても怯えるばかりだ、、、その真相を突きとめるべく私はその廃病院に足を踏み入れることにした、、、', location: '3-4教室', category: 'class', name_en: 'Class 3-4', content_en: 'Deserted Hospital', description_en: 'A popular hospital was suddenly closed long ago... To find out the truth, I decided to step into the abandoned hospital...', location_en: 'Room 3-4' },
-                { id: 'c35', name: '3年5組', content: '月見亭', description: 'お月見うさぎが誘う、大正ロマンのひととき―――風情ただよう空間で、心もお腹もほっと満たされる癒しの一杯をどうぞ。', location: '1-5教室', category: 'class', name_en: 'Class 3-5', content_en: 'Tsukimi-tei', description_en: 'An invitation from the moon-viewing rabbit to a moment of Taisho Roman. Enjoy a soothing bowl that will warm your heart and stomach.', location_en: 'Room 1-5' },
-                { id: 'c36', name: '3年6組', content: 'Cafe ZERO Gravity', description: '宇宙人がやってきた!? 宇宙船内の神秘的なカフェで、惑星スイーツと銀河ドリンクをお楽しみください。まるで無重力な非日常体験をお届けします。', location: '1-6教室', category: 'class', name_en: 'Class 3-6', content_en: 'Cafe ZERO Gravity', description_en: 'Aliens have arrived!? Enjoy planetary sweets and galactic drinks in a mystical spaceship cafe. A zero-gravity-like experience awaits.', location_en: 'Room 1-6' },
+                { id: 'c21', category: 'class', name: { ja: '2年1組', en: 'Class 2-1' }, content: { ja: 'トイストーリーマニア21', en: 'Toy Story Mania 21' }, description: { ja: '完全非公式、某夢の国に雰囲気だけ寄せたシューティングゲーム。難易度本家超え、豪華景品あり！狙うは的と、担任のSmile。', en: 'An unofficial shooting game with a dream-like atmosphere. Harder than the original, with great prizes! Aim for the target and our teacher\'s smile.' }, location: { ja: '2-4教室', en: 'Room 2-4' } },
+                { id: 'c22', category: 'class', name: { ja: '2年2組', en: 'Class 2-2' }, content: { ja: 'カジノ', en: 'Casino' }, description: { ja: '運否天賦、貴方の運はどこまで通じるか、賞品を狙って試してみよう。日常に別れをつけ、ただでしか味わえない非日常があなたを待っています！※このカジノは合法です。', en: 'Test your luck and aim for prizes. A unique experience awaits you! *This casino is legal.' }, location: { ja: '2-2教室', en: 'Room 2-2' } },
+                { id: 'c23', category: 'class', name: { ja: '2年3組', en: 'Class 2-3' }, content: { ja: 'クラブ 童夢', en: 'Club Domu' }, description: { ja: 'Ladies and gentlemen, boys and girls! 夏の暑さと山東祭の熱気にあてられたそこのアナタ、涼しいクラブで遊んでいきませんか？占いで素敵な未来への恒等式をお教えしましょう。', en: 'Feeling the heat of the summer and the festival? Come cool down and play at our club. We\'ll tell your fortune for a wonderful future.' }, location: { ja: '2-3教室', en: 'Room 2-3' } },
+                { id: 'c24', category: 'class', name: { ja: '2年4組', en: 'Class 2-4' }, content: { ja: 'どきどき♡だっしゅつげーむ', en: 'Thrilling ♡ Escape Game' }, description: { ja: 'もえもえきゅん♡メイド喫茶の鍵があかない！？ご主人様、私たちを助けて〜！', en: 'The key to the maid cafe is lost!? Master, please help us!' }, location: { ja: '2-1教室', en: 'Room 2-1' } },
+                { id: 'c25', category: 'class', name: { ja: '2年5組', en: 'Class 2-5' }, content: { ja: '山東謎の陣', en: 'Mysterious Camp in Yamato' }, description: { ja: '待ち時間で遊びたい友達とはしゃぎたいこれら全てを叶える方法があります。そう、謎解きをすることです！山東祭を楽しみたい皆様やってるんですか、謎解きしてください！', en: 'Want to have fun with friends while you wait? Then solve our puzzles! Everyone, please come and challenge our mystery!' }, location: { ja: '2-5教室', en: 'Room 2-5' } },
+                { id: 'c26', category: 'class', name: { ja: '2年6組', en: 'Class 2-6' }, content: { ja: 'ROUND6', en: 'ROUND6' }, description: { ja: 'All the fun with this class. 山東祭にくる人々へ笑顔と健康とコミュニケーションの場を提供し続けることが私たちの理念です。楽しさの全てはこのクラスとともに。', en: 'Our philosophy is to provide smiles, health, and a place for communication. All the fun is with this class.' }, location: { ja: '1-1教室 & ゼミ1', en: 'Room 1-1 & Seminar 1' } },
+                { id: 'c31', category: 'class', name: { ja: '3年1組', en: 'Class 3-1' }, content: { ja: 'cafe-ゆい。', en: 'cafe-Yui.' }, description: { ja: 'クロワッサンを潰して焼くという、背教的ですらあるその発想は世の中をひっくり返すような危険思想かもしれない。しかし、だからこそ、どうしようもなく魅力的なのだ。', en: 'The idea of crushing and baking a croissant may be a dangerous thought that could turn the world upside down. But that\'s precisely why it\'s so irresistibly charming.' }, location: { ja: '1-2教室', en: 'Room 1-2' } },
+                { id: 'c32', category: 'class', name: { ja: '3年2組', en: 'Class 3-2' }, content: { ja: 'Route 32 Diner', en: 'Route 32 Diner' }, description: { ja: '本場アメリカの雰囲気を再現したダイナーが登場！ジューシーなバーガーやきらめくゼリーで、文化祭の思い出に最高の一皿を！', en: 'A diner that recreates an authentic American atmosphere! Enjoy juicy burgers and sparkling jelly for the best festival memories!' }, location: { ja: '1-3教室', en: 'Room 1-3' } },
+                { id: 'c33', category: 'class', name: { ja: '3年3組', en: 'Class 3-3' }, content: { ja: '真夏のぶっ濃いメイド', en: 'Midsummer\'s Scorching Maid' }, description: { ja: 'おかえりなさいませ、ご主人様♡ 3年3組の名物の焼きそばは、ぶっ濃い脂汗が隠し味♡(衛生面には配慮してます) ギャップ萌え必至の非日常体験、召し上がれ！', en: 'Welcome home, Master♡ Our famous yakisoba has a secret ingredient... Enjoy a unique experience that will surely charm you!' }, location: { ja: '1-4教室', en: 'Room 1-4' } },
+                { id: 'c34', category: 'class', name: { ja: '3年4組', en: 'Class 3-4' }, content: { ja: '廃病院', en: 'Deserted Hospital' }, description: { ja: '昔、人気の病院が突然閉鎖されたらしい、、、私の親友がその病院に入ってから様子がおかしい。その理由をたずねても怯えるばかりだ、、、その真相を突きとめるべく私はその廃病院に足を踏み入れることにした、、、', en: 'A popular hospital was suddenly closed long ago... To find out the truth, I decided to step into the abandoned hospital...' }, location: { ja: '3-4教室', en: 'Room 3-4' } },
+                { id: 'c35', category: 'class', name: { ja: '3年5組', en: 'Class 3-5' }, content: { ja: '月見亭', en: 'Tsukimi-tei' }, description: { ja: 'お月見うさぎが誘う、大正ロマンのひととき―――風情ただよう空間で、心もお腹もほっと満たされる癒しの一杯をどうぞ。', en: 'An invitation from the moon-viewing rabbit to a moment of Taisho Roman. Enjoy a soothing bowl that will warm your heart and stomach.' }, location: { ja: '1-5教室', en: 'Room 1-5' } },
+                { id: 'c36', category: 'class', name: { ja: '3年6組', en: 'Class 3-6' }, content: { ja: 'Cafe ZERO Gravity', en: 'Cafe ZERO Gravity' }, description: { ja: '宇宙人がやってきた!? 宇宙船内の神秘的なカフェで、惑星スイーツと銀河ドリンクをお楽しみください。まるで無重力な非日常体験をお届けします。', en: 'Aliens have arrived!? Enjoy planetary sweets and galactic drinks in a mystical spaceship cafe. A zero-gravity-like experience awaits.' }, location: { ja: '1-6教室', en: 'Room 1-6' } },
             ],
             clubs: [
-                { id: 'literary', name: '文芸部', content: '我らの青春~俳句甲子園~', description: 'この夏、私達は俳句甲子園全国大会で熱い戦いを繰り広げました。その様子をたなびく短冊と詳細を記した部誌の販売によってお届けします。', location: '中央廊下・部室', category: 'club', name_en: 'Literature Club', content_en: 'Our Youth ~ Haiku Koshien ~', description_en: 'This summer, we fought hard in the national Haiku Koshien tournament. We will share our experience through our club magazine and poems.', location_en: 'Central Hallway / Clubroom' },
-                { id: 'jrc', name: 'JRC部', content: '飲んでスカッとレモネードスタンド', description: '夏に丁度良いレモネードです。売り上げは小児がん患者への支援になります。一本で2度嬉しいレモネードはいかがですか？', location: '保健室前廊下', category: 'club', name_en: 'JRC Club', content_en: 'JRC Sales', description_en: 'Perfect for summer. Proceeds will support pediatric cancer patients. A lemonade that makes you happy twice!', location_en: 'Hallway in front of Nurse\'s Office' },
-                { id: 'home_economics', name: '家庭科部', content: '家庭科部のクッキーやさん', description: '家庭科部のクッキーが美味しいって伝えなきゃ！味はプレーン、ココア、抹茶、チョコチップって伝えなきゃ！', location: '中央廊下', category: 'club', name_en: 'Home Economics Club', content_en: 'Home Economics Club Sales', description_en: 'We have to tell you how delicious our cookies are! Flavors include plain, cocoa, matcha, and chocolate chip!', location_en: 'Central Hallway' },
-                { id: 'regional_international', name: '探究部地域国際班', content: '英国茶会', description: '空襲のときもイギリス人は欠かさなく飲んだという紅茶。今回は港とティーポットを間違えないようにしましょう。', location: '中央廊下', category: 'club', name_en: 'Regional International Group', content_en: 'Regional International Group Booth', description_en: 'It is said that the English drank tea even during air raids. Let\'s not mistake the harbor for the teapot this time.', location_en: 'Central Hallway' },
-                { id: 'inquiry_a9', name: '探究A9班', content: '規格外野菜・果物の販売', description: 'フードロス削減にご協力ください！', location: '中央廊下', category: 'club', name_en: 'Research Group A9', content_en: 'Sale of Non-standard Vegetables & Fruits', description_en: 'Please cooperate in reducing food loss!', location_en: 'Central Hallway' },
-                { id: 'go_shogi', name: '囲碁将棋部', content: '青空将棋・改 ~目指せ藤井聡太!!~', description: '例年に加え、キンキンに冷えたドリンクあり。どうぶつしょうぎや崩し将棋などもあり。部員に勝つと...!? ', location: '講堂前廊下', category: 'club', name_en: 'Go & Shogi Club', content_en: 'Outdoor Shogi Kai', description_en: 'In addition to the usual, we have ice-cold drinks. We also have Dobutsu Shogi and Kuzushi Shogi. If you beat a club member...!? ', location_en: 'Hallway in front of Auditorium' },
-                { id: 'kendo', name: '剣道部', content: '氷屋けんちゃん', description: '今年もやります、毎年大好評の氷屋けんちゃん。剣道部伝統のかき氷と玉こんを、ぜひお買い求めください!!', location: '武道館前', category: 'club', name_en: 'Kendo Club', content_en: 'Ice Shop Ken-chan', description_en: 'We\'re doing it again this year! The ever-popular Ice Shop Ken-chan. Please come and buy our traditional shaved ice and tamakon!!', location_en: 'In front of Budokan' },
-                { id: 'soccer', name: 'サッカー部', content: 'あなたの心にダイレクトシュート!絶品かき氷店', description: 'サッカー部が運営するかき氷店です。様々なフレーバーを用意しています。中庭でのリフティングチャレンジも行うのでぜひ訪れてください。', location: '体育館', category: 'club', name_en: 'Football Club', content_en: 'Direct Shot to Your Heart! Exquisite Shaved Ice Shop', description_en: 'A shaved ice shop run by the soccer club. We have various flavors. We also have a juggling challenge in the courtyard, so please visit!', location_en: 'Gymnasium' },
-                { id: 'handball', name: '男子ハンドボール部', content: 'アメイジング・支那・ポップ', description: '某インフルエンサー直伝！ゴールよりコーンを愛する男たちの至極の一品※真心こめてすべてハンドメイドで作っています。', location: '体育館', category: 'club', name_en: 'Men\'s Handball Club', content_en: 'Amazing China Pop', description_en: 'Taught by a certain influencer! A masterpiece from the men who love corn more than goals. *Everything is handmade with love.', location_en: 'Gymnasium' },
-                { id: 'kyudo', name: '弓道部', content: '的当て', description: '弓道部が主催の毎年恒的当て！当たった数によってお菓子ゲット！玩具の弓を使うので誰でも楽しめます。ぜひお越し下さい！', location: '体育館', category: 'club', name_en: 'Kyudo Club', content_en: 'Archery Target Practice', description_en: 'The annual target practice hosted by the Kyudo Club! Get sweets based on the number of hits! Anyone can enjoy it as we use toy bows.', location_en: 'Gymnasium' },
-                { id: 'track_field', name: '陸上部', content: 'デリシャスベビかす', description: '色々な味のベビーカステラ用意しました。美味しいデリシャスベビかす。いかがですか？？', location: '体育館', category: 'club', name_en: 'Athletics club', content_en: 'Delicious Baby Castella', description_en: 'We have prepared baby castella in various flavors. How about some delicious baby castella??', location_en: 'Gymnasium' },
-                { id: 'badminton', name: 'バドミントン部', content: 'ちー特製!? アオの綿あめドリンク', description: '口で弾ける綿あめとドリンクのコンビネーション。何とも言えない味、爽快感溢れるスマッシュを喉の奥にぶち込みます。', location: '体育館', category: 'club', name_en: 'Badminton Club', content_en: 'Chi\'s Special!? Ao\'s Cotton Candy Drink', description_en: 'The combination of cotton candy that pops in your mouth and a drink. An indescribable taste, we\'ll smash it deep down your throat with an exhilarating feeling.', location_en: 'Gymnasium' },
-                { id: 'basketball', name: 'バスケットボール部', content: 'ICE DUNK SIDER', description: '普段は明るく元気でちょっと暑苦しいバスケ部が夏にぴったりの冷えた飲み物を提供します。体育館の盛り上げをバスケ部にお任せを･･･', location: '体育館', category: 'club', name_en: 'Basketball Club', content_en: 'ICE DUNK SIDER', description_en: 'The usually cheerful, energetic, and slightly intense basketball club will provide a cold drink perfect for summer. Leave it to us to liven up the gym...', location_en: 'Gymnasium' },
-                { id: 'tennis', name: '硬式テニス部', content: 'ジュースの王子様', description: '今年もテニス部ではゼリー入りドリンクを販売します！テニスの王子様たちがいます！ぜひ来てください！！！', location: '体育館', category: 'club', name_en: 'Hard Tennis Club', content_en: 'Prince of Juice', description_en: 'The tennis club will be selling jelly drinks again this year! The Princes of Tennis are here! Please come!!!', location_en: 'Gymnasium' },
-                { id: 'baseball', name: '野球部', content: '球魂フロート', description: 'みなさん、今年はプロテインじゃないですよ。フロートを販売します。球魂フロートを食べて、暑い夏の日差しをスタンドまでかっ飛ばしましょう！！', location: '体育館入口', category: 'club', name_en: 'Baseball Club', content_en: 'Baseball Soul Float', description_en: 'Everyone, it\'s not protein this year. We\'re selling floats. Eat a Baseball Soul Float and hit the summer heat out of the park!!', location_en: 'Gymnasium Entrance' },
-                { id: 'volleyball', name: 'バレーボール部', content: 'バレー部 Presents 倍倍ワッフル', description: 'バレー部ではワッフルを販売します。日々の練習で培ったチームワークでおいしさ・愛情倍増のワッフルはいかがですか？', location: '体育館入口', category: 'club', name_en: 'Volleyball Club', content_en: 'Volleyball Club Presents Double-Up Waffles', description_en: 'The volleyball club is selling waffles. How about waffles with double the deliciousness and love, made with teamwork cultivated through daily practice?', location_en: 'Gymnasium Entrance' },
-                { id: 'soft_tennis', name: 'ソフトテニス部', content: '氷屋そふてに', description: '山東祭を楽しむなら、水分&糖分補給も忘れずに！定番からちょっと変わり種まで、いろんな味をそろえてます！冷たいかき氷で暑さをふっとばそー！', location: '体育館入口', category: 'club', name_en: 'Soft Tennis Club', content_en: 'Soft Tennis Ice Shop', description_en: 'If you\'re enjoying the festival, don\'t forget to hydrate and get some sugar! We have a variety of flavors, from classic to unique! Beat the heat with cold shaved ice!', location_en: 'Gymnasium Entrance' },
-                { id: 'art', name: '美術部', content: 'オリジナル缶バッチ作り！', description: '美術部は、スパッタリング技法を使った缶バッチ作りをします。一緒にオリジナル缶バッチ作ってみませんか', location: '美術室', category: 'club', name_en: 'Art Club', content_en: 'Art Club Showcase & Creative Experience', description_en: 'The art club will be making button badges using the spattering technique. Why not make an original button badge with us?', location_en: 'Art Studio' },
-                { id: 'calligraphy', name: '書道部', content: '山東書"東"展&書道パフォーマンス', description: '力作揃いの書道展とダイナミックな書道パフォーマンスをします。どちらも最高な出来となっておりますのでぜひお越しください！', location: '書道室', category: 'club', name_en: 'Calligraphy Club', content_en: 'Calligraphy Club Showcase & Performance', description_en: 'We will have a calligraphy exhibition with many masterpieces and a dynamic calligraphy performance. Both are excellent, so please come and see them!', location_en: 'Calligraphy Studio' },
-                { id: 'photo', name: '写真部', content: '山東リトルコスモラボ', description: '今だけの青春の一コマ、写真で未来に残しませんか？昇降口右手側にある写真部室にて、フォトスポット開設&ブロマイド販売！', location: '写真室', category: 'club', name_en: 'Photography Club', content_en: 'Yamato Little Cosmo Lab', description_en: 'Why not capture a moment of your youth in a photo to keep for the future? We have a photo spot and are selling prints in the photo club room on the right side of the entrance!', location_en: 'Photo Room' },
-                { id: 'science', name: '探究部理数班科学部門', content: 'ペットボトルロケット', description: 'ペットボトルロケットは、水と空気の力で飛ぶ手作りロケット。仕組みを学びながら楽しく科学に触れられます。', location: 'グラウンド', category: 'club', name_en: 'Inquiry Club - Science Dept.', content_en: 'Bottle Rocket', description_en: 'A bottle rocket is a handmade rocket that flies with the power of water and air. You can learn about the mechanism while having fun with science.', location_en: 'Grounds' },
-                { id: 'library', name: '図書委員会', content: '古本市', description: '掘り出し物が見つかるかも？古本市へようこそ。', location: '2-6教室', category: 'club', name_en: 'Library Committee', content_en: 'Secondhand Book Market', description_en: 'You might find a hidden gem! Welcome to the used book fair.', location_en: 'Room 2-6' }
+                { id: 'literary', category: 'club', name: { ja: '文芸部', en: 'Literature Club' }, content: { ja: '我らの青春~俳句甲子園~', en: 'Our Youth ~ Haiku Koshien ~' }, description: { ja: 'この夏、私達は俳句甲子園全国大会で熱い戦いを繰り広げました。その様子をたなびく短冊と詳細を記した部誌の販売によってお届けします。', en: 'This summer, we fought hard in the national Haiku Koshien tournament. We will share our experience through our club magazine and poems.' }, location: { ja: '中央廊下・部室', en: 'Central Hallway / Clubroom' } },
+                { id: 'jrc', category: 'club', name: { ja: 'JRC部', en: 'JRC Club' }, content: { ja: '飲んでスカッとレモネードスタンド', en: 'JRC Sales' }, description: { ja: '夏に丁度良いレモネードです。売り上げは小児がん患者への支援になります。一本で2度嬉しいレモネードはいかがですか？', en: 'Perfect for summer. Proceeds will support pediatric cancer patients. A lemonade that makes you happy twice!' }, location: { ja: '保健室前廊下', en: 'Hallway in front of Nurse\'s Office' } },
+                { id: 'home_economics', category: 'club', name: { ja: '家庭科部', en: 'Home Economics Club' }, content: { ja: '家庭科部のクッキーやさん', en: 'Home Economics Club Sales' }, description: { ja: '家庭科部のクッキーが美味しいって伝えなきゃ！味はプレーン、ココア、抹茶、チョコチップって伝えなきゃ！', en: 'We have to tell you how delicious our cookies are! Flavors include plain, cocoa, matcha, and chocolate chip!' }, location: { ja: '中央廊下', en: 'Central Hallway' } },
+                { id: 'regional_international', category: 'club', name: { ja: '探究部地域国際班', en: 'Regional International Group' }, content: { ja: '英国茶会', en: 'Regional International Group Booth' }, description: { ja: '空襲のときもイギリス人は欠かさなく飲んだという紅茶。今回は港とティーポットを間違えないようにしましょう。', en: 'It is said that the English drank tea even during air raids. Let\'s not mistake the harbor for the teapot this time.' }, location: { ja: '中央廊下', en: 'Central Hallway' } },
+                { id: 'inquiry_a9', category: 'club', name: { ja: '探究A9班', en: 'Research Group A9' }, content: { ja: '規格外野菜・果物の販売', en: 'Sale of Non-standard Vegetables & Fruits' }, description: { ja: 'フードロス削減にご協力ください！', en: 'Please cooperate in reducing food loss!' }, location: { ja: '中央廊下', en: 'Central Hallway' } },
+                { id: 'go_shogi', category: 'club', name: { ja: '囲碁将棋部', en: 'Go & Shogi Club' }, content: { ja: '青空将棋・改 ~目指せ藤井聡太!!~', en: 'Outdoor Shogi Kai' }, description: { ja: '例年に加え、キンキンに冷えたドリンクあり。どうぶつしょうぎや崩し将棋などもあり。部員に勝つと...!? ', en: 'In addition to the usual, we have ice-cold drinks. We also have Dobutsu Shogi and Kuzushi Shogi. If you beat a club member...!? ' }, location: { ja: '講堂前廊下', en: 'Hallway in front of Auditorium' } },
+                { id: 'kendo', category: 'club', name: { ja: '剣道部', en: 'Kendo Club' }, content: { ja: '氷屋けんちゃん', en: 'Ice Shop Ken-chan' }, description: { ja: '今年もやります、毎年大好評の氷屋けんちゃん。剣道部伝統のかき氷と玉こんを、ぜひお買い求めください!!', en: 'We\'re doing it again this year! The ever-popular Ice Shop Ken-chan. Please come and buy our traditional shaved ice and tamakon!!' }, location: { ja: '武道館前', en: 'In front of Budokan' } },
+                { id: 'soccer', category: 'club', name: { ja: 'サッカー部', en: 'Football Club' }, content: { ja: 'あなたの心にダイレクトシュート!絶品かき氷店', en: 'Direct Shot to Your Heart! Exquisite Shaved Ice Shop' }, description: { ja: 'サッカー部が運営するかき氷店です。様々なフレーバーを用意しています。中庭でのリフティングチャレンジも行うのでぜひ訪れてください。', en: 'A shaved ice shop run by the soccer club. We have various flavors. We also have a juggling challenge in the courtyard, so please visit!' }, location: { ja: '体育館', en: 'Gymnasium' } },
+                { id: 'handball', category: 'club', name: { ja: '男子ハンドボール部', en: 'Men\'s Handball Club' }, content: { ja: 'アメイジング・支那・ポップ', en: 'Amazing China Pop' }, description: { ja: '某インフルエンサー直伝！ゴールよりコーンを愛する男たちの至極の一品※真心こめてすべてハンドメイドで作っています。', en: 'Taught by a certain influencer! A masterpiece from the men who love corn more than goals. *Everything is handmade with love.' }, location: { ja: '体育館', en: 'Gymnasium' } },
+                { id: 'kyudo', category: 'club', name: { ja: '弓道部', en: 'Kyudo Club' }, content: { ja: '的当て', en: 'Archery Target Practice' }, description: { ja: '弓道部が主催の毎年恒的当て！当たった数によってお菓子ゲット！玩具の弓を使うので誰でも楽しめます。ぜひお越し下さい！', en: 'The annual target practice hosted by the Kyudo Club! Get sweets based on the number of hits! Anyone can enjoy it as we use toy bows.' }, location: { ja: '体育館', en: 'Gymnasium' } },
+                { id: 'track_field', category: 'club', name: { ja: '陸上部', en: 'Athletics club' }, content: { ja: 'デリシャスベビかす', en: 'Delicious Baby Castella' }, description: { ja: '色々な味のベビーカステラ用意しました。美味しいデリシャスベビかす。いかがですか？？', en: 'We have prepared baby castella in various flavors. How about some delicious baby castella??' }, location: { ja: '体育館', en: 'Gymnasium' } },
+                { id: 'badminton', category: 'club', name: { ja: 'バドミントン部', en: 'Badminton Club' }, content: { ja: 'ちー特製!? アオの綿あめドリンク', en: 'Chi\'s Special!? Ao\'s Cotton Candy Drink' }, description: { ja: '口で弾ける綿あめとドリンクのコンビネーション。何とも言えない味、爽快感溢れるスマッシュを喉の奥にぶち込みます。', en: 'The combination of cotton candy that pops in your mouth and a drink. An indescribable taste, we\'ll smash it deep down your throat with an exhilarating feeling.' }, location: { ja: '体育館', en: 'Gymnasium' } },
+                { id: 'basketball', category: 'club', name: { ja: 'バスケットボール部', en: 'Basketball Club' }, content: { ja: 'ICE DUNK SIDER', en: 'ICE DUNK SIDER' }, description: { ja: '普段は明るく元気でちょっと暑苦しいバスケ部が夏にぴったりの冷えた飲み物を提供します。体育館の盛り上げをバスケ部にお任せを･･･', en: 'The usually cheerful, energetic, and slightly intense basketball club will provide a cold drink perfect for summer. Leave it to us to liven up the gym...' }, location: { ja: '体育館', en: 'Gymnasium' } },
+                { id: 'tennis', category: 'club', name: { ja: '硬式テニス部', en: 'Hard Tennis Club' }, content: { ja: 'ジュースの王子様', en: 'Prince of Juice' }, description: { ja: '今年もテニス部ではゼリー入りドリンクを販売します！テニスの王子様たちがいます！ぜひ来てください！！！', en: 'The tennis club will be selling jelly drinks again this year! The Princes of Tennis are here! Please come!!!' }, location: { ja: '体育館', en: 'Gymnasium' } },
+                { id: 'baseball', category: 'club', name: { ja: '野球部', en: 'Baseball Club' }, content: { ja: '球魂フロート', en: 'Baseball Soul Float' }, description: { ja: 'みなさん、今年はプロテインじゃないですよ。フロートを販売します。球魂フロートを食べて、暑い夏の日差しをスタンドまでかっ飛ばしましょう！！', en: 'Everyone, it\'s not protein this year. We\'re selling floats. Eat a Baseball Soul Float and hit the summer heat out of the park!!' }, location: { ja: '体育館入口', en: 'Gymnasium Entrance' } },
+                { id: 'volleyball', category: 'club', name: { ja: 'バレーボール部', en: 'Volleyball Club' }, content: { ja: 'バレー部 Presents 倍倍ワッフル', en: 'Volleyball Club Presents Double-Up Waffles' }, description: { ja: 'バレー部ではワッフルを販売します。日々の練習で培ったチームワークでおいしさ・愛情倍増のワッフルはいかがですか？', en: 'The volleyball club is selling waffles. How about waffles with double the deliciousness and love, made with teamwork cultivated through daily practice?' }, location: { ja: '体育館入口', en: 'Gymnasium Entrance' } },
+                { id: 'soft_tennis', category: 'club', name: { ja: 'ソフトテニス部', en: 'Soft Tennis Club' }, content: { ja: '氷屋そふてに', en: 'Soft Tennis Ice Shop' }, description: { ja: '山東祭を楽しむなら、水分&糖分補給も忘れずに！定番からちょっと変わり種まで、いろんな味をそろえてます！冷たいかき氷で暑さをふっとばそー！', en: 'If you\'re enjoying the festival, don\'t forget to hydrate and get some sugar! We have a variety of flavors, from classic to unique! Beat the heat with cold shaved ice!' }, location: { ja: '体育館入口', en: 'Gymnasium Entrance' } },
+                { id: 'art', category: 'club', name: { ja: '美術部', en: 'Art Club' }, content: { ja: 'オリジナル缶バッチ作り！', en: 'Art Club Showcase & Creative Experience' }, description: { ja: '美術部は、スパッタリング技法を使った缶バッチ作りをします。一緒にオリジナル缶バッチ作ってみませんか', en: 'The art club will be making button badges using the spattering technique. Why not make an original button badge with us?' }, location: { ja: '美術室', en: 'Art Studio' } },
+                { id: 'calligraphy', category: 'club', name: { ja: '書道部', en: 'Calligraphy Club' }, content: { ja: '山東書"東"展&書道パフォーマンス', en: 'Calligraphy Club Showcase & Performance' }, description: { ja: '力作揃いの書道展とダイナミックな書道パフォーマンスをします。どちらも最高な出来となっておりますのでぜひお越しください！', en: 'We will have a calligraphy exhibition with many masterpieces and a dynamic calligraphy performance. Both are excellent, so please come and see them!' }, location: { ja: '書道室', en: 'Calligraphy Studio' } },
+                { id: 'photo', category: 'club', name: { ja: '写真部', en: 'Photography Club' }, content: { ja: '山東リトルコスモラボ', en: 'Yamato Little Cosmo Lab' }, description: { ja: '今だけの青春の一コマ、写真で未来に残しませんか？昇降口右手側にある写真部室にて、フォトスポット開設&ブロマイド販売！', en: 'Why not capture a moment of your youth in a photo to keep for the future? We have a photo spot and are selling prints in the photo club room on the right side of the entrance!' }, location: { ja: '写真室', en: 'Photo Room' } },
+                { id: 'science', category: 'club', name: { ja: '探究部理数班科学部門', en: 'Inquiry Club - Science Dept.' }, content: { ja: 'ペットボトルロケット', en: 'Bottle Rocket' }, description: { ja: 'ペットボトルロケットは、水と空気の力で飛ぶ手作りロケット。仕組みを学びながら楽しく科学に触れられます。', en: 'A bottle rocket is a handmade rocket that flies with the power of water and air. You can learn about the mechanism while having fun with science.' }, location: { ja: 'グラウンド', en: 'Grounds' } },
+                { id: 'library', category: 'club', name: { ja: '図書委員会', en: 'Library Committee' }, content: { ja: '古本市', en: 'Secondhand Book Market' }, description: { ja: '掘り出し物が見つかるかも？古本市へようこそ。', en: 'You might find a hidden gem! Welcome to the used book fair.' }, location: { ja: '2-6教室', en: 'Room 2-6' } }
             ]
         };
         
-        const locationCoordinates = {
-            '体育館': { top: '35%', left: '25%' }, 'Gymnasium': { top: '35%', left: '25%' },
-            '武道館前': { top: '25%', left: '15%' }, 'In front of Budokan': { top: '25%', left: '15%' },
-            'グラウンド': { top: '80%', left: '15%' }, 'Grounds': { top: '80%', left: '15%' },
-            '体育館入口': { top: '45%', left: '28%' }, 'Gymnasium Entrance': { top: '45%', left: '28%' },
-            '保健室前廊下': { top: '45%', left: '50%'}, 'Hallway in front of Nurse\'s Office': { top: '45%', left: '50%'},
-            '中央廊下': { top: '55%', left: '50%'}, 'Central Hallway': { top: '55%', left: '50%'},
-            '講堂前廊下': { top: '50%', left: '62%'}, 'Hallway in front of Auditorium': { top: '50%', left: '62%'},
-            '1-1教室': { top: '65%', left: '45%' }, 'Room 1-1': { top: '65%', left: '45%' },
-            '1-2教室': { top: '65%', left: '50%' }, 'Room 1-2': { top: '65%', left: '50%' },
-            '1-3教室': { top: '65%', left: '55%' }, 'Room 1-3': { top: '65%', left: '55%' },
-            '1-4教室': { top: '65%', left: '60%' }, 'Room 1-4': { top: '65%', left: '60%' },
-            '1-5教室': { top: '65%', left: '65%' }, 'Room 1-5': { top: '65%', left: '65%' },
-            '1-6教室': { top: '65%', left: '70%' }, 'Room 1-6': { top: '65%', left: '70%' },
-            '2-1教室': { top: '75%', left: '55%' }, 'Room 2-1': { top: '75%', left: '55%' },
-            '2-2教室': { top: '75%', left: '65%' }, 'Room 2-2': { top: '75%', left: '65%' },
-            '2-3教室': { top: '75%', left: '60%' }, 'Room 2-3': { top: '75%', left: '60%' },
-            '2-4教室': { top: '75%', left: '70%' }, 'Room 2-4': { top: '75%', left: '70%' },
-            '2-5教室': { top: '75%', left: '50%' }, 'Room 2-5': { top: '75%', left: '50%' },
-            '2-5教室前': { top: '70%', left: '50%' }, 'In front of Room 2-5': { top: '70%', left: '50%' },
-            '3-4教室': { top: '20%', left: '30%' }, 'Room 3-4': { top: '20%', left: '30%' },
-            '第1多目的室': { top: '25%', left: '50%'}, 'Multipurpose Room 1': { top: '25%', left: '50%'},
-            '美術室': { top: '40%', left: '85%'}, 'Art Room': { top: '40%', left: '85%'},
-            '書道室': { top: '15%', left: '75%'}, 'Calligraphy Room': { top: '15%', left: '75%'},
-            '写真室': { top: '40%', left: '30%'}, 'Photo Room': { top: '40%', left: '30%'},
-            'ゼミ1': { top: '65%', left: '40%' }, 'Seminar 1': { top: '65%', left: '40%' },
-            'ゼミ2': { top: '75%', left: '75%' }, 'Seminar 2': { top: '75%', left: '75%' }
-        };
-
         const translations = {
             ja: {
-                heroTitle: "山東祭2025<br>E-AST-",
-                heroSubtitle: "『チ。-地球の運動について-』",
-                infoTitle: "Information",
-                infoDateTitle: "日程",
-                infoDate1: "8月30日 (土)",
-                infoDate2: "8月31日 (日)",
-                infoTimeTitle: "一般公開 時間",
-                infoTime1: "8/30 (土) 10:30 〜 15:00",
-                infoTime2: "8/31 (日) 10:00 〜 14:00",
-                crowdTitle: "リアルタイム混雑状況",
-                crowdLoading: "混雑状況を読み込んでいます...",
-                status_0: "空いています",
-                status_1: "やや混雑",
-                status_2: "大変混雑",
-                scheduleTitle: "Schedule",
-                scheduleDay1Title: "8/30 (Sat)",
-                scheduleDay2Title: "8/31 (Sun)",
-                scheduleDate1: "8月30日(土)",
-                scheduleDate2: "8月31日(日)",
-                scheduleVenueGym: "体育館",
-                scheduleVenueHall: "講堂",
-                eventD1G1: "オープニング",
-                eventD1G2: "放送部作品上映",
-                eventD1G3: "歌うまA",
-                eventD1G4: "一年生企画",
-                eventD1G5: "チアパフォーマンス",
-                eventD1G6: "歌うまB",
-                eventD1G7: "イントロドン",
-                eventD1G8: "有志ダンス",
-                eventD1A_none: "講堂での一般公開企画はありません",
-                eventD2G1: "歌うまC",
-                eventD2G2: "H-1",
-                eventD2G3: "一年生企画",
-                eventD2G4: "有志ダンス",
-                eventD2G5: "書道パフォーマンス",
-                eventD2G6: "エンディング",
-                eventD2A1: "スマブラ大会",
-                eventD2A2: "歌うま準決勝",
-                eventD2A3: "バンド",
-                boothsTitle: "Booths & Exhibits",
-                filterAll: "すべて",
-                filterClass: "クラス",
-                filterClub: "部活・委員会",
-                mapTitle: "School Map",
-                mapTab1F: "1F",
-                mapTab2F: "2F",
-                mapTab3F: "3F",
-                mapTabGym: "体育館",
-                mapDesc: "マップをクリックまたはタップで拡大表示します。",
-                accessTitle: "Access",
-                accessSchoolName: "山形県立山形東高等学校",
-                accessAddressTitle: "住所:",
-                accessAddress: "〒990-0044 山形県山形市緑町1-5-59",
-                accessPhoneTitle: "電話:",
-                accessGmapTitle: "地図で場所を確認",
-                accessGmapButton: "Googleマップで開く",
-                instagramButton: "山東祭 公式Instagramへ",
-                footerText: "© 2025 山形東高校 山東祭実行委員会",
-                boothLocation: "場所:",
-                boothContent: "内容:",
-                researchPostersButton: "本校2年生の探究ポスターはこちら",
+                heroTitle: "山東祭2025<br>E-AST-", heroSubtitle: "『チ。-地球の運動について-』", infoTitle: "Information", infoDateTitle: "日程", infoDate1: "8月30日 (土)", infoDate2: "8月31日 (日)", infoTimeTitle: "一般公開 時間", infoTime1: "8/30 (土) 10:30 〜 15:00", infoTime2: "8/31 (日) 10:00 〜 14:00", crowdTitle: "リアルタイム混雑状況", crowdLoading: "混雑状況を読み込んでいます...", status_0: "空いています", status_1: "やや混雑", status_2: "大変混雑", scheduleTitle: "Schedule", scheduleDay1Title: "8/30 (Sat)", scheduleDay2Title: "8/31 (Sun)", scheduleDate1: "8月30日(土)", scheduleDate2: "8月31日(日)", scheduleVenueGym: "体育館", scheduleVenueHall: "講堂", eventD1G1: "オープニング", eventD1G2: "放送部作品上映", eventD1G3: "歌うまA", eventD1G4: "一年生企画", eventD1G5: "チアパフォーマンス", eventD1G6: "歌うまB", eventD1G7: "イントロドン", eventD1G8: "有志ダンス", eventD1A_none: "講堂での一般公開企画はありません", eventD2G1: "歌うまC", eventD2G2: "H-1", eventD2G3: "一年生企画", eventD2G4: "有志ダンス", eventD2G5: "書道パフォーマンス", eventD2G6: "エンディング", eventD2A1: "スマブラ大会", eventD2A2: "歌うま準決勝", eventD2A3: "バンド", boothsTitle: "Booths & Exhibits", filterAll: "すべて", filterClass: "クラス", filterClub: "部活・委員会", mapTitle: "School Map", mapTab1F: "1F", mapTab2F: "2F", mapTab3F: "3F", mapTabGym: "体育館", mapDesc: "マップをクリックまたはタップで拡大表示します。", accessTitle: "Access", accessSchoolName: "山形県立山形東高等学校", accessAddressTitle: "住所:", accessAddress: "〒990-0044 山形県山形市緑町1-5-59", accessPhoneTitle: "電話:", accessGmapTitle: "地図で場所を確認", accessGmapButton: "Googleマップで開く", instagramButton: "山東祭 公式Instagramへ", footerText: "© 2025 山形東高校 山東祭実行委員会", boothLocation: "場所:", boothContent: "内容:", researchPostersButton: "本校2年生の探究ポスターはこちら",
             },
             en: {
-                heroTitle: "YAMATO Fes 2025<br>E-AST-",
-                heroSubtitle: "'Orb: On the Movements of the Earth'",
-                infoTitle: "Information",
-                infoDateTitle: "Date",
-                infoDate1: "August 30 (Sat)",
-                infoDate2: "August 31 (Sun)",
-                infoTimeTitle: "Public Hours",
-                infoTime1: "Aug 30 (Sat) 10:30 - 15:00",
-                infoTime2: "Aug 31 (Sun) 10:00 - 14:00",
-                crowdTitle: "Real-time Crowd Status",
-                crowdLoading: "Loading crowd status...",
-                status_0: "Available",
-                status_1: "A bit crowded",
-                status_2: "Very crowded",
-                scheduleTitle: "Schedule",
-                scheduleDay1Title: "Aug 30 (Sat)",
-                scheduleDay2Title: "Aug 31 (Sun)",
-                scheduleDate1: "Aug 30 (Sat)",
-                scheduleDate2: "Aug 31 (Sun)",
-                scheduleVenueGym: "Gymnasium",
-                scheduleVenueHall: "Auditorium",
-                eventD1G1: "Opening",
-                eventD1G2: "Broadcasting Club Screening",
-                eventD1G3: "Singing Contest A",
-                eventD1G4: "1st Year Projects",
-                eventD1G5: "Cheer Performance",
-                eventD1G6: "Singing Contest B",
-                eventD1G7: "Intro Quiz",
-                eventD1G8: "Volunteer Dance",
-                eventD1A_none: "No public events in the auditorium.",
-                eventD2G1: "Singing Contest C",
-                eventD2G2: "H-1",
-                eventD2G3: "1st Year Projects",
-                eventD2G4: "Volunteer Dance",
-                eventD2G5: "Calligraphy Performance",
-                eventD2G6: "Ending",
-                eventD2A1: "Smash Bros. Tournament",
-                eventD2A2: "Singing Contest Semi-final",
-                eventD2A3: "Band Performances",
-                boothsTitle: "Booths & Exhibits",
-                filterAll: "All",
-                filterClass: "Class",
-                filterClub: "Clubs & Committees",
-                mapTitle: "School Map",
-                mapTab1F: "1F",
-                mapTab2F: "2F",
-                mapTab3F: "3F",
-                mapTabGym: "Gymnasium",
-                mapDesc: "Click or tap the map to enlarge.",
-                accessTitle: "Access",
-                accessSchoolName: "Yamagata Higashi High School",
-                accessAddressTitle: "Address:",
-                accessAddress: "1-5-59 Midori-cho, Yamagata-shi, Yamagata 990-0044",
-                accessPhoneTitle: "Phone:",
-                accessGmapTitle: "Check the location on the map",
-                accessGmapButton: "Open in Google Maps",
-                instagramButton: "Official Instagram",
-                footerText: "© 2025 Yamagata Higashi High School Festival Committee",
-                boothLocation: "Location:",
-                boothContent: "Content:",
-                researchPostersButton: "View 2nd Year Student Research Posters",
+                heroTitle: "YAMATO Fes 2025<br>E-AST-", heroSubtitle: "'Orb: On the Movements of the Earth'", infoTitle: "Information", infoDateTitle: "Date", infoDate1: "August 30 (Sat)", infoDate2: "August 31 (Sun)", infoTimeTitle: "Public Hours", infoTime1: "Aug 30 (Sat) 10:30 - 15:00", infoTime2: "Aug 31 (Sun) 10:00 - 14:00", crowdTitle: "Real-time Crowd Status", crowdLoading: "Loading crowd status...", status_0: "Available", status_1: "A bit crowded", status_2: "Very crowded", scheduleTitle: "Schedule", scheduleDay1Title: "Aug 30 (Sat)", scheduleDay2Title: "Aug 31 (Sun)", scheduleDate1: "Aug 30 (Sat)", scheduleDate2: "Aug 31 (Sun)", scheduleVenueGym: "Gymnasium", scheduleVenueHall: "Auditorium", eventD1G1: "Opening", eventD1G2: "Broadcasting Club Screening", eventD1G3: "Singing Contest A", eventD1G4: "1st Year Projects", eventD1G5: "Cheer Performance", eventD1G6: "Singing Contest B", eventD1G7: "Intro Quiz", eventD1G8: "Volunteer Dance", eventD1A_none: "No public events in the auditorium.", eventD2G1: "Singing Contest C", eventD2G2: "H-1", eventD2G3: "1st Year Projects", eventD2G4: "Volunteer Dance", eventD2G5: "Calligraphy Performance", eventD2G6: "Ending", eventD2A1: "Smash Bros. Tournament", eventD2A2: "Singing Contest Semi-final", eventD2A3: "Band Performances", boothsTitle: "Booths & Exhibits", filterAll: "All", filterClass: "Class", filterClub: "Clubs & Committees", mapTitle: "School Map", mapTab1F: "1F", mapTab2F: "2F", mapTab3F: "3F", mapTabGym: "Gymnasium", mapDesc: "Click or tap the map to enlarge.", accessTitle: "Access", accessSchoolName: "Yamagata Higashi High School", accessAddressTitle: "Address:", accessAddress: "1-5-59 Midori-cho, Yamagata-shi, Yamagata 990-0044", accessPhoneTitle: "Phone:", accessGmapTitle: "Check the location on the map", accessGmapButton: "Open in Google Maps", instagramButton: "Official Instagram", footerText: "© 2025 Yamagata Higashi High School Festival Committee", boothLocation: "Location:", boothContent: "Content:", researchPostersButton: "View 2nd Year Student Research Posters",
             }
         };
 
-        let currentLang = 'ja';
+        // --- ★ 修正点: localStorageから言語設定を読み込む ---
+        let currentLang = localStorage.getItem('preferredLanguage') || 'ja';
 
         // --- 機能別関数 ---
 
-        // 静的なテキスト要素を翻訳する関数
         function translateAllStaticText(lang) {
             document.documentElement.lang = lang;
             document.querySelectorAll('[data-lang-key]').forEach(el => {
@@ -555,7 +464,6 @@
             });
         }
 
-        // 言語スイッチャーボタンの表示を更新する関数
         function updateLangSwitcherUI(lang) {
             const langSwitcherText = document.getElementById('lang-switcher-text');
             if (langSwitcherText) {
@@ -563,19 +471,19 @@
             }
         }
         
-        // 言語を切り替えるメインの関数
         function setLanguage(lang) {
             if (!['ja', 'en'].includes(lang) || currentLang === lang) return;
             currentLang = lang;
-
+            // --- ★ 修正点: localStorageに言語設定を保存 ---
+            localStorage.setItem('preferredLanguage', lang);
+            
             translateAllStaticText(lang);
             updateMapImages();
             updateLangSwitcherUI(lang);
-            createAndDisplayBooths(); // 新しい言語でカードを再生成
-            window.updateCrowdStatusUI(); // 混雑状況も新しい言語に更新
+            createAndDisplayBooths();
+            window.updateCrowdStatusUI();
         }
 
-        // マップ画像のURLを言語によって切り替える
         function updateMapImages() {
             const suffix = currentLang === 'en' ? '-En.svg' : '.svg';
             document.getElementById('map-1f').src = '山東祭校内マップ1F' + suffix;
@@ -586,220 +494,156 @@
         
         let lastReceivedStatuses = {};
         window.updateCrowdStatusUI = function(statuses) {
-            if (statuses) {
-                lastReceivedStatuses = statuses;
-            }
-            
+            if (statuses) lastReceivedStatuses = statuses;
             const grid = document.getElementById('crowd-status-grid');
             if (!grid) return;
-
-            grid.innerHTML = ''; // クリア
+            grid.innerHTML = '';
             const allBooths = [...boothData.classes, ...boothData.clubs];
-
             if (Object.keys(lastReceivedStatuses).length === 0) {
-                 grid.innerHTML = `<p class="text-gray-400 col-span-full text-center" data-lang-key="crowdLoading">${translations[currentLang].crowdLoading}</p>`;
+                 grid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #9ca3af;" data-lang-key="crowdLoading">${translations[currentLang].crowdLoading}</p>`;
                  return;
             }
-
             allBooths.forEach(booth => {
                 const statusData = lastReceivedStatuses[booth.id];
                 if (statusData) {
                     const statusText = translations[currentLang][`status_${statusData.status}`] || '';
-                    const name = currentLang === 'en' ? booth.name_en : booth.name;
-
+                    const name = booth.name[currentLang];
                     const statusElement = document.createElement('div');
-                    statusElement.className = 'flex items-center';
+                    statusElement.className = 'status-item';
                     statusElement.innerHTML = `
                         <span class="status-indicator status-${statusData.status}"></span>
-                        <div>
-                            <p class="font-bold">${name}</p>
-                            <p class="text-sm text-gray-400">${statusText}</p>
-                        </div>
-                    `;
+                        <div><p style="font-weight: bold;">${name}</p><p style="font-size: 0.875rem; color: #9ca3af;">${statusText}</p></div>`;
                     grid.appendChild(statusElement);
                 }
             });
         }
 
-
         function createAndDisplayBooths() {
-            try {
-                const boothGrid = document.getElementById('booth-grid');
-                if (!boothGrid) {
-                    console.error('booth-grid element not found!');
-                    return;
-                }
-                
-                boothGrid.innerHTML = '';
-                const allBooths = [...boothData.classes, ...boothData.clubs];
-                
-                allBooths.forEach(booth => {
-                    const card = document.createElement('div');
-                    card.className = 'booth-card bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden floating-card cursor-pointer flex flex-col';
-                    card.dataset.category = booth.category;
-
-                    const name = currentLang === 'en' ? booth.name_en : booth.name;
-                    const content = currentLang === 'en' ? booth.content_en : booth.content;
-                    const description = currentLang === 'en' ? booth.description_en : booth.description;
-                    const location = currentLang === 'en' ? booth.location_en : booth.location;
-
-                    card.innerHTML = `
-                        <div class="p-4 flex-grow flex flex-col justify-center text-center min-h-[180px]">
-                            <h3 class="text-xl font-bold font-playfair">${name}</h3>
-                            <p class="text-sm mt-1 text-gray-300">${content}</p>
-                        </div>
-                        <div class="booth-details hidden p-4 border-t border-white/10 bg-black/20 text-gray-200">
-                            <p><strong>${translations[currentLang].boothLocation}</strong> ${location}</p>
-                            <p><strong>${translations[currentLang].boothContent}</strong> ${content}</p>
-                            <p class="mt-2 text-sm">${description}</p>
-                        </div>`;
-                    
-                    boothGrid.appendChild(card);
-                });
-            } catch (e) {
-                console.error("An error occurred in createAndDisplayBooths:", e);
-            }
+            const boothGrid = document.getElementById('booth-grid');
+            if (!boothGrid) return;
+            boothGrid.innerHTML = '';
+            const allBooths = [...boothData.classes, ...boothData.clubs];
+            allBooths.forEach(booth => {
+                const card = document.createElement('div');
+                card.className = 'booth-card floating-card';
+                card.dataset.category = booth.category;
+                card.innerHTML = `
+                    <div>
+                        <h3 class="font-playfair">${booth.name[currentLang]}</h3>
+                        <p>${booth.content[currentLang]}</p>
+                    </div>
+                    <div class="booth-details">
+                        <p><strong>${translations[currentLang].boothLocation}</strong> ${booth.location[currentLang]}</p>
+                        <p><strong>${translations[currentLang].boothContent}</strong> ${booth.content[currentLang]}</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem;">${booth.description[currentLang]}</p>
+                    </div>`;
+                boothGrid.appendChild(card);
+            });
         }
         
         function setupEventListeners() {
-            try {
-                document.getElementById('lang-switcher-btn').addEventListener('click', () => {
-                    const newLang = currentLang === 'ja' ? 'en' : 'ja';
-                    setLanguage(newLang);
-                });
+            document.getElementById('lang-switcher-btn').addEventListener('click', () => {
+                setLanguage(currentLang === 'ja' ? 'en' : 'ja');
+            });
 
-                const faders = document.querySelectorAll('.fade-in-section');
-                const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -20px 0px" };
-                const appearOnScroll = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('is-visible');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, appearOptions);
-                faders.forEach(fader => appearOnScroll.observe(fader));
+            const faders = document.querySelectorAll('.fade-in-section');
+            const appearOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+            faders.forEach(fader => appearOnScroll.observe(fader));
 
-                const dateTabs = document.querySelectorAll('.date-tab-button');
-                const dateContents = document.querySelectorAll('.date-content');
-                dateTabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        dateTabs.forEach(t => t.classList.remove('tab-active'));
-                        tab.classList.add('tab-active');
-                        const targetId = tab.dataset.dateTarget;
-                        dateContents.forEach(content => {
-                            content.classList.toggle('hidden', content.id !== targetId);
-                        });
+            document.querySelectorAll('.tab-buttons button').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    const parent = e.target.parentElement;
+                    parent.querySelectorAll('button').forEach(t => t.classList.remove('tab-active'));
+                    e.target.classList.add('tab-active');
+                    const targetId = e.target.dataset.dateTarget || e.target.dataset.mapTarget;
+                    parent.nextElementSibling.querySelectorAll('.date-content, .map-image').forEach(content => {
+                        content.classList.toggle('hidden', content.id !== targetId);
                     });
                 });
-                
-                const filterButtons = document.querySelectorAll('.filter-button');
-                filterButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const filter = button.dataset.filter;
-                        filterButtons.forEach(btn => btn.classList.remove('filter-active'));
-                        button.classList.add('filter-active');
-                        document.querySelectorAll('.booth-card').forEach(card => {
-                            card.style.display = (filter === 'all' || card.dataset.category === filter) ? 'flex' : 'none';
-                        });
-                    });
-                });
-                
-                const boothGrid = document.getElementById('booth-grid');
-                if (boothGrid) {
-                    boothGrid.addEventListener('click', (e) => {
-                        const card = e.target.closest('.booth-card');
-                        if (card) {
-                            card.querySelector('.booth-details').classList.toggle('hidden');
-                        }
+            });
+            
+            document.getElementById('filters').addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    document.querySelectorAll('#filters button').forEach(btn => btn.classList.remove('filter-active'));
+                    e.target.classList.add('filter-active');
+                    const filter = e.target.dataset.filter;
+                    document.querySelectorAll('.booth-card').forEach(card => {
+                        card.style.display = (filter === 'all' || card.dataset.category === filter) ? 'flex' : 'none';
                     });
                 }
+            });
+            
+            document.getElementById('booth-grid').addEventListener('click', (e) => {
+                const card = e.target.closest('.booth-card');
+                if (card) {
+                    card.querySelector('.booth-details').classList.toggle('hidden');
+                }
+            });
 
-                const mapTabs = document.querySelectorAll('.map-tab-button');
-                const mapImages = document.querySelectorAll('.map-image');
-                mapTabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        mapTabs.forEach(t => t.classList.remove('tab-active'));
-                        tab.classList.add('tab-active');
-                        const targetId = tab.dataset.mapTarget;
-                        mapImages.forEach(image => {
-                            image.classList.toggle('hidden', image.id !== targetId);
-                        });
-                    });
-                });
-
-                const modal = document.getElementById('mapModal');
-                const modalImage = document.getElementById('modalImage');
-                const closeModal = document.getElementById('closeModal');
-                
-                mapImages.forEach(image => {
-                    image.addEventListener('click', () => {
-                        modal.style.display = "flex";
-                        modalImage.src = image.src;
-                    });
-                });
-
-                if(closeModal) closeModal.onclick = () => { modal.style.display = "none"; };
-                window.onclick = (event) => { if (event.target == modal) { modal.style.display = "none"; } };
-            } catch (e) {
-                console.error("An error occurred in setupEventListeners:", e);
-            }
+            const modal = document.getElementById('mapModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeModal = document.getElementById('closeModal');
+            document.getElementById('map-images').addEventListener('click', (e) => {
+                if (e.target.classList.contains('map-image')) {
+                    modal.style.display = "flex";
+                    modalImage.src = e.target.src;
+                }
+            });
+            closeModal.onclick = () => { modal.style.display = "none"; };
+            window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; };
         }
         
         function setupStarrySky() {
-            try {
-                const canvas = document.getElementById('starry-sky');
-                if (!canvas) return;
-                const ctx = canvas.getContext('2d');
-                let stars = [], shootingStars = [];
-                function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-                resizeCanvas();
-                window.addEventListener('resize', resizeCanvas);
-                class Star {
-                    constructor(x, y, r, c) { this.x=x;this.y=y;this.r=r;this.c=c;this.a=0.5+Math.random()*0.5;this.baseAlpha=this.a;this.ac=Math.random()*0.02-0.01; }
-                    draw() { ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(${this.c}, ${this.a})`;ctx.fill(); }
-                    update() { this.a+=this.ac; if(this.a>this.baseAlpha||this.a<0){this.ac*=-1;} this.draw(); }
-                }
-                class ShootingStar {
-                    constructor() { this.reset(); }
-                    reset() { this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height*0.5;this.l=Math.random()*80+10;this.s=Math.random()*5+5;this.sz=Math.random()*1+0.5;this.active=true; }
-                    update() { if(this.active){ this.x-=this.s;this.y+=this.s*0.5; if(this.x<0||this.y>=canvas.height){this.active=false;setTimeout(()=>this.reset(),Math.random()*5000+5000);} } }
-                    draw() { if(this.active){ ctx.fillStyle='#d1bfff';ctx.beginPath();ctx.moveTo(this.x,this.y);ctx.lineTo(this.x+this.l,this.y-this.l*0.5);ctx.lineWidth=this.sz;ctx.strokeStyle='rgba(209,191,255,0.5)';ctx.stroke(); } }
-                }
-                function initStars() { for(let i=0;i<200;i++){stars.push(new Star(Math.random()*canvas.width,Math.random()*canvas.height,Math.random()*1.5,'255,255,255'));} for(let i=0;i<2;i++){shootingStars.push(new ShootingStar());} }
-                function animate() { requestAnimationFrame(animate);ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>s.update());shootingStars.forEach(s=>{s.update();s.draw();}); }
-                initStars();animate();
-
-                const footer = document.querySelector('.footer-stars');
-                if (!footer) return;
-                for (let i = 0; i < 50; i++) { const star = document.createElement('div');star.className='star';star.style.width=`${Math.random()*2+1}px`;star.style.height=star.style.width;star.style.left=`${Math.random()*100}%`;star.style.top=`${Math.random()*100}%`;star.style.animationDelay=`${Math.random()*5}s`;star.style.animationDuration=`${Math.random()*3+2}s`;footer.appendChild(star); }
-            } catch(e) {
-                console.error("An error occurred in setupStarrySky:", e);
+            const canvas = document.getElementById('starry-sky');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let stars = [], shootingStars = [];
+            const resizeCanvas = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            class Star {
+                constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.r = Math.random() * 1.5; this.a = 0.5 + Math.random() * 0.5; this.ac = Math.random() * 0.02 - 0.01; }
+                draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(255,255,255, ${this.a})`; ctx.fill(); }
+                update() { this.a += this.ac; if (this.a > 1 || this.a < 0) this.ac *= -1; this.draw(); }
+            }
+            for (let i = 0; i < 200; i++) stars.push(new Star());
+            const animate = () => { requestAnimationFrame(animate); ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => s.update()); };
+            animate();
+            const footer = document.querySelector('.footer-stars');
+            if (!footer) return;
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = `${Math.random() * 2 + 1}px`;
+                star.style.width = size;
+                star.style.height = size;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                footer.appendChild(star);
             }
         }
 
         // --- アプリケーションの初期化 ---
-        function initializeApp() {
+        window.addEventListener('load', function() {
             setupStarrySky();
             setupEventListeners();
             
-            // 最初に表示する言語で静的コンテンツを翻訳
             translateAllStaticText(currentLang);
             updateMapImages();
             updateLangSwitcherUI(currentLang);
-            
-            // 企画カードを生成
             createAndDisplayBooths();
-        }
-
-        // --- ★ 修正点: イベントリスナーの登録タイミングを 'load' に変更 ---
-        // 'load' イベントは、画像を含むすべてのリソースが読み込まれた後に発生します。
-        // これにより、どんなブラウザでも、すべての要素が確実に準備された状態でプログラムが実行されます。
-        window.addEventListener('load', function() {
-            initializeApp();
 
             const preloader = document.getElementById('preloader');
-            if(preloader) {
+            if (preloader) {
                 preloader.style.opacity = '0';
                 preloader.style.visibility = 'hidden';
             }
