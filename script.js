@@ -116,7 +116,6 @@ window.updateCrowdStatusUI = function(statuses) {
     });
 }
 
-// ★ 修正点: requestAnimationFrame を使ってカードを1枚ずつ表示
 function createAndDisplayBooths() {
     const boothGrid = document.getElementById('booth-grid');
     if (!boothGrid) return;
@@ -125,7 +124,7 @@ function createAndDisplayBooths() {
     
     let index = 0;
     function processNextCard() {
-        if (index >= allBooths.length) return; // すべてのカードを処理したら終了
+        if (index >= allBooths.length) return;
 
         const booth = allBooths[index];
         const card = document.createElement('div');
@@ -144,10 +143,8 @@ function createAndDisplayBooths() {
         boothGrid.appendChild(card);
         
         index++;
-        // 次のフレームで次のカードを処理するようにスケジュール
         requestAnimationFrame(processNextCard);
     }
-    // 最初のカード処理を開始
     requestAnimationFrame(processNextCard);
 }
 
