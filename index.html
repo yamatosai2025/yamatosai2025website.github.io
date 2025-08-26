@@ -243,10 +243,10 @@
                             <div class="space-y-6">
                                 <div class="schedule-item"><time>10:30~10:35</time><div data-lang-key="eventD1G1">オープニング</div></div>
                                 <div class="schedule-item"><time>10:35~11:30</time><div data-lang-key="eventD1G2">放送部作品上映</div></div>
-                                <div class="schedule-item"><time>11:30~12:00</time><div data-lang-key="eventD1G3">歌うまAブロック</div></div>
-                                <div class="schedule-item"><time>12:05~12:45</time><div data-lang-key="eventD1G4">一年生ダンス</div></div>
+                                <div class="schedule-item"><time>11:30~12:00</time><div data-lang-key="eventD1G3">歌うまA</div></div>
+                                <div class="schedule-item"><time>12:05~12:45</time><div data-lang-key="eventD1G4">一年生企画</div></div>
                                 <div class="schedule-item"><time>12:50~13:10</time><div data-lang-key="eventD1G5">チアパフォーマンス</div></div>
-                                <div class="schedule-item"><time>13:15~13:45</time><div data-lang-key="eventD1G6">歌うまBブロック</div></div>
+                                <div class="schedule-item"><time>13:15~13:45</time><div data-lang-key="eventD1G6">歌うまB</div></div>
                                 <div class="schedule-item"><time>13:50~14:20</time><div data-lang-key="eventD1G7">イントロドン</div></div>
                                 <div class="schedule-item"><time>14:25~14:55</time><div data-lang-key="eventD1G8">有志ダンス</div></div>
                             </div>
@@ -262,9 +262,9 @@
                         <div class="schedule-card">
                             <h4 class="font-playfair" data-lang-key="scheduleVenueGym">体育館</h4>
                             <div class="space-y-6">
-                                <div class="schedule-item"><time>10:10~10:40</time><div data-lang-key="eventD2G1">歌うまCブロック</div></div>
-                                <div class="schedule-item"><time>10:45~11:30</time><div data-lang-key="eventD2G2">H-1グランプリ</div></div>
-                                <div class="schedule-item"><time>11:35~12:15</time><div data-lang-key="eventD2G3">一年生ダンス</div></div>
+                                <div class="schedule-item"><time>10:10~10:40</time><div data-lang-key="eventD2G1">歌うまC</div></div>
+                                <div class="schedule-item"><time>10:45~11:30</time><div data-lang-key="eventD2G2">H-1</div></div>
+                                <div class="schedule-item"><time>11:35~12:15</time><div data-lang-key="eventD2G3">一年生企画</div></div>
                                 <div class="schedule-item"><time>12:20~13:05</time><div data-lang-key="eventD2G4">有志ダンス</div></div>
                                 <div class="schedule-item"><time>13:10~13:40</time><div data-lang-key="eventD2G5">書道パフォーマンス</div></div>
                                 <div class="schedule-item"><time>13:45~13:50</time><div data-lang-key="eventD2G6">エンディング</div></div>
@@ -449,7 +449,6 @@
             }
         };
 
-        // --- ★ 修正点: localStorageから言語設定を読み込む ---
         let currentLang = localStorage.getItem('preferredLanguage') || 'ja';
 
         // --- 機能別関数 ---
@@ -474,7 +473,6 @@
         function setLanguage(lang) {
             if (!['ja', 'en'].includes(lang) || currentLang === lang) return;
             currentLang = lang;
-            // --- ★ 修正点: localStorageに言語設定を保存 ---
             localStorage.setItem('preferredLanguage', lang);
             
             translateAllStaticText(lang);
@@ -583,7 +581,10 @@
             document.getElementById('booth-grid').addEventListener('click', (e) => {
                 const card = e.target.closest('.booth-card');
                 if (card) {
-                    card.querySelector('.booth-details').classList.toggle('hidden');
+                    const details = card.querySelector('.booth-details');
+                    if (details) {
+                        details.style.display = details.style.display === 'block' ? 'none' : 'block';
+                    }
                 }
             });
 
