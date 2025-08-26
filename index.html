@@ -92,7 +92,7 @@
             color: #0d0d2b !important;
             box-shadow: 0 0 10px var(--accent-color);
         }
-        .filter-active {
+        #filters button.filter-active {
             background-color: var(--accent-color);
             color: #0d0d2b;
             font-weight: bold;
@@ -143,7 +143,8 @@
         
         /* --- 企画 & 展示セクション --- */
         #filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
-        #filters button { padding: 0.5rem 1rem; border-radius: 9999px; border: 1px solid var(--border-color); transition: all 0.3s; cursor: pointer; color: var(--text-color); }
+        /* ★ 修正点: 未選択ボタンにも背景色を追加 */
+        #filters button { padding: 0.5rem 1rem; border-radius: 9999px; border: 1px solid var(--border-color); transition: all 0.3s; cursor: pointer; color: var(--text-color); background-color: rgba(255, 255, 255, 0.1); }
         .booth-card { background-color: var(--card-bg); backdrop-filter: blur(4px); border: 1px solid var(--border-color); border-radius: 1rem; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
         .booth-card > div:first-child { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; text-align: center; padding: 1rem; min-height: 180px; }
         .booth-card h3 { font-size: 1.25rem; font-weight: bold; }
@@ -235,47 +236,49 @@
                     <button data-date-target="day1" class="tab-active" data-lang-key="scheduleDate1">8月30日(土)</button>
                     <button data-date-target="day2" data-lang-key="scheduleDate2">8月31日(日)</button>
                 </div>
-                <div id="day1" class="date-content">
-                    <h3 class="font-playfair" style="text-align: center; margin-bottom: 2rem; color: #d1d5db;" data-lang-key="scheduleDay1Title">8/30 (Sat)</h3>
-                    <div class="grid md-grid-cols-2">
-                        <div class="schedule-card">
-                            <h4 class="font-playfair" data-lang-key="scheduleVenueGym">体育館</h4>
-                            <div class="space-y-6">
-                                <div class="schedule-item"><time>10:30~10:35</time><div data-lang-key="eventD1G1">オープニング</div></div>
-                                <div class="schedule-item"><time>10:35~11:30</time><div data-lang-key="eventD1G2">放送部作品上映</div></div>
-                                <div class="schedule-item"><time>11:30~12:00</time><div data-lang-key="eventD1G3">歌うまA</div></div>
-                                <div class="schedule-item"><time>12:05~12:45</time><div data-lang-key="eventD1G4">一年生企画</div></div>
-                                <div class="schedule-item"><time>12:50~13:10</time><div data-lang-key="eventD1G5">チアパフォーマンス</div></div>
-                                <div class="schedule-item"><time>13:15~13:45</time><div data-lang-key="eventD1G6">歌うまB</div></div>
-                                <div class="schedule-item"><time>13:50~14:20</time><div data-lang-key="eventD1G7">イントロドン</div></div>
-                                <div class="schedule-item"><time>14:25~14:55</time><div data-lang-key="eventD1G8">有志ダンス</div></div>
+                <div id="schedule-content-container">
+                    <div id="day1" class="date-content">
+                        <h3 class="font-playfair" style="text-align: center; margin-bottom: 2rem; color: #d1d5db;" data-lang-key="scheduleDay1Title">8/30 (Sat)</h3>
+                        <div class="grid md-grid-cols-2">
+                            <div class="schedule-card">
+                                <h4 class="font-playfair" data-lang-key="scheduleVenueGym">体育館</h4>
+                                <div class="space-y-6">
+                                    <div class="schedule-item"><time>10:30~10:35</time><div data-lang-key="eventD1G1">オープニング</div></div>
+                                    <div class="schedule-item"><time>10:35~11:30</time><div data-lang-key="eventD1G2">放送部作品上映</div></div>
+                                    <div class="schedule-item"><time>11:30~12:00</time><div data-lang-key="eventD1G3">歌うまAブロック</div></div>
+                                    <div class="schedule-item"><time>12:05~12:45</time><div data-lang-key="eventD1G4">一年生ダンス</div></div>
+                                    <div class="schedule-item"><time>12:50~13:10</time><div data-lang-key="eventD1G5">チアパフォーマンス</div></div>
+                                    <div class="schedule-item"><time>13:15~13:45</time><div data-lang-key="eventD1G6">歌うまBブロック</div></div>
+                                    <div class="schedule-item"><time>13:50~14:20</time><div data-lang-key="eventD1G7">イントロドン</div></div>
+                                    <div class="schedule-item"><time>14:25~14:55</time><div data-lang-key="eventD1G8">有志ダンス</div></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="schedule-card" style="display:flex; align-items:center; justify-content:center;">
-                             <p style="text-align:center; color: #9ca3af;" data-lang-key="eventD1A_none">講堂での一般公開企画はありません</p>
+                            <div class="schedule-card" style="display:flex; align-items:center; justify-content:center;">
+                                 <p style="text-align:center; color: #9ca3af;" data-lang-key="eventD1A_none">講堂での一般公開企画はありません</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div id="day2" class="date-content hidden">
-                    <h3 class="font-playfair" style="text-align: center; margin-bottom: 2rem; color: #d1d5db;" data-lang-key="scheduleDay2Title">8/31 (Sun)</h3>
-                    <div class="grid md-grid-cols-2">
-                        <div class="schedule-card">
-                            <h4 class="font-playfair" data-lang-key="scheduleVenueGym">体育館</h4>
-                            <div class="space-y-6">
-                                <div class="schedule-item"><time>10:10~10:40</time><div data-lang-key="eventD2G1">歌うまC</div></div>
-                                <div class="schedule-item"><time>10:45~11:30</time><div data-lang-key="eventD2G2">H-1</div></div>
-                                <div class="schedule-item"><time>11:35~12:15</time><div data-lang-key="eventD2G3">一年生企画</div></div>
-                                <div class="schedule-item"><time>12:20~13:05</time><div data-lang-key="eventD2G4">有志ダンス</div></div>
-                                <div class="schedule-item"><time>13:10~13:40</time><div data-lang-key="eventD2G5">書道パフォーマンス</div></div>
-                                <div class="schedule-item"><time>13:45~13:50</time><div data-lang-key="eventD2G6">エンディング</div></div>
+                    <div id="day2" class="date-content hidden">
+                        <h3 class="font-playfair" style="text-align: center; margin-bottom: 2rem; color: #d1d5db;" data-lang-key="scheduleDay2Title">8/31 (Sun)</h3>
+                        <div class="grid md-grid-cols-2">
+                            <div class="schedule-card">
+                                <h4 class="font-playfair" data-lang-key="scheduleVenueGym">体育館</h4>
+                                <div class="space-y-6">
+                                    <div class="schedule-item"><time>10:10~10:40</time><div data-lang-key="eventD2G1">歌うまCブロック</div></div>
+                                    <div class="schedule-item"><time>10:45~11:30</time><div data-lang-key="eventD2G2">H-1グランプリ</div></div>
+                                    <div class="schedule-item"><time>11:35~12:15</time><div data-lang-key="eventD2G3">一年生ダンス</div></div>
+                                    <div class="schedule-item"><time>12:20~13:05</time><div data-lang-key="eventD2G4">有志ダンス</div></div>
+                                    <div class="schedule-item"><time>13:10~13:40</time><div data-lang-key="eventD2G5">書道パフォーマンス</div></div>
+                                    <div class="schedule-item"><time>13:45~13:50</time><div data-lang-key="eventD2G6">エンディング</div></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="schedule-card">
-                            <h4 class="font-playfair" data-lang-key="scheduleVenueHall">講堂</h4>
-                            <div class="space-y-6">
-                                <div class="schedule-item"><time>10:10~11:00</time><div data-lang-key="eventD2A1">スマブラ大会</div></div>
-                                <div class="schedule-item"><time>11:05~11:20</time><div data-lang-key="eventD2A2">歌うま準決勝</div></div>
-                                <div class="schedule-item"><time>11:30~14:05</time><div data-lang-key="eventD2A3">バンド</div></div>
+                            <div class="schedule-card">
+                                <h4 class="font-playfair" data-lang-key="scheduleVenueHall">講堂</h4>
+                                <div class="space-y-6">
+                                    <div class="schedule-item"><time>10:10~11:00</time><div data-lang-key="eventD2A1">スマブラ大会</div></div>
+                                    <div class="schedule-item"><time>11:05~11:20</time><div data-lang-key="eventD2A2">歌うま準決勝</div></div>
+                                    <div class="schedule-item"><time>11:30~14:05</time><div data-lang-key="eventD2A3">バンド</div></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -442,10 +445,10 @@
         
         const translations = {
             ja: {
-                heroTitle: "山東祭2025<br>E-AST-", heroSubtitle: "『チ。-地球の運動について-』", infoTitle: "Information", infoDateTitle: "日程", infoDate1: "8月30日 (土)", infoDate2: "8月31日 (日)", infoTimeTitle: "一般公開 時間", infoTime1: "8/30 (土) 10:30 〜 15:00", infoTime2: "8/31 (日) 10:00 〜 14:00", crowdTitle: "リアルタイム混雑状況", crowdLoading: "混雑状況を読み込んでいます...", status_0: "空いています", status_1: "やや混雑", status_2: "大変混雑", scheduleTitle: "Schedule", scheduleDay1Title: "8/30 (Sat)", scheduleDay2Title: "8/31 (Sun)", scheduleDate1: "8月30日(土)", scheduleDate2: "8月31日(日)", scheduleVenueGym: "体育館", scheduleVenueHall: "講堂", eventD1G1: "オープニング", eventD1G2: "放送部作品上映", eventD1G3: "歌うまA", eventD1G4: "一年生企画", eventD1G5: "チアパフォーマンス", eventD1G6: "歌うまB", eventD1G7: "イントロドン", eventD1G8: "有志ダンス", eventD1A_none: "講堂での一般公開企画はありません", eventD2G1: "歌うまC", eventD2G2: "H-1", eventD2G3: "一年生企画", eventD2G4: "有志ダンス", eventD2G5: "書道パフォーマンス", eventD2G6: "エンディング", eventD2A1: "スマブラ大会", eventD2A2: "歌うま準決勝", eventD2A3: "バンド", boothsTitle: "Booths & Exhibits", filterAll: "すべて", filterClass: "クラス", filterClub: "部活・委員会", mapTitle: "School Map", mapTab1F: "1F", mapTab2F: "2F", mapTab3F: "3F", mapTabGym: "体育館", mapDesc: "マップをクリックまたはタップで拡大表示します。", accessTitle: "Access", accessSchoolName: "山形県立山形東高等学校", accessAddressTitle: "住所:", accessAddress: "〒990-0044 山形県山形市緑町1-5-59", accessPhoneTitle: "電話:", accessGmapTitle: "地図で場所を確認", accessGmapButton: "Googleマップで開く", instagramButton: "山東祭 公式Instagramへ", footerText: "© 2025 山形東高校 山東祭実行委員会", boothLocation: "場所:", boothContent: "内容:", researchPostersButton: "本校2年生の探究ポスターはこちら",
+                heroTitle: "山東祭2025<br>E-AST-", heroSubtitle: "『チ。-地球の運動について-』", infoTitle: "Information", infoDateTitle: "日程", infoDate1: "8月30日 (土)", infoDate2: "8月31日 (日)", infoTimeTitle: "一般公開 時間", infoTime1: "8/30 (土) 10:30 〜 15:00", infoTime2: "8/31 (日) 10:00 〜 14:00", crowdTitle: "リアルタイム混雑状況", crowdLoading: "混雑状況を読み込んでいます...", status_0: "空いています", status_1: "やや混雑", status_2: "大変混雑", scheduleTitle: "Schedule", scheduleDay1Title: "8/30 (Sat)", scheduleDay2Title: "8/31 (Sun)", scheduleDate1: "8月30日(土)", scheduleDate2: "8月31日(日)", scheduleVenueGym: "体育館", scheduleVenueHall: "講堂", eventD1G1: "オープニング", eventD1G2: "放送部作品上映", eventD1G3: "歌うまAブロック", eventD1G4: "一年生ダンス", eventD1G5: "チアパフォーマンス", eventD1G6: "歌うまBブロック", eventD1G7: "イントロドン", eventD1G8: "有志ダンス", eventD1A_none: "講堂での一般公開企画はありません", eventD2G1: "歌うまCブロック", eventD2G2: "H-1グランプリ", eventD2G3: "一年生ダンス", eventD2G4: "有志ダンス", eventD2G5: "書道パフォーマンス", eventD2G6: "エンディング", eventD2A1: "スマブラ大会", eventD2A2: "歌うま準決勝", eventD2A3: "バンド", boothsTitle: "Booths & Exhibits", filterAll: "すべて", filterClass: "クラス", filterClub: "部活・委員会", mapTitle: "School Map", mapTab1F: "1F", mapTab2F: "2F", mapTab3F: "3F", mapTabGym: "体育館", mapDesc: "マップをクリックまたはタップで拡大表示します。", accessTitle: "Access", accessSchoolName: "山形県立山形東高等学校", accessAddressTitle: "住所:", accessAddress: "〒990-0044 山形県山形市緑町1-5-59", accessPhoneTitle: "電話:", accessGmapTitle: "地図で場所を確認", accessGmapButton: "Googleマップで開く", instagramButton: "山東祭 公式Instagramへ", footerText: "© 2025 山形東高校 山東祭実行委員会", boothLocation: "場所:", boothContent: "内容:", researchPostersButton: "本校2年生の探究ポスターはこちら",
             },
             en: {
-                heroTitle: "YAMATO Fes 2025<br>E-AST-", heroSubtitle: "'Orb: On the Movements of the Earth'", infoTitle: "Information", infoDateTitle: "Date", infoDate1: "August 30 (Sat)", infoDate2: "August 31 (Sun)", infoTimeTitle: "Public Hours", infoTime1: "Aug 30 (Sat) 10:30 - 15:00", infoTime2: "Aug 31 (Sun) 10:00 - 14:00", crowdTitle: "Real-time Crowd Status", crowdLoading: "Loading crowd status...", status_0: "Available", status_1: "A bit crowded", status_2: "Very crowded", scheduleTitle: "Schedule", scheduleDay1Title: "Aug 30 (Sat)", scheduleDay2Title: "Aug 31 (Sun)", scheduleDate1: "Aug 30 (Sat)", scheduleDate2: "Aug 31 (Sun)", scheduleVenueGym: "Gymnasium", scheduleVenueHall: "Auditorium", eventD1G1: "Opening", eventD1G2: "Broadcasting Club Screening", eventD1G3: "Singing Contest A", eventD1G4: "1st Year Projects", eventD1G5: "Cheer Performance", eventD1G6: "Singing Contest B", eventD1G7: "Intro Quiz", eventD1G8: "Volunteer Dance", eventD1A_none: "No public events in the auditorium.", eventD2G1: "Singing Contest C", eventD2G2: "H-1", eventD2G3: "1st Year Projects", eventD2G4: "Volunteer Dance", eventD2G5: "Calligraphy Performance", eventD2G6: "Ending", eventD2A1: "Smash Bros. Tournament", eventD2A2: "Singing Contest Semi-final", eventD2A3: "Band Performances", boothsTitle: "Booths & Exhibits", filterAll: "All", filterClass: "Class", filterClub: "Clubs & Committees", mapTitle: "School Map", mapTab1F: "1F", mapTab2F: "2F", mapTab3F: "3F", mapTabGym: "Gymnasium", mapDesc: "Click or tap the map to enlarge.", accessTitle: "Access", accessSchoolName: "Yamagata Higashi High School", accessAddressTitle: "Address:", accessAddress: "1-5-59 Midori-cho, Yamagata-shi, Yamagata 990-0044", accessPhoneTitle: "Phone:", accessGmapTitle: "Check the location on the map", accessGmapButton: "Open in Google Maps", instagramButton: "Official Instagram", footerText: "© 2025 Yamagata Higashi High School Festival Committee", boothLocation: "Location:", boothContent: "Content:", researchPostersButton: "View 2nd Year Student Research Posters",
+                heroTitle: "YAMATO Fes 2025<br>E-AST-", heroSubtitle: "'Orb: On the Movements of the Earth'", infoTitle: "Information", infoDateTitle: "Date", infoDate1: "August 30 (Sat)", infoDate2: "August 31 (Sun)", infoTimeTitle: "Public Hours", infoTime1: "Aug 30 (Sat) 10:30 - 15:00", infoTime2: "Aug 31 (Sun) 10:00 - 14:00", crowdTitle: "Real-time Crowd Status", crowdLoading: "Loading crowd status...", status_0: "Available", status_1: "A bit crowded", status_2: "Very crowded", scheduleTitle: "Schedule", scheduleDay1Title: "Aug 30 (Sat)", scheduleDay2Title: "Aug 31 (Sun)", scheduleDate1: "Aug 30 (Sat)", scheduleDate2: "Aug 31 (Sun)", scheduleVenueGym: "Gymnasium", scheduleVenueHall: "Auditorium", eventD1G1: "Opening", eventD1G2: "Broadcasting Club Screening", eventD1G3: "Singing Contest Block-A", eventD1G4: "1st Year Dance Performance", eventD1G5: "Cheer Performance", eventD1G6: "Singing Contest Block-B", eventD1G7: "Intro Quiz", eventD1G8: "Volunteer Dance", eventD1A_none: "No public events in the auditorium.", eventD2G1: "Singing Contest Block-C", eventD2G2: "H-1 Grand Prix", eventD2G3: "1st Year Dance Performance", eventD2G4: "Volunteer Dance", eventD2G5: "Calligraphy Performance", eventD2G6: "Ending", eventD2A1: "Smash Bros. Tournament", eventD2A2: "Singing Contest Semi-final", eventD2A3: "Band Performances", boothsTitle: "Booths & Exhibits", filterAll: "All", filterClass: "Class", filterClub: "Clubs & Committees", mapTitle: "School Map", mapTab1F: "1F", mapTab2F: "2F", mapTab3F: "3F", mapTabGym: "Gymnasium", mapDesc: "Click or tap the map to enlarge.", accessTitle: "Access", accessSchoolName: "Yamagata Higashi High School", accessAddressTitle: "Address:", accessAddress: "1-5-59 Midori-cho, Yamagata-shi, Yamagata 990-0044", accessPhoneTitle: "Phone:", accessGmapTitle: "Check the location on the map", accessGmapButton: "Open in Google Maps", instagramButton: "Official Instagram", footerText: "© 2025 Yamagata Higashi High School Festival Committee", boothLocation: "Location:", boothContent: "Content:", researchPostersButton: "View 2nd Year Student Research Posters",
             }
         };
 
@@ -555,16 +558,26 @@
             }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
             faders.forEach(fader => appearOnScroll.observe(fader));
 
-            document.querySelectorAll('.tab-buttons button').forEach(tab => {
-                tab.addEventListener('click', (e) => {
-                    const parent = e.target.parentElement;
-                    parent.querySelectorAll('button').forEach(t => t.classList.remove('tab-active'));
+            document.getElementById('date-tabs').addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    document.querySelectorAll('#date-tabs button').forEach(t => t.classList.remove('tab-active'));
                     e.target.classList.add('tab-active');
-                    const targetId = e.target.dataset.dateTarget || e.target.dataset.mapTarget;
-                    parent.nextElementSibling.querySelectorAll('.date-content, .map-image').forEach(content => {
+                    const targetId = e.target.dataset.dateTarget;
+                    document.querySelectorAll('#schedule-content-container .date-content').forEach(content => {
                         content.classList.toggle('hidden', content.id !== targetId);
                     });
-                });
+                }
+            });
+
+            document.getElementById('map-tabs').addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    document.querySelectorAll('#map-tabs button').forEach(t => t.classList.remove('tab-active'));
+                    e.target.classList.add('tab-active');
+                    const targetId = e.target.dataset.mapTarget;
+                    document.querySelectorAll('#map-images .map-image').forEach(image => {
+                        image.classList.toggle('hidden', image.id !== targetId);
+                    });
+                }
             });
             
             document.getElementById('filters').addEventListener('click', (e) => {
