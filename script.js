@@ -116,7 +116,7 @@ window.updateCrowdStatusUI = function(statuses) {
     });
 }
 
-function createAndDisplayBooths() {
+function createAndDisplayBooths(onCompleteCallback) {
     const boothGrid = document.getElementById('booth-grid');
     if (!boothGrid) return;
     boothGrid.innerHTML = '';
@@ -124,7 +124,10 @@ function createAndDisplayBooths() {
     
     let index = 0;
     function processNextCard() {
-        if (index >= allBooths.length) return;
+        if (index >= allBooths.length) {
+            if (onCompleteCallback) onCompleteCallback();
+            return;
+        }
 
         const booth = allBooths[index];
         const card = document.createElement('div');
@@ -311,7 +314,10 @@ setupEventListeners();
 translateAllStaticText(currentLang);
 updateMapImages();
 updateLangSwitcherUI(currentLang);
-createAndDisplayBooths();
+createAndDisplayBooths(function applyInitialFilter() {
+    // カード作成完了後に、初期フィルターを適用して再描画を強制
+    document.querySelector('#filters button[data-filter="all"]').click();
+});
 
 window.addEventListener('load', function() {
     setupStarrySky();
