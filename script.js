@@ -148,7 +148,6 @@ function createAndDisplayBooths() {
     requestAnimationFrame(processNextCard);
 }
 
-// ★ 修正点: Firebaseの初期化を遅延させる
 let firebaseInitialized = false;
 function initializeFirebase() {
     if (firebaseInitialized) return;
@@ -307,20 +306,18 @@ function setupStarrySky() {
 }
 
 // --- アプリケーションの初期化 ---
-document.addEventListener('DOMContentLoaded', function() {
-    setupEventListeners();
-    
-    translateAllStaticText(currentLang);
-    updateMapImages();
-    updateLangSwitcherUI(currentLang);
-    createAndDisplayBooths();
+// ★ 修正点: DOMContentLoadedから直接実行に変更
+setupEventListeners();
+translateAllStaticText(currentLang);
+updateMapImages();
+updateLangSwitcherUI(currentLang);
+createAndDisplayBooths();
 
-    window.addEventListener('load', function() {
-        setupStarrySky();
-        const preloader = document.getElementById('preloader');
-        if (preloader) {
-            preloader.style.opacity = '0';
-            preloader.style.visibility = 'hidden';
-        }
-    });
+window.addEventListener('load', function() {
+    setupStarrySky();
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.style.opacity = '0';
+        preloader.style.visibility = 'hidden';
+    }
 });
