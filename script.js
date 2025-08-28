@@ -316,7 +316,10 @@ updateMapImages();
 updateLangSwitcherUI(currentLang);
 createAndDisplayBooths(function applyInitialFilter() {
     // カード作成完了後に、初期フィルターを適用して再描画を強制
-    document.querySelector('#filters button[data-filter="all"]').click();
+    const allButton = document.querySelector('#filters button[data-filter="all"]');
+    if (allButton) {
+        allButton.click();
+    }
 });
 
 window.addEventListener('load', function() {
