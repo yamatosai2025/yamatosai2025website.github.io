@@ -199,7 +199,6 @@
                     <button data-map-target="map-gym" data-lang-key="mapTabGym">体育館</button>
                 </div>
                 <div id="map-images">
-                    <!-- ★ 修正点: width, height, loading="lazy" を追加 -->
                     <img id="map-1f" class="map-image" src="山東祭校内マップ1F.svg" alt="1階 校内マップ" width="1000" height="600" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+1F+Error';">
                     <img id="map-2f" class="map-image hidden" src="山東祭校内マップ2F.svg" alt="2階 校内マップ" width="1000" height="600" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+2F+Error';">
                     <img id="map-3f" class="map-image hidden" src="山東祭校内マップ3F.svg" alt="3階 校内マップ" width="1000" height="600" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+3F+Error';">
@@ -240,7 +239,9 @@
         <p data-lang-key="footerText">© 2025 山形東高校 山東祭実行委員会</p>
     </footer>
     
-    <!-- JavaScriptを遅延実行 -->
-    <script src="script.js" defer></script>
+    <!-- ★ 修正点: Firebaseのスクリプトを削除 -->
+
+    <!-- ★ 修正点: script.jsの読み込み位置を変更し、deferを削除 -->
+    <script src="script.js"></script>
 </body>
 </html>
