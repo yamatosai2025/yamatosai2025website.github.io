@@ -60,11 +60,11 @@
         }
     </style>
     
-    <!-- 非クリティカルCSS & フォントを非同期で読み込み -->
-    <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="style.css"></noscript>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Playfair+Display:wght@700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Playfair+Display:wght@700;900&display=swap"></noscript>
+    
+    <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="style.css"></noscript>
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 </head>
@@ -97,13 +97,11 @@
         <section id="info" class="fade-in-section">
             <h2 class="font-playfair section-title" data-lang-key="infoTitle">Information</h2>
             <div class="grid md-grid-cols-2">
-                <!-- ★ 修正点: 背景画像をUnsplashの最適化URLに変更 -->
                 <div class="info-card floating-card" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=800&auto=format&fit=crop&fm=webp');">
                     <h3 class="font-playfair" data-lang-key="infoDateTitle">日程</h3>
                     <p data-lang-key="infoDate1">8月30日 (土)</p>
                     <p data-lang-key="infoDate2">8月31日 (日)</p>
                 </div>
-                <!-- ★ 修正点: 背景画像をUnsplashの最適化URLに変更 -->
                 <div class="info-card floating-card" style="background-image: url('https://images.unsplash.com/photo-1506443432602-ac2fcd6f54e0?q=80&w=800&auto=format&fit=crop&fm=webp');">
                     <h3 class="font-playfair" data-lang-key="infoTimeTitle">一般公開 時間</h3>
                     <p data-lang-key="infoTime1">8/30 (土) 10:30 〜 15:00</p>
@@ -201,10 +199,11 @@
                     <button data-map-target="map-gym" data-lang-key="mapTabGym">体育館</button>
                 </div>
                 <div id="map-images">
-                    <img id="map-1f" class="map-image" src="山東祭校内マップ1F.svg" alt="1階 校内マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+1F+Error';">
-                    <img id="map-2f" class="map-image hidden" src="山東祭校内マップ2F.svg" alt="2階 校内マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+2F+Error';">
-                    <img id="map-3f" class="map-image hidden" src="山東祭校内マップ3F.svg" alt="3階 校内マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+3F+Error';">
-                    <img id="map-gym" class="map-image hidden" src="山東祭校内マップ体育館.svg" alt="体育館マップ" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+Gym+Error';">
+                    <!-- ★ 修正点: width, height, loading="lazy" を追加 -->
+                    <img id="map-1f" class="map-image" src="山東祭校内マップ1F.svg" alt="1階 校内マップ" width="1000" height="600" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+1F+Error';">
+                    <img id="map-2f" class="map-image hidden" src="山東祭校内マップ2F.svg" alt="2階 校内マップ" width="1000" height="600" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+2F+Error';">
+                    <img id="map-3f" class="map-image hidden" src="山東祭校内マップ3F.svg" alt="3階 校内マップ" width="1000" height="600" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+3F+Error';">
+                    <img id="map-gym" class="map-image hidden" src="山東祭校内マップ体育館.svg" alt="体育館マップ" width="1000" height="600" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/1000x600/1a1a3b/d1bfff?text=Map+Gym+Error';">
                 </div>
                 <p style="text-align: center; margin-top: 1rem; color: #9ca3af;" data-lang-key="mapDesc">マップをクリックまたはタップで拡大表示します。</p>
             </div>
@@ -241,48 +240,6 @@
         <p data-lang-key="footerText">© 2025 山形東高校 山東祭実行委員会</p>
     </footer>
     
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-             apiKey: "AIzaSyBUclBluehOXOZXlDCeePcdVKmYdKkRxFI",
-             authDomain: "yamatosai2025-4f10b.firebaseapp.com",
-             projectId: "yamatosai2025-4f10b",
-             storageBucket: "yamatosai2025-4f10b.firebasestorage.app",
-             messagingSenderId: "817983089763",
-             appId: "1:817983089763:web:8ca71d1ff70812f2645c56",
-             measurementId: "G-H7VH1ZJYE9"
-        };
-
-        try {
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-            const db = getFirestore(app);
-            
-            signInAnonymously(auth).catch(console.error);
-
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    const dbPath = `/artifacts/${firebaseConfig.projectId}/public/data/crowd-status`;
-                    onSnapshot(collection(db, dbPath), (snapshot) => {
-                        const statuses = {};
-                        snapshot.forEach((doc) => { statuses[doc.id] = doc.data(); });
-                        window.updateCrowdStatusUI(statuses);
-                    }, console.error);
-                }
-            });
-        } catch (error) {
-            console.error("Firebase initialization failed:", error);
-            const crowdGrid = document.getElementById('crowd-status-grid');
-            if(crowdGrid) {
-                crowdGrid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #9ca3af;">混雑状況の取得に失敗しました。</p>`;
-            }
-        }
-    </script>
-
     <!-- JavaScriptを遅延実行 -->
     <script src="script.js" defer></script>
 </body>
