@@ -148,6 +148,57 @@ function createAndDisplayBooths() {
     requestAnimationFrame(processNextCard);
 }
 
+// ★ 修正点: Firebaseの初期化を遅延させる
+let firebaseInitialized = false;
+function initializeFirebase() {
+    if (firebaseInitialized) return;
+    firebaseInitialized = true;
+
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.innerHTML = `
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+             apiKey: "AIzaSyBUclBluehOXOZXlDCeePcdVKmYdKkRxFI",
+             authDomain: "yamatosai2025-4f10b.firebaseapp.com",
+             projectId: "yamatosai2025-4f10b",
+             storageBucket: "yamatosai2025-4f10b.firebasestorage.app",
+             messagingSenderId: "817983089763",
+             appId: "1:817983089763:web:8ca71d1ff70812f2645c56",
+             measurementId: "G-H7VH1ZJYE9"
+        };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+            
+            signInAnonymously(auth).catch(console.error);
+
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    const dbPath = \`/artifacts/\${firebaseConfig.projectId}/public/data/crowd-status\`;
+                    onSnapshot(collection(db, dbPath), (snapshot) => {
+                        const statuses = {};
+                        snapshot.forEach((doc) => { statuses[doc.id] = doc.data(); });
+                        window.updateCrowdStatusUI(statuses);
+                    }, console.error);
+                }
+            });
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            const crowdGrid = document.getElementById('crowd-status-grid');
+            if(crowdGrid) {
+                crowdGrid.innerHTML = \`<p style="grid-column: 1 / -1; text-align: center; color: #9ca3af;">混雑状況の取得に失敗しました。</p>\`;
+            }
+        }
+    `;
+    document.body.appendChild(script);
+}
+
 function setupEventListeners() {
     document.getElementById('lang-switcher-btn').addEventListener('click', () => {
         setLanguage(currentLang === 'ja' ? 'en' : 'ja');
@@ -158,6 +209,9 @@ function setupEventListeners() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('is-visible');
+                if (entry.target.id === 'crowd-status') {
+                    initializeFirebase();
+                }
                 observer.unobserve(entry.target);
             }
         });
