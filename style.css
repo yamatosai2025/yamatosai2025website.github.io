@@ -1,3 +1,40 @@
+/* --- 基本スタイル & アニメーション --- */
+:root {
+    --bg-color: #1a1a3b;
+    --text-color: #f0f0f0;
+    --accent-color: #d1bfff;
+    --card-bg: rgba(0, 0, 0, 0.3);
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Noto Sans JP', 'Inter', sans-serif;
+    overflow-x: hidden;
+    margin: 0;
+}
+
+.font-playfair { font-family: 'Playfair Display', serif; }
+
+@keyframes gradient-animation {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-20px); }
+    60% { transform: translateY(-10px); }
+}
+@keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; text-shadow: 0 0 5px var(--accent-color); }
+    50% { opacity: 1; text-shadow: 0 0 15px var(--accent-color); }
+}
+
 /* --- 共通コンポーネント --- */
 .section-title {
     color: var(--accent-color);
@@ -26,7 +63,6 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 10px 20px rgba(0,0,0,0.3), 0 0 15px rgba(209, 191, 255, 0.1);
     contain: content;
-    /* ★ 修正点: アニメーションの最適化 */
     will-change: transform;
 }
 .floating-card:hover {
@@ -64,7 +100,6 @@ main section { margin-bottom: 6rem; }
     background-size: cover; 
     background-blend-mode: overlay; 
     contain: content;
-    /* ★ 修正点: アニメーションの最適化 */
     will-change: transform;
 }
 .info-card h3 { font-size: 1.875rem; margin-bottom: 1rem; color: var(--accent-color); }
@@ -91,6 +126,10 @@ main section { margin-bottom: 6rem; }
 /* --- 企画 & 展示セクション --- */
 #filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
 #filters button { padding: 0.5rem 1rem; border-radius: 9999px; border: 1px solid var(--border-color); transition: all 0.3s; cursor: pointer; color: var(--text-color); background-color: rgba(255, 255, 255, 0.1); }
+/* ★ 修正点: CLS対策として、カードコンテナに最低限の高さを設定 */
+#booth-grid {
+    min-height: 600px; /* 少なくとも数行分の高さを確保 */
+}
 .booth-card { 
     background-color: var(--card-bg); 
     backdrop-filter: blur(4px); 
@@ -101,7 +140,6 @@ main section { margin-bottom: 6rem; }
     display: flex; 
     flex-direction: column; 
     contain: content;
-    /* ★ 修正点: アニメーションの最適化 */
     will-change: transform;
 }
 .booth-card > div:first-child { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; text-align: center; padding: 1rem; min-height: 180px; }
@@ -111,7 +149,17 @@ main section { margin-bottom: 6rem; }
 .booth-details p { margin-top: 0.5rem; }
 
 /* --- 混雑状況セクション --- */
-#crowd-status-grid { max-width: 56rem; margin: 0 auto; padding: 2rem; border-radius: 1rem; background-color: var(--card-bg); backdrop-filter: blur(4px); border: 1px solid var(--border-color); }
+#crowd-status-grid { 
+    max-width: 56rem; 
+    margin: 0 auto; 
+    padding: 2rem; 
+    border-radius: 1rem; 
+    background-color: var(--card-bg); 
+    backdrop-filter: blur(4px); 
+    border: 1px solid var(--border-color);
+    /* ★ 修正点: CLS対策として、混雑状況コンテナにも最低限の高さを設定 */
+    min-height: 200px;
+}
 .status-item { display: flex; align-items: center; }
 .status-indicator { display: inline-block; width: 1rem; height: 1rem; border-radius: 50%; margin-right: 0.75rem; }
 .status-0 { background-color: #4ade80; box-shadow: 0 0 8px #4ade80; }
@@ -120,7 +168,7 @@ main section { margin-bottom: 6rem; }
 
 /* --- マップセクション --- */
 .map-container { background-color: var(--card-bg); padding: 1rem; border-radius: 1rem; border: 1px solid var(--border-color); }
-.map-image { width: 100%; border-radius: 0.5rem; cursor: pointer; }
+.map-image { width: 100%; height: auto; border-radius: 0.5rem; cursor: pointer; } /* height: auto を追加 */
 .map-image.hidden { display: none; }
 .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
 .modal-content { margin: auto; display: block; max-width: 90%; max-height: 90%; }
