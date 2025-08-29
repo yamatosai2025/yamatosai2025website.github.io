@@ -43,7 +43,7 @@ header { height: 100vh; display: flex; flex-direction: column; align-items: cent
 header h1 { font-size: 3rem; font-weight: 900; margin-bottom: 1rem; line-height: 1.2; }
 header p { font-size: 1.125rem; color: #d1d5db; }
 .galaxy-text { background: linear-gradient(45deg, #d1bfff, #a29bfe, #74b9ff, #d1bfff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: transparent; animation: gradient-animation 5s ease infinite; background-size: 200% 200%; }
-.scroll-down-arrow { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; color: var(--accent-color); font-size: 1.875rem; }
+.scroll-down-arrow { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; color: var(--accent-color); font-size: 1.875rem; text-decoration: none; }
 #lang-switcher-container { position: fixed; top: 1.25rem; right: 1.25rem; z-index: 50; }
 #lang-switcher-btn { padding: 0.5rem 1rem; color: white; background-color: var(--card-bg); backdrop-filter: blur(5px); border: 1px solid var(--border-color); border-radius: 9999px; transition: all 0.3s; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
 #lang-switcher-btn:hover { background-color: rgba(255, 255, 255, 0.2); }
@@ -224,7 +224,7 @@ main section { margin-bottom: 6rem; }
 }
 
 #booth-grid {
-    min-height: 800px;
+    min-height: 800px; /* CLS対策 */
 }
 .booth-card {
     background-color: var(--card-bg);
@@ -273,7 +273,7 @@ main section { margin-bottom: 6rem; }
     background-color: var(--card-bg);
     backdrop-filter: blur(5px);
     border: 1px solid var(--border-color);
-    min-height: 200px; 
+    min-height: 200px;  /* CLS対策 */
 }
 .loading-text {
     grid-column: 1 / -1;
@@ -348,3 +348,4 @@ main section { margin-bottom: 6rem; }
 footer { position: relative; padding: 5rem 1rem 2rem 1rem; margin-top: 4rem; text-align: center; color: #9ca3af; font-size: 0.875rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
 .footer-stars { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; }
 .star { position: absolute; background-color: white; border-radius: 50%; animation: twinkle 5s infinite ease-in-out; }
+
