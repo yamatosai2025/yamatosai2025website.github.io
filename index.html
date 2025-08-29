@@ -9,10 +9,11 @@
     
     <link rel="icon" type="image/png" href="favicon.png">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts (Async Loading) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Playfair+Display:wght@900&display=swap" as="style">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Playfair+Display:wght@900&display=swap" media="print" onload="this.media='all'">
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
@@ -107,8 +108,8 @@
                                 <h4 class="font-playfair venue-title" data-lang-key="scheduleVenueHall">講堂</h4>
                                 <div class="schedule-list">
                                     <div class="schedule-item"><time>10:05~10:55</time><div data-lang-key="eventD2A1">スマブラ大会</div></div>
-                                    <div class="schedule-item"><time>11:00~11:30</time><div data-lang-key="eventD2A2">歌うま準決勝</div></div>
-                                    <div class="schedule-item"><time>11:38~13:56</time><div data-lang-key="eventD2A3">バンド</div></div>
+                                    <div class="schedule-item"><time>11:00~11:20</time><div data-lang-key="eventD2A2">歌うま準決勝</div></div>
+                                    <div class="schedule-item"><time>11:30~14:05</time><div data-lang-key="eventD2A3">バンド</div></div>
                                 </div>
                             </div>
                         </div>
@@ -193,3 +194,4 @@
     <script src="script.js" defer></script>
 </body>
 </html>
+
