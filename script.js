@@ -37,7 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
             { id: 'calligraphy', category: 'club', name: { ja: '書道部', en: 'Calligraphy Club' }, content: { ja: '山東書"東"展&書道パフォーマンス', en: 'Calligraphy Club Showcase & Performance' }, description: { ja: '力作揃いの書道展とダイナミックな書道パフォーマンスをします。どちらも最高な出来となっておりますのでぜひお越しください！', en: 'We will have a calligraphy exhibition with many masterpieces and a dynamic calligraphy performance. Both are excellent, so please come and see them!' }, location: { ja: '書道室', en: 'Calligraphy Studio' } },
             { id: 'photo', category: 'club', name: { ja: '写真部', en: 'Photography Club' }, content: { ja: '山東リトルコスモラボ', en: 'Yamato Little Cosmo Lab' }, description: { ja: '今だけの青春の一コマ、写真で未来に残しませんか？昇降口右手側にある写真部室にて、フォトスポット開設&ブロマイド販売！', en: 'Why not capture a moment of your youth in a photo to keep for the future? We have a photo spot and are selling prints in the photo club room on the right side of the entrance!' }, location: { ja: '写真室', en: 'Photo Room' } },
             { id: 'science', category: 'club', name: { ja: '探究部理数班科学部門', en: 'Inquiry Club - Science Dept.' }, content: { ja: 'ペットボトルロケット', en: 'Bottle Rocket' }, description: { ja: 'ペットボトルロケットは、水と空気の力で飛ぶ手作りロケット。仕組みを学びながら楽しく科学に触れられます。', en: 'A bottle rocket is a handmade rocket that flies with the power of water and air. You can learn about the mechanism while having fun with science.' }, location: { ja: 'グラウンド', en: 'Grounds' } },
-            { id: 'library', category: 'club', name: { ja: '図書委員会', en: 'Library Committee' }, content: { ja: '古本市', en: 'Secondhand Book Market' }, description: { ja: '掘り出し物が見つかるかも？古本市へようこそ。', en: 'You might find a hidden gem! Welcome to the used book fair.' }, location: { ja: '2-6教室', en: 'Room 2-6' } }
+            { id: 'library', category: 'club', name: { ja: '図書委員会', en: 'Library Committee' }, content: { ja: '古本市', en: 'Secondhand Book Market' }, description: { ja: '掘り出し物が見つかるかも？古本市へようこそ。', en: 'You might find a hidden gem! Welcome to the used book fair.' }, location: { ja: '2-6教室', en: 'Room 2-6' } },
+            // ★ 追加点
+            { id: 'maruimo', category: 'club', name: { ja: '外部企業出店：まる芋様', en: 'Guest Vendor: Maruimo' }, content: { ja: '冷やし焼き芋・クレープ・かき氷', en: 'Sweet Potato, Crepes & Shaved Ice' }, description: { ja: '焼き芋屋さんならではの、冷やし焼き芋だけでなく、クレープやかき氷も販売してくださいます！', en: 'This baked sweet potato vendor will be selling not only their specialty chilled baked sweet potatoes, but also crepes and shaved ice!' }, location: { ja: '昇降口前', en: 'In front of school entrance' } }
         ]
     };
 
@@ -315,3 +317,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
